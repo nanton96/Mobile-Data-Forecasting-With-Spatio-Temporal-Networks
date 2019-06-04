@@ -14,11 +14,12 @@ def main():
         description='Welcome to Milan dataset preprocess script. This script generates the data necessary for supervised learning from the raw Milan traffic data.')
     parser.add_argument('--S',type = int, default = 12,help='specifies number of observations')
     parser.add_argument('--K',type = int, default = 4,help='specifies number of predictions')
-
+    parser.add_argument('--shifted_predictions',type = bool, default = True,help='if true then we produce targets of shifted data, else we produce targets of the data directly after the observations')
+    
     args = parser.parse_args()
-    process_milan_dataset(args.S,args.K)
+    process_milan_dataset(args.S,args.K,args.shifted_predictions)
 
-def process_milan_dataset(S=12,K=4):
+def process_milan_dataset(S=12,K=4,shift_flag=True):
     '''
     This function will return a tensorflow Dataset consisting of tensors from the milan dataset.
     N is the number of training examples
@@ -36,8 +37,8 @@ def process_milan_dataset(S=12,K=4):
         y : predictions (labels) (Nx100x100xK tensor)
     '''
 
-    DATA_PATH = 'data'
-    SAVE_FILE = 'data/milan_processed'
+    DATA_PATH = 'data_toy'
+    SAVE_FILE = 'data_toy/milan_processed'
     all_files = glob.glob(os.path.join(DATA_PATH, "*.txt")) 
 
     # load files
@@ -48,7 +49,7 @@ def process_milan_dataset(S=12,K=4):
     # preprocess dataset
     df = milan_preprocess(df)
     # convert to numpy feature and label tensors
-    x,y = dataframe_to_numpy_arrays(df,S,K)
+    x,y = dataframe_to_numpy_arrays(df,S,K,shift_flag)
     x,y = shuffle(x,y,random_state = seed)
     # split to train,val, test set
     x_train, x_test, y_train, y_test = train_test_split(x, y, test_size=0.2)
@@ -80,7 +81,7 @@ def milan_preprocess(df):
     
     return df
 
-def dataframe_to_numpy_arrays(df,S,K):
+def dataframe_to_numpy_arrays(df,S,K,shift_flag):
 
     '''
     Converts the dataframe to numpy arrays.
@@ -107,8 +108,10 @@ def dataframe_to_numpy_arrays(df,S,K):
     L = raw.shape[2]
 
     x_t = [raw[:,:,t:t+S] for t in range(L-S-K)]
-    y_t = [raw[:,:,t+S:t+S+K] for t in range(L-S-K)]
-
+    if shift_flag == True: 
+        y_t = [raw[:,:,t+1:t+S+1] for t in range(L-S-K)]
+    else:
+        y_t = [raw[:,:,t+S:t+S+K] for t in range(L-S-K)]
     x = np.array(x_t)
     y = np.array(y_t)
 

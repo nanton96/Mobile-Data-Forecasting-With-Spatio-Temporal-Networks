@@ -104,6 +104,6 @@ venv.bak/
 .mypy_cache/
 # data
 data/
-
+data_toy/
 # vscode
 .vscode/
