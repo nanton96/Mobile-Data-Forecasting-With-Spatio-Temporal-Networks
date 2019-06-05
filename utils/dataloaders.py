@@ -8,8 +8,8 @@ class MilanDataLoader():
         data_set = np.load(DATA_DIR)
         # self.x = np.expand_dims(data_set['x'],4).transpose(0,3,1,2,4)
         # self.y = np.expand_dims(data_set['y'],4).transpose(0,3,1,2,4)
-        self.x = data_set['x'].transpose(0,3,1,2)
-        self.y = data_set['y'].transpose(0,3,1,2)
+        self.x = data_set['x'].transpose(0,3,1,2).astype(np.float32)
+        self.y = data_set['y'].transpose(0,3,1,2).astype(np.float32)
         print(self.x.shape[0])
     
     def __getitem__(self,index):
