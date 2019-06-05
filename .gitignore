@@ -105,5 +105,7 @@ venv.bak/
 # data
 data/
 data_toy/
+# logs
+logs/
 # vscode
 .vscode/

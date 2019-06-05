@@ -122,8 +122,8 @@ def run_training(args,reload=False):
         start = 0
 
     torch.manual_seed(1)
-    summary = open(args.logs_train_dir+"5_10_2ly.txt","w") ## you can change the name of your summary. 
-    self_built_dataset = MilanDataloader(args.data_dir+args.trainset_name,
+    summary = open(args.logs_train_dir+"test_logs.txt","w") ## you can change the name of your summary. 
+    self_built_dataset = MilanDataLoader(args.data_dir+args.trainset_name,
                                           args.seq_start,
                                           args.seq_length-args.seq_start)
     trainloader = DataLoader(
