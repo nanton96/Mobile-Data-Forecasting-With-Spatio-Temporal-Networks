@@ -27,7 +27,7 @@ class ConvLSTMCell(nn.Module):
   def forward(self, x, state):
 
     _hidden, _cell = state
-    # print(x.shape,_hidden.shape)
+    print(x.shape,_hidden.shape)
     cat_x = torch.cat([x, _hidden], dim=1) 
     Conv_x = self._conv(cat_x)
       
