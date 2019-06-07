@@ -34,7 +34,7 @@ class Model(nn.Module):
         self.pool_pad = 0
         self.pool_kernel_size = 3
         self.pool_stride = 3
-        self.hidden_size = 100
+        self.hidden_size = 64
         self.size = int((args.img_size+2*self.conv_pad-(self.conv_kernel_size-1)-1)/self.conv_stride+1)
         self.size1 = int((self.size+2*self.pool_pad-(self.pool_kernel_size-1)-1)/self.pool_stride+1)
         #define layers
@@ -69,10 +69,7 @@ class Model(nn.Module):
 
 
     def forward(self,X):
-        print(X.shape)
         X_chunked = torch.chunk(X,args.seq_start,dim=1)
-        for x_i in X_chunked:    
-            print(x_i.shape)
         X = None
         output = [None]*args.seq_length
         state_size = [args.batch_size, self.hidden_size]+[self.size1,self.size1]
@@ -82,7 +79,7 @@ class Model(nn.Module):
         cell2 = Variable(torch.zeros(state_size)).cuda()
         
         for i in range(args.seq_start):
-                                                        
+
             output[i] = self.conv(X_chunked[i])     
             output[i] = self.pool(output[i])
             hidden1, cell1 = self.convlstm1(output[i],(hidden1,cell1))
@@ -211,7 +208,7 @@ def get_args():
                     help = "length of the sequence")
     args.add_argument('--img_size',
                     type = int,
-                    default = 256,
+                    default = 100,
                     help = "length of the sequence")
     args.add_argument('--seq_start',
                     type = int,
