@@ -71,7 +71,8 @@ class Model(nn.Module):
     def forward(self,X):
         print(X.shape)
         X_chunked = torch.chunk(X,args.seq_start,dim=1)
-        print(X_chunked.shape)
+        for x_i in X_chunked:    
+            print(x_i.shape)
         X = None
         output = [None]*args.seq_length
         state_size = [args.batch_size, self.hidden_size]+[self.size1,self.size1]
