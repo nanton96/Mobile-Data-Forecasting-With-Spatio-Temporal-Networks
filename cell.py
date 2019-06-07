@@ -18,7 +18,7 @@ class ConvLSTMCell(nn.Module):
     self._input_channel = input_channel
     self._filter_size = filter_size
     self._hidden_size = hidden_size
-    self._conv = nn.Conv2d(in_channels=self._input_channel+self._hidden_size, ###hidden state has similar spational struture as inputs, we simply concatenate them on the feature dimension
+    self._conv = nn.Conv2d(in_channels=self._input_channel+self._hidden_size, ###hidden state has similar spatial struture as inputs, we simply concatenate them on the feature dimension
                            out_channels=self._hidden_size*4, ##lstm has four gates
                            kernel_size=self._filter_size,
                            stride=1,
