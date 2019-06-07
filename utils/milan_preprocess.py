@@ -37,8 +37,8 @@ def process_milan_dataset(S=12,K=4,shift_flag=True):
         y : predictions (labels) (Nx100x100xK tensor)
     '''
 
-    DATA_PATH = 'data_toy'
-    SAVE_FILE = 'data_toy/milan_processed'
+    DATA_PATH = 'data'
+    SAVE_FILE = 'data/milan_processed'
     all_files = glob.glob(os.path.join(DATA_PATH, "*.txt")) 
 
     # load files
