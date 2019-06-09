@@ -46,7 +46,7 @@ def get_args():
     # parser.add_argument('--num_filters', nargs="?", type=int, default=64,
     #                     help='Number of convolutional filters per convolutional layer in the network (excluding '
     #                          'dimensionality reduction layers)')
-    parser.add_argument('--num_epochs', nargs="?", type=int, default=100, help='The experiment\'s epoch budget')
+    parser.add_argument('--epochs', nargs="?", type=int, default=100, help='The experiment\'s epoch budget')
     parser.add_argument('--experiment_name', nargs="?", type=str, default="exp_1",
                         help='Experiment name - to be used for building the experiment folder')
     parser.add_argument('--use_gpu', nargs="?", type=str2bool, default=True,
