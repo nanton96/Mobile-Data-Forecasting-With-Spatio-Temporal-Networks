@@ -43,13 +43,12 @@ seq_start = 5
 seq_length = 15
 
 model = ConvLSTMModel(input_size = args.image_height, seq_start = args.seq_start, seq_length = args.seq_length, batch_size = args.batch_size)
-experiment = ExperimentBuilder(network_model=model,
+experiment = ExperimentBuilder(network_model=model,seq_start = seq_start,seq_length = seq_length,
                                     experiment_name=args.experiment_name,
                                     num_epochs=args.num_epochs,
                                     weight_decay_coefficient=args.weight_decay_coefficient,
                                     continue_from_epoch=args.continue_from_epoch,
                                     device=device,
-                                    seq_start = seq_start, seq_length = seq_length,
                                     train_data=train_data, val_data=valid_data,
                                     test_data=test_data)  # build an experiment object
 experiment_metrics, test_metrics = experiment.run_experiment()
