@@ -1,6 +1,7 @@
 import numpy as np
+import torch.utils.data as data
 
-class MilanDataLoader():
+class MilanDataLoader(data.Dataset):
 
     def __init__(self):
 
@@ -21,3 +22,8 @@ class MilanDataLoader():
 
     def __len__(self):
         return self.x.shape[0]
+
+    def __repr__(self):
+        fmt_str = 'Dataset ' + self.__class__.__name__ + '\n'
+        fmt_str += '    Number of datapoints: {}\n'.format(self.__len__())
+        return fmt_str
