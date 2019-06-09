@@ -32,7 +32,8 @@ class ExperimentBuilder(nn.Module):
         self.model = network_model
         #self.model.reset_parameters()
         self.device = device
-
+        self.seq_start = seq_start
+        self.seq_length = seq_length
         if torch.cuda.device_count() > 1:
             self.model.to(self.device)
             self.model = nn.DataParallel(module=self.model)
