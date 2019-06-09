@@ -8,7 +8,7 @@ from torch.nn import functional as func
 
 class ConvLSTMModel(nn.Module):
 
-    def __init__(self,input_size,seq_start,seq_length, batch_size):
+    def __init__(self,input_size,seq_start,seq_length, batch_size,use_gpu):
         super(ConvLSTMModel,self).__init__()
 
         self.seq_start = seq_start
@@ -25,6 +25,7 @@ class ConvLSTMModel(nn.Module):
         self.size = int((input_size+2*self.conv_pad-(self.conv_kernel_size-1)-1)/self.conv_stride+1)
         self.size1 = int((self.size+2*self.pool_pad-(self.pool_kernel_size-1)-1)/self.pool_stride+1)
         #define layers
+        self.use_gpu = use_gpu
         self.conv = nn.Conv2d(
              in_channels=1,
              out_channels=8,
@@ -60,11 +61,17 @@ class ConvLSTMModel(nn.Module):
         X = None
         output = [None]*self.seq_length
         state_size = [self.batch_size, self.hidden_size]+[self.size1,self.size1]
-        hidden1 = Variable(torch.zeros(state_size))#.cuda()
-        cell1 = Variable(torch.zeros(state_size))#.cuda()
-        hidden2 = Variable(torch.zeros(state_size))#.cuda()
-        cell2 = Variable(torch.zeros(state_size))#.cuda()
-        
+        if use_gpu == False:
+            hidden1 = Variable(torch.zeros(state_size))
+            cell1 = Variable(torch.zeros(state_size))
+            hidden2 = Variable(torch.zeros(state_size))
+            cell2 = Variable(torch.zeros(state_size))
+        else :
+            hidden1 = Variable(torch.zeros(state_size)).cuda()
+            cell1 = Variable(torch.zeros(state_size)).cuda()
+            hidden2 = Variable(torch.zeros(state_size)).cuda()
+            cell2 = Variable(torch.zeros(state_size)).cuda()
+
         for i in range(self.seq_start):
 
             output[i] = self.conv(X_chunked[i])     
