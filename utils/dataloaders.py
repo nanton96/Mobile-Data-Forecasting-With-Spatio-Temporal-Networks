@@ -3,9 +3,20 @@ import torch.utils.data as data
 
 class MilanDataLoader(data.Dataset):
 
-    def __init__(self):
-
-        DATA_DIR = 'data_toy/milan_processed_train.npz'
+    def __init__(self,_set='train',toy=False):
+        if toy == True:
+            DATA_DIR = 'data_toy/'
+        else:
+            DATA_DIR = 'data/'
+        if _set.lower() == 'train':
+            DATA_DIR += 'milan_processed_train.npz'
+        elif _set.lower() == 'valid':
+            DATA_DIR += 'milan_processed_val.npz'
+        elif _set.lower() == 'test':
+            DATA_DIR += 'milan_processed_test.npz'
+        else:
+            raise ValueError("Invalid set please select one of: train, valid, test")
+        
         data_set = np.load(DATA_DIR)
         # self.x = np.expand_dims(data_set['x'],4).transpose(0,3,1,2,4)
         # self.y = np.expand_dims(data_set['y'],4).transpose(0,3,1,2,4)
