@@ -46,7 +46,7 @@ model = ConvLSTMModel(input_size = args.image_height, seq_start = args.seq_start
 experiment = ExperimentBuilder(network_model=model,seq_start = seq_start,seq_length = seq_length,
                                     experiment_name=args.experiment_name,
                                     num_epochs=args.num_epochs,
-                                    weight_decay_coefficient=args.weight_decay_coefficient,
+                                    lr =args.learning_rate, weight_decay_coefficient=args.weight_decay_coefficient,
                                     continue_from_epoch=args.continue_from_epoch,
                                     device=device,
                                     train_data=train_data, val_data=valid_data,
