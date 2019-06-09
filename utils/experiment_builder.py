@@ -43,7 +43,7 @@ class ExperimentBuilder(nn.Module):
         self.train_data = train_data
         self.val_data = val_data
         self.test_data = test_data
-        self.optimizer = optim.Adam(self.parameters(), amsgrad=False, lr=lr
+        self.optimizer = optim.Adam(self.parameters(), amsgrad=False, lr=lr,
                                     weight_decay=weight_decay_coefficient)
         # Generate the directory names
         self.experiment_folder = os.path.abspath(experiment_name)
