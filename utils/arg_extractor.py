@@ -54,7 +54,7 @@ def get_args():
     parser.add_argument('--gpu_id', type=str, default="0", help="A string indicating the gpu to use")
     parser.add_argument('--weight_decay_coefficient', nargs="?", type=float, default=1e-05,
                         help='Weight decay to use for Adam')
-    parser.add_argument('--learning-rate', nargs="?", type=float, default=1e-03,
+    parser.add_argument('--learning_rate', nargs="?", type=float, default=1e-03,
                         help='learning rate to use for Adam')
     parser.add_argument('--filepath_to_arguments_json_file', nargs="?", type=str, default=None,
                         help='')
