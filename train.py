@@ -14,16 +14,17 @@ train_data = dataloaders.MilanDataLoader(_set = 'train',toy = args.toy)
 valid_data = dataloaders.MilanDataLoader(_set = 'valid',toy = args.toy)
 test_data  = dataloaders.MilanDataLoader(_set = 'test', toy = args.toy)
 
-for (x,y) in train_data:
+
+
+trainloader = DataLoader(
+        train_data,
+        batch_size=args.batch_size,
+        shuffle=True,
+        num_workers=4,
+        drop_last = True)
+for (x,y) in trainloader:
     print(x.shape)
     print(y.shape)
-
-# trainloader = DataLoader(
-#         self_built_dataset,
-#         batch_size=args.batch_size,
-#         shuffle=True,
-#         num_workers=4,
-#         drop_last = True)
 
 # example_x, example_y = train_data.__getitem__(1)
 # seq_start = example_x.shape[0]
