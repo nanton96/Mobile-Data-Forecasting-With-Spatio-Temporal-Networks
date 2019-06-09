@@ -17,15 +17,15 @@ test_dataset  = dataloaders.MilanDataLoader(_set = 'test', toy = args.toy)
 
 
 train_data = DataLoader(
-        train_data,
+        train_dataset,
         batch_size=args.batch_size,
         shuffle=True,
         num_workers=4,
         drop_last = True)
 
 
-val_data = DataLoader(
-        train_data,
+valid_data = DataLoader(
+        valid_dataset,
         batch_size=args.batch_size,
         shuffle=True,
         num_workers=4,
@@ -33,7 +33,7 @@ val_data = DataLoader(
 
 
 test_data = DataLoader(
-        train_data,
+        test_dataset,
         batch_size=args.batch_size,
         shuffle=True,
         num_workers=4,
