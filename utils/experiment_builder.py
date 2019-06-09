@@ -46,9 +46,9 @@ class ExperimentBuilder(nn.Module):
         self.optimizer = optim.Adam(self.parameters(), amsgrad=False, lr=lr,
                                     weight_decay=weight_decay_coefficient)
         # Generate the directory names
-        self.experiment_folder = os.path.abspath(experiment_name)
-        self.experiment_logs = os.path.abspath(os.path.join("experiments_results",self.experiment_folder, "result_outputs"))
-        self.experiment_saved_models = os.path.abspath(os.path.join("experiments_results",self.experiment_folder, "saved_models"))
+        self.experiment_folder = os.path.abspath("experiments_results/"+experiment_name)
+        self.experiment_logs = os.path.abspath(os.path.join(self.experiment_folder, "result_outputs"))
+        self.experiment_saved_models = os.path.abspath(os.path.join(self.experiment_folder, "saved_models"))
         print(self.experiment_folder, self.experiment_logs)
         # Set best models to be at 0 since we are just starting
         self.best_val_model_idx = 0
