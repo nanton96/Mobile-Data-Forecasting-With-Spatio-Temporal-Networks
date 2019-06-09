@@ -9,7 +9,7 @@ args, device = get_args()  # get arguments from command line
 rng = np.random.RandomState(seed=args.seed)  
 
 torch.manual_seed(seed=args.seed)
-args.toy = True
+args.toy = False
 train_dataset = dataloaders.MilanDataLoader(_set = 'train',toy = args.toy)
 valid_dataset = dataloaders.MilanDataLoader(_set = 'valid',toy = args.toy)
 test_dataset  = dataloaders.MilanDataLoader(_set = 'test', toy = args.toy)
