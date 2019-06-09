@@ -115,16 +115,17 @@ class ExperimentBuilder(nn.Module):
         x = x.to(self.device)
         y = y.to(self.device)
 
-        out = self.model.forward(x)  # forward the data in the model
+        out_list = self.model.forward(x)  # forward the data in the model
         ###loss = F.cross_entropy(input=out, target=y)  # compute loss
-        print(out.shape)
-        print(y.shape)
-        loss = torch.sqrt(self.criterion(out,y))
+        for i in range(self.seq_length - self.seq_start):
+            loss += torch.sqrt(self.criterion(out_list[i], y[:,i,:,:]))
+
+        # loss = torch.sqrt(self.criterion(out,y))
         self.optimizer.zero_grad()  # set all weight grads from previous training iters to 0
         loss.backward()  # backpropagate to compute gradients for current iter loss
 
         self.optimizer.step()  # update network parameters
-        _, predicted = torch.max(out.data, 1)  # get argmax of predictions
+        #_, predicted = torch.max(out.data, 1)  # get argmax of predictions
         ###accuracy = np.mean(list(predicted.eq(y.data).cpu()))  # compute accuracy
         return loss.data.detach().cpu().numpy()#, accuracy
 
@@ -144,10 +145,12 @@ class ExperimentBuilder(nn.Module):
 
         x = x.to(self.device)
         y = y.to(self.device)
-        out = self.model.forward(x)  # forward the data in the model
-        ###loss = F.cross_entropy(out, y)  # compute loss
-        loss = torch.sqrt(self.criterion(out,y))
-        _, predicted = torch.max(out.data, 1)  # get argmax of predictions
+        out_list = self.model.forward(x)  # forward the data in the model
+        ###loss = F.cross_entropy(input=out, target=y)  # compute loss
+        for i in range(self.seq_length - self.seq_start):
+            loss += torch.sqrt(self.criterion(out_list[i], y[:,i,:,:]))
+        #loss = torch.sqrt(self.criterion(out,y))
+        #_, predicted = torch.max(out.data, 1)  # get argmax of predictions
         ###accuracy = np.mean(list(predicted.eq(y.data).cpu()))  # compute accuracy
         return loss.data.detach().cpu().numpy()#, accuracy
 
