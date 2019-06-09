@@ -118,6 +118,7 @@ class ExperimentBuilder(nn.Module):
 
         out_list = self.model.forward(x)  # forward the data in the model
         ###loss = F.cross_entropy(input=out, target=y)  # compute loss
+        loss = 0
         for i in range(self.seq_length - self.seq_start):
             loss += torch.sqrt(self.criterion(out_list[i], y[:,i,:,:]))
 
@@ -148,6 +149,7 @@ class ExperimentBuilder(nn.Module):
         y = y.to(self.device)
         out_list = self.model.forward(x)  # forward the data in the model
         ###loss = F.cross_entropy(input=out, target=y)  # compute loss
+        loss = 0
         for i in range(self.seq_length - self.seq_start):
             loss += torch.sqrt(self.criterion(out_list[i], y[:,i,:,:]))
         #loss = torch.sqrt(self.criterion(out,y))
