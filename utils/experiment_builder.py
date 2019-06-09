@@ -30,7 +30,7 @@ class ExperimentBuilder(nn.Module):
 
         self.experiment_name = experiment_name
         self.model = network_model
-        self.model.reset_parameters()
+        #self.model.reset_parameters()
         self.device = device
 
         if torch.cuda.device_count() > 1:
