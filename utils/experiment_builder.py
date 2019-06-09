@@ -120,6 +120,7 @@ class ExperimentBuilder(nn.Module):
         ###loss = F.cross_entropy(input=out, target=y)  # compute loss
         loss = 0
         for i in range(self.seq_length - self.seq_start):
+            print(y.type())
             loss += torch.sqrt(self.criterion(out_list[i], y[i,:,:]))
 
         # loss = torch.sqrt(self.criterion(out,y))
