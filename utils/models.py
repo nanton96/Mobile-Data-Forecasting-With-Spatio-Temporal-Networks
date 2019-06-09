@@ -61,7 +61,7 @@ class ConvLSTMModel(nn.Module):
         X = None
         output = [None]*self.seq_length
         state_size = [self.batch_size, self.hidden_size]+[self.size1,self.size1]
-        if use_gpu == False:
+        if self.use_gpu == False:
             hidden1 = Variable(torch.zeros(state_size))
             cell1 = Variable(torch.zeros(state_size))
             hidden2 = Variable(torch.zeros(state_size))
