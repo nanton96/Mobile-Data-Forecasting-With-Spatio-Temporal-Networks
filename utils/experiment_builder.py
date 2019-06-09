@@ -151,7 +151,7 @@ class ExperimentBuilder(nn.Module):
         ###loss = F.cross_entropy(input=out, target=y)  # compute loss
         loss = 0
         for i in range(self.seq_length - self.seq_start):
-            loss += torch.sqrt(self.criterion(out_list[i], y[i,:,:]))
+            loss += torch.sqrt(self.criterion(out_list[i], y[i,:,:].float()))
         #loss = torch.sqrt(self.criterion(out,y))
         #_, predicted = torch.max(out.data, 1)  # get argmax of predictions
         ###accuracy = np.mean(list(predicted.eq(y.data).cpu()))  # compute accuracy
