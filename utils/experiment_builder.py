@@ -110,7 +110,7 @@ class ExperimentBuilder(nn.Module):
         #print(type(x))
 
         if type(x) is np.ndarray:
-            x, y = torch.Tensor(x).float().to(device=self.device), torch.Tensor(y).long().to(
+            x, y = torch.Tensor(x).float().to(device=self.device), torch.Tensor(y).float().to(
             device=self.device)  # send data to device as torch tensors
 
         x = x.to(self.device)
@@ -120,7 +120,7 @@ class ExperimentBuilder(nn.Module):
         ###loss = F.cross_entropy(input=out, target=y)  # compute loss
         loss = 0
         for i in range(self.seq_length - self.seq_start):
-            loss += torch.sqrt(self.criterion(out_list[i], y[i,:,:].type(torch.LongTensor)))
+            loss += torch.sqrt(self.criterion(out_list[i], y[i,:,:]))
 
         # loss = torch.sqrt(self.criterion(out,y))
         self.optimizer.zero_grad()  # set all weight grads from previous training iters to 0
@@ -142,7 +142,7 @@ class ExperimentBuilder(nn.Module):
         if len(y.shape) > 1:
             y = np.argmax(y, axis=1)  # convert one hot encoded labels to single integer labels
         if type(x) is np.ndarray:
-            x, y = torch.Tensor(x).float().to(device=self.device), torch.Tensor(y).long().to(
+            x, y = torch.Tensor(x).float().to(device=self.device), torch.Tensor(y).float().to(
             device=self.device)  # convert data to pytorch tensors and send to the computation device
 
         x = x.to(self.device)
@@ -151,7 +151,7 @@ class ExperimentBuilder(nn.Module):
         ###loss = F.cross_entropy(input=out, target=y)  # compute loss
         loss = 0
         for i in range(self.seq_length - self.seq_start):
-            loss += torch.sqrt(self.criterion(out_list[i], y[i,:,:].type(torch.LongTensor)))
+            loss += torch.sqrt(self.criterion(out_list[i], y[i,:,:]))
         #loss = torch.sqrt(self.criterion(out,y))
         #_, predicted = torch.max(out.data, 1)  # get argmax of predictions
         ###accuracy = np.mean(list(predicted.eq(y.data).cpu()))  # compute accuracy
