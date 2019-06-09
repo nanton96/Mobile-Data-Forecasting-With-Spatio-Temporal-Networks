@@ -56,9 +56,7 @@ class ConvLSTMModel(nn.Module):
 
 
     def forward(self,X):
-        print(X[1].shape)
         X_chunked = torch.chunk(X,self.seq_start,dim=1)
-        print(X_chunked[1].shape)
         X = None
         output = [None]*self.seq_length
         state_size = [self.batch_size, self.hidden_size]+[self.size1,self.size1]

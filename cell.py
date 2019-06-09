@@ -33,10 +33,10 @@ class ConvLSTMCell(nn.Module):
       
     i, f, o, j = torch.chunk(Conv_x, 4, dim = 1)
 
-    i = func.sigmoid(i)
-    f = func.sigmoid(f)
-    cell = _cell * f + i * func.tanh(j)
-    o =func.sigmoid(o)
-    hidden = o * func.tanh(cell)
+    i = torch.sigmoid(i)
+    f = torch.sigmoid(f)
+    cell = _cell * f + i * torch.tanh(j)
+    o =torch.sigmoid(o)
+    hidden = o * torch.tanh(cell)
 
     return hidden, cell
