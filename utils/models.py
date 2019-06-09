@@ -60,10 +60,10 @@ class ConvLSTMModel(nn.Module):
         X = None
         output = [None]*self.seq_length
         state_size = [self.batch_size, self.hidden_size]+[self.size1,self.size1]
-        hidden1 = Variable(torch.zeros(state_size)).cuda()
-        cell1 = Variable(torch.zeros(state_size)).cuda()
-        hidden2 = Variable(torch.zeros(state_size)).cuda()
-        cell2 = Variable(torch.zeros(state_size)).cuda()
+        hidden1 = Variable(torch.zeros(state_size))#.cuda()
+        cell1 = Variable(torch.zeros(state_size))#.cuda()
+        hidden2 = Variable(torch.zeros(state_size))#.cuda()
+        cell2 = Variable(torch.zeros(state_size))#.cuda()
         
         for i in range(self.seq_start):
 
