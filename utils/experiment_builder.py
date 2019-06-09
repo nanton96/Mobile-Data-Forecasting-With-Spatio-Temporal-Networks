@@ -117,6 +117,8 @@ class ExperimentBuilder(nn.Module):
 
         out = self.model.forward(x)  # forward the data in the model
         ###loss = F.cross_entropy(input=out, target=y)  # compute loss
+        print(out.shape)
+        print(y.shape)
         loss = torch.sqrt(self.criterion(out,y))
         self.optimizer.zero_grad()  # set all weight grads from previous training iters to 0
         loss.backward()  # backpropagate to compute gradients for current iter loss
