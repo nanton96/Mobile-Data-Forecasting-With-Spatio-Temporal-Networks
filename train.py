@@ -39,9 +39,9 @@ test_data = DataLoader(
         num_workers=4,
         drop_last = True)
 
-example_x, example_y = train_data.__getitem__(1)
-seq_start = example_x.shape[0]
-seq_length = seq_start + example_y.shape[0]
+seq_start = 5
+seq_length = 15
+
 model = ConvLSTMModel(input_size = args.image_height, seq_start = args.seq_start, seq_length = args.seq_length, batch_size = args.batch_size)
 experiment = ExperimentBuilder(network_model=model,
                                     experiment_name=args.experiment_name,
