@@ -10,7 +10,7 @@ import time
 from utils.storage import save_statistics
 
 class ExperimentBuilder(nn.Module):
-    def __init__(self, network_model, experiment_name, num_epochs, train_data, val_data,
+    def __init__(self,seq_start,seq_length, network_model, experiment_name, num_epochs, train_data, val_data,
                  test_data, weight_decay_coefficient, device, continue_from_epoch=-1):
         """
         Initializes an ExperimentBuilder object. Such an object takes care of running training and evaluation of a deep net

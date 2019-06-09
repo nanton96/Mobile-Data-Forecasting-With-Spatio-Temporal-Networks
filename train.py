@@ -49,6 +49,7 @@ experiment = ExperimentBuilder(network_model=model,
                                     weight_decay_coefficient=args.weight_decay_coefficient,
                                     continue_from_epoch=args.continue_from_epoch,
                                     device=device,
+                                    seq_start = seq_start, seq_length = seq_length,
                                     train_data=train_data, val_data=valid_data,
                                     test_data=test_data)  # build an experiment object
 experiment_metrics, test_metrics = experiment.run_experiment()
