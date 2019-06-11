@@ -105,6 +105,8 @@ venv.bak/
 # data
 data/
 data_toy/
+# models
+trained_models/
 # logs
 logs/
 # vscode
