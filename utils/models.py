@@ -5,6 +5,7 @@ import torch.nn.functional as F
 from utils.cell import ConvLSTMCell
 from torch.autograd import Variable
 from torch.nn import functional as func
+""" modified code from  https://github.com/cxxixi/Precipitation-Nowcasting """
 
 class ConvLSTMModel(nn.Module):
 

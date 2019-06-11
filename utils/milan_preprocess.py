@@ -51,6 +51,10 @@ def process_milan_dataset(S=12,K=4,shift_flag=True):
     # convert to numpy feature and label tensors
     x,y = dataframe_to_numpy_arrays(df,S,K,shift_flag)
     x,y = shuffle(x,y,random_state = seed)
+    # transform to [1,-1] range
+    max_x = np.max(x[...])
+    x = 2 * (x / max_x) - 1
+    y = 2 * (y / max_x) - 1
     # split to train,val, test set
     x_train, x_test, y_train, y_test = train_test_split(x, y, test_size=0.2)
     x_test, x_val, y_test, y_val = train_test_split(x_test, y_test, test_size=0.5)
