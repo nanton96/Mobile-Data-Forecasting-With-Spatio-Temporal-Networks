@@ -12,8 +12,8 @@ from sklearn.model_selection import train_test_split
 def main():
     parser = argparse.ArgumentParser(
         description='Welcome to Milan dataset preprocess script. This script generates the data necessary for supervised learning from the raw Milan traffic data.')
-    parser.add_argument('--S',type = int, default = 5,help='specifies number of observations')
-    parser.add_argument('--K',type = int, default = 15,help='specifies number of predictions')
+    parser.add_argument('--S',type = int, default = 12,help='specifies number of observations')
+    parser.add_argument('--K',type = int, default = 6,help='specifies number of predictions')
     parser.add_argument('--shifted_predictions',type = bool, default = False,help='if true then we produce targets of shifted data, else we produce targets of the data directly after the observations')
     
     args = parser.parse_args()
