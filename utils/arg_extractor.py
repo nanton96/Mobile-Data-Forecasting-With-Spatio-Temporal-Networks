@@ -34,11 +34,11 @@ def get_args():
                         help='One of [strided_convolution, dilated_convolution, max_pooling, avg_pooling]')
     parser.add_argument('--seq_length',
                     type = int,
-                    default = 20,
+                    default = 18,
                     help = "length of the sequence")
     parser.add_argument('--seq_start',
                     type = int,
-                    default = 5,
+                    default = 12,
                     help = """start of the sequence generation""")
     # parser.add_argument('--num_layers', nargs="?", type=int, default=4,
     #                     help='Number of convolutional layers in the network (excluding '
