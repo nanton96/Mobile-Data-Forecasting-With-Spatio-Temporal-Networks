@@ -28,10 +28,12 @@ class MilanDataLoader(data.Dataset):
         print(self.x.shape[0])
     
     def __getitem__(self,index):
-
-        inputs = self.x[index]
-        predictions = self.y[index]
-
+        if create_channel_axis == True: 
+            inputs = self.x[:,index,...]
+            predictions = self.y[:,index,...]
+        else:
+            inputs = self.x[index]
+            predictions = self.y[index]
         return inputs, predictions
 
     def __len__(self):
