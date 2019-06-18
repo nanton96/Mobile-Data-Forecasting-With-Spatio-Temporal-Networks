@@ -28,8 +28,8 @@ class MilanDataLoader(data.Dataset):
         else:
             self.x = data_set['x'].transpose(0,3,1,2).astype(np.float32)  # DIMENSIONS B S H W
             self.y = data_set['y'].transpose(0,3,1,2).astype(np.float32)
-        print(x.shape)
-        print(y.shape)
+        print(self.x.shape)
+        print(self.y.shape)
     
     def __getitem__(self,index):
         if self.create_channel_axis == True: 
