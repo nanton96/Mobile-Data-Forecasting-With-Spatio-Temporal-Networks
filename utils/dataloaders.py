@@ -20,8 +20,10 @@ class MilanDataLoader(data.Dataset):
         
         data_set = np.load(DATA_DIR)
         if create_channel_axis == True: 
-            self.x = np.expand_dims(data_set['x'],4).transpose(3,0,4,1,2) # DIMENSIONS S B C H W
-            self.y = np.expand_dims(data_set['y'],4).transpose(3,0,4,1,2) # seq_len batch_size input_channel height width
+            self.x = np.expand_dims(data_set['x'],4).transpose(3,0,4,1,2).astype(np.float32)   
+            # DIMENSIONS S B C H W
+            self.y = np.expand_dims(data_set['y'],4).transpose(3,0,4,1,2).astype(np.float32)   
+            # seq_len batch_size input_channel height width
         
         else:
             self.x = data_set['x'].transpose(0,3,1,2).astype(np.float32)  # DIMENSIONS B S H W
