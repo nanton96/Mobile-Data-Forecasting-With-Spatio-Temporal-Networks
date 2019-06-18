@@ -103,7 +103,10 @@ class ExperimentBuilder(nn.Module):
         :return: the loss and accuracy for this batch
         """
         self.train()  # sets model to training mode (in case batch normalization or other methods have different procedures for training and evaluation)
-
+        
+        # DATALOADER PUTS BATCHSIZE FIRST AND WE WANT IT SECOND IE S B C H H
+        x = x.transpose(1,0,2,3,4)
+        y = y.transpose(1,0,2,3,4)
         if len(y.shape) > 1:
             y = np.argmax(y, axis=1)  # convert one hot encoded labels to single integer labels
 
@@ -138,6 +141,9 @@ class ExperimentBuilder(nn.Module):
         :return: the loss and accuracy for this batch
         """
         self.eval()  # sets the system to validation mode
+        # DATALOADER PUTS BATCHSIZE FIRST AND WE WANT IT SECOND IE S B C H H
+        x = x.transpose(1,0,2,3,4)
+        y = y.transpose(1,0,2,3,4)
         if len(y.shape) > 1:
             y = np.argmax(y, axis=1)  # convert one hot encoded labels to single integer labels
         if type(x) is np.ndarray:
