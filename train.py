@@ -1,7 +1,7 @@
 import utils.dataloaders as dataloaders
 import numpy as np
 from utils.arg_extractor import get_args
-from utils.experiment_builder import ExperimentBuilder
+from utils.new_experiment_builder import ExperimentBuilder
 from utils.models import ConvLSTMModel
 import torch
 from torch.utils.data import DataLoader
