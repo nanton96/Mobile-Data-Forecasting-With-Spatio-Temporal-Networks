@@ -3,7 +3,7 @@ sys.path.insert(0, '../')
 import torch
 from collections import OrderedDict
 from utils.new_models import EF,Encoder,Forecaster,ConvLSTM
-
+import utils.dataloaders as dataloaders
 batch_size = 10
 encoder_architecture = [
     [   OrderedDict({'conv1_leaky_1': [1, 8, 4, 2, 1]}),
