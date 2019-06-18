@@ -104,9 +104,7 @@ class ExperimentBuilder(nn.Module):
         """
         self.train()  # sets model to training mode (in case batch normalization or other methods have different procedures for training and evaluation)
         
-        # DATALOADER PUTS BATCHSIZE FIRST AND WE WANT IT SECOND IE S B C H H
-        x = x.transpose(1,0,2,3,4)
-        y = y.transpose(1,0,2,3,4)
+       
         if len(y.shape) > 1:
             y = np.argmax(y, axis=1)  # convert one hot encoded labels to single integer labels
 
@@ -115,6 +113,10 @@ class ExperimentBuilder(nn.Module):
         if type(x) is np.ndarray:
             x, y = torch.Tensor(x).float().to(device=self.device), torch.Tensor(y).float().to(
             device=self.device)  # send data to device as torch tensors
+
+        # DATALOADER PUTS BATCHSIZE FIRST AND WE WANT IT SECOND IE S B C H H
+        x = x.permute(1,0,2,3,4)
+        y = y.permute(1,0,2,3,4)
 
         x = x.to(self.device)
         y = y.to(self.device)
@@ -141,14 +143,15 @@ class ExperimentBuilder(nn.Module):
         :return: the loss and accuracy for this batch
         """
         self.eval()  # sets the system to validation mode
-        # DATALOADER PUTS BATCHSIZE FIRST AND WE WANT IT SECOND IE S B C H H
-        x = x.transpose(1,0,2,3,4)
-        y = y.transpose(1,0,2,3,4)
         if len(y.shape) > 1:
             y = np.argmax(y, axis=1)  # convert one hot encoded labels to single integer labels
         if type(x) is np.ndarray:
             x, y = torch.Tensor(x).float().to(device=self.device), torch.Tensor(y).float().to(
             device=self.device)  # convert data to pytorch tensors and send to the computation device
+
+        # DATALOADER PUTS BATCHSIZE FIRST AND WE WANT IT SECOND IE S B C H H
+        x = x.permute(1,0,2,3,4)
+        y = y.permute(1,0,2,3,4)
 
         x = x.to(self.device)
         y = y.to(self.device)
