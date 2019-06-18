@@ -65,7 +65,7 @@ forecaster_architecture = [
 ]
 forecaster=Forecaster(forecaster_architecture[0],forecaster_architecture[1],seq_length).to(device)
 
-model = EF(encoder,forecaster)
+model = EF(encoder,forecaster).float()
 
 experiment = ExperimentBuilder(network_model=model,seq_start = seq_start,seq_length = seq_length,
                                     experiment_name=args.experiment_name,
