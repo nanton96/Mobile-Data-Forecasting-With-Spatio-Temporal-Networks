@@ -41,7 +41,7 @@ encoder_architecture = [
                  kernel_size=3, stride=1, padding=1),
     ]
 ]
-encoder = Encoder(encoder_architecture[0],encoder_architecture[1])
+encoder = Encoder(encoder_architecture[0],encoder_architecture[1]).to(device)
 ###### Define decoder #####
 forecaster_architecture = [
     [
@@ -63,7 +63,7 @@ forecaster_architecture = [
                  kernel_size=3, stride=1, padding=1),
     ]
 ]
-forecaster=Forecaster(forecaster_architecture[0],forecaster_architecture[1],seq_length)
+forecaster=Forecaster(forecaster_architecture[0],forecaster_architecture[1],seq_length).to(device)
 
 model = EF(encoder,forecaster)
 

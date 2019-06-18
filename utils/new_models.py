@@ -81,8 +81,7 @@ class Encoder(nn.Module):
         hidden_states = []
         #logging.debug(input.size())
         for i in range(1, self.blocks+1):
-            input, state_stage = self.forward_by_stage(input, 
-            getattr(self, 'stage'+str(i)), getattr(self, 'rnn'+str(i)))
+            input, state_stage = self.forward_by_stage(input, getattr(self, 'stage'+str(i)), getattr(self, 'rnn'+str(i)))
             hidden_states.append(state_stage)
         return tuple(hidden_states)
 
@@ -155,3 +154,5 @@ def make_layers(block):
                 layers.append(('leaky_' + layer_name, nn.LeakyReLU(negative_slope=0.2, inplace=True)))
         else:
             raise NotImplementedError
+
+    return nn.Sequential(OrderedDict(layers))
