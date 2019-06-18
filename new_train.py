@@ -34,11 +34,11 @@ encoder_architecture = [
 
     [
         ConvLSTM(input_channel=8, num_filter=64, b_h_w=(batch_size, 50, 50),
-                 kernel_size=3, stride=1, padding=1),
+                 kernel_size=3, stride=1, padding=1,device=device,seq_len=seq_length),
         ConvLSTM(input_channel=192, num_filter=192, b_h_w=(batch_size, 25, 25),
-                 kernel_size=3, stride=1, padding=1),
+                 kernel_size=3, stride=1, padding=1,device=device,seq_len=seq_length),
         ConvLSTM(input_channel=192, num_filter=192, b_h_w=(batch_size, 13, 13),
-                 kernel_size=3, stride=1, padding=1),
+                 kernel_size=3, stride=1, padding=1,device=device,seq_len=seq_length),
     ]
 ]
 encoder = Encoder(encoder_architecture[0],encoder_architecture[1]).to(device)
@@ -56,11 +56,11 @@ forecaster_architecture = [
 
     [
         ConvLSTM(input_channel=192, num_filter=192, b_h_w=(batch_size, 13, 13),
-                 kernel_size=3, stride=1, padding=1),
+                 kernel_size=3, stride=1, padding=1,device=device,seq_len=seq_length),
         ConvLSTM(input_channel=192, num_filter=192, b_h_w=(batch_size, 25, 25),
-                 kernel_size=3, stride=1, padding=1),
+                 kernel_size=3, stride=1, padding=1,device=device,seq_len=seq_length),
         ConvLSTM(input_channel=64, num_filter=64, b_h_w=(batch_size, 50, 50),
-                 kernel_size=3, stride=1, padding=1),
+                 kernel_size=3, stride=1, padding=1,device=device,seq_len=seq_length),
     ]
 ]
 forecaster=Forecaster(forecaster_architecture[0],forecaster_architecture[1],seq_length).to(device)

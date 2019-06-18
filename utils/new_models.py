@@ -2,7 +2,7 @@ from torch import nn
 import torch
 from collections import OrderedDict
 class ConvLSTM(nn.Module):
-    def __init__(self, input_channel, num_filter, b_h_w, kernel_size, stride=1, padding=1,device=None):
+    def __init__(self, input_channel, num_filter, b_h_w, kernel_size, stride=1, padding=1,device=None,seq_len=None):
         super().__init__()
         self._conv = nn.Conv2d(in_channels=input_channel + num_filter,
                                out_channels=num_filter*4,
@@ -19,9 +19,10 @@ class ConvLSTM(nn.Module):
         self._input_channel = input_channel
         self._num_filter = num_filter
         self.device = device 
+        self.seq_len = seq_len
     # inputs and states should not be all none
     # inputs: S*B*C*H*W
-    def forward(self, inputs=None, states=None, seq_len=None):
+    def forward(self, inputs=None, states=None):
 
         if states is None:
             c = torch.zeros((inputs.size(1), self._num_filter, self._state_height,
@@ -32,7 +33,7 @@ class ConvLSTM(nn.Module):
             h, c = states
 
         outputs = []
-        for index in range(seq_len):
+        for index in range(self.seq_len):
             # initial inputs
             if inputs is None:
                 x = torch.zeros((h.size(0), self._input_channel, self._state_height,
