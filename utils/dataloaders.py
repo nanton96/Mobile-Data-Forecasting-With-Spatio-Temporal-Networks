@@ -4,6 +4,7 @@ import torch.utils.data as data
 class MilanDataLoader(data.Dataset):
 
     def __init__(self,_set='train',toy=False,create_channel_axis=False):
+        self.create_channel_axis = create_channel_axis
         if toy == True:
             DATA_DIR = 'data_toy/'
         else:
@@ -28,7 +29,7 @@ class MilanDataLoader(data.Dataset):
         print(self.x.shape[0])
     
     def __getitem__(self,index):
-        if create_channel_axis == True: 
+        if self.create_channel_axis == True: 
             inputs = self.x[:,index,...]
             predictions = self.y[:,index,...]
         else:
