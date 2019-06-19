@@ -22,7 +22,7 @@ class ConvLSTM(nn.Module):
         self.seq_len = seq_len
     # inputs and states should not be all none
     # inputs: S*B*C*H*W
-    def forward(self, inputs=None, states=None, seq_len = self.seq_len):
+    def forward(self, inputs=None, states=None, seq_len = None):
 
         if states is None:
             c = torch.zeros((inputs.size(1), self._num_filter, self._state_height,
@@ -31,7 +31,8 @@ class ConvLSTM(nn.Module):
                              self._state_width), dtype=torch.float).to(self.device)
         else:
             h, c = states
-
+        if seq_len == None:
+            seq_len = self.seq_len
         outputs = []
         for index in range(seq_len):
             # initial inputs
