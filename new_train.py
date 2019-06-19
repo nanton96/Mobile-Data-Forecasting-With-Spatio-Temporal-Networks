@@ -23,6 +23,7 @@ test_data = DataLoader(test_dataset,batch_size=args.batch_size,shuffle=True,num_
 
 
 seq_input = 12
+seq_output = 6
 seq_length = 18
 ###### Define encoder #####
 encoder_architecture = [
@@ -56,14 +57,14 @@ forecaster_architecture = [
 
     [
         ConvLSTM(input_channel=192, num_filter=192, b_h_w=(batch_size, 13, 13),
-                 kernel_size=3, stride=1, padding=1,device=device,seq_len=seq_input),
+                 kernel_size=3, stride=1, padding=1,device=device,seq_len=seq_output),
         ConvLSTM(input_channel=192, num_filter=192, b_h_w=(batch_size, 25, 25),
-                 kernel_size=3, stride=1, padding=1,device=device,seq_len=seq_input),
+                 kernel_size=3, stride=1, padding=1,device=device,seq_len=seq_output),
         ConvLSTM(input_channel=64, num_filter=64, b_h_w=(batch_size, 50, 50),
-                 kernel_size=3, stride=1, padding=1,device=device,seq_len=seq_input),
+                 kernel_size=3, stride=1, padding=1,device=device,seq_len=seq_output),
     ]
 ]
-forecaster=Forecaster(forecaster_architecture[0],forecaster_architecture[1],seq_length).to(device)
+forecaster=Forecaster(forecaster_architecture[0],forecaster_architecture[1],seq_output).to(device)
 
 model = EF(encoder,forecaster)
 experiment = ExperimentBuilder(network_model=model,seq_start = seq_input,seq_length = seq_length,
