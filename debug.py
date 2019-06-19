@@ -40,7 +40,7 @@ torch.manual_seed(seed=args.seed)
 args.toy = False
 batch_size = args.batch_size
 
-train_dataset = dataloaders.MilanDataLoader(_set = 'train',toy = args.toy,create_channel_axis=True)
+train_dataset = dataloaders.MilanDataLoader(_set = 'train',toy = args.toy,create_channel_axis=False)
 valid_dataset = dataloaders.MilanDataLoader(_set = 'valid',toy = args.toy,create_channel_axis=True)
 test_dataset  = dataloaders.MilanDataLoader(_set = 'test', toy = args.toy,create_channel_axis=True)
 
