@@ -119,7 +119,9 @@ class ExperimentBuilder(nn.Module):
         ###loss = F.cross_entropy(input=out, target=y)  # compute loss
         loss = 0
         for i in range(self.seq_length - self.seq_start):
-            loss += self.criterion(out_list[i], y[i,:,:].float())
+            print('o',out_list[i].shape)
+            print('y',y[:,i,:,:].shape)
+            loss += self.criterion(out_list[i], y[:,i,:,:].float())
 
         # loss = torch.sqrt(self.criterion(out,y))
         self.optimizer.zero_grad()  # set all weight grads from previous training iters to 0
