@@ -120,7 +120,7 @@ class ExperimentBuilder(nn.Module):
         loss = 0
         se = 0
         for i in range(self.seq_length - self.seq_start):
-            se += torch.sum((out_list[i].squeeze() - y[:,i,:,:])**2,(2,3))
+            se += torch.sum((out_list[i].squeeze() - y[:,i,:,:])**2,(1,2))
         
         loss = torch.mean(se) / (self.seq_length - self.seq_start)
 
