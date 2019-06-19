@@ -118,10 +118,12 @@ class ExperimentBuilder(nn.Module):
         out_list = self.model.forward(x)  # forward the data in the model
         ###loss = F.cross_entropy(input=out, target=y)  # compute loss
         loss = 0
+        se = 0
         for i in range(self.seq_length - self.seq_start):
-            print('o',out_list[i].shape)
-            print('y',y[:,i,:,:].shape)
-            loss += self.criterion(out_list[i], y[:,i,:,:].float())
+            se += torch.sum(((out_list[i].squeeze() - y[:,i,:,:])**2,(2,3)))
+        
+        loss = torch.mean(se) / (self.seq_length - self.seq_start)
+            #loss += self.criterion(out_list[i], y[:,i,:,:].float())
 
         # loss = torch.sqrt(self.criterion(out,y))
         self.optimizer.zero_grad()  # set all weight grads from previous training iters to 0
