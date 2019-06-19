@@ -154,8 +154,13 @@ class ExperimentBuilder(nn.Module):
         out_list = self.model.forward(x)  # forward the data in the model
         ###loss = F.cross_entropy(input=out, target=y)  # compute loss
         loss = 0
+        # for i in range(self.seq_length - self.seq_start):
+        #     loss += self.criterion(out_list[i], y[:,i,:,:].float())
+        se = 0
         for i in range(self.seq_length - self.seq_start):
-            loss += self.criterion(out_list[i], y[:,i,:,:].float())
+            se += torch.sum((out_list[i].squeeze() - y[:,i,:,:])**2,(1,2))
+        
+        loss = torch.mean(se) / (self.seq_length - self.seq_start)
         #loss = torch.sqrt(self.criterion(out,y))
         #_, predicted = torch.max(out.data, 1)  # get argmax of predictions
         ###accuracy = np.mean(list(predicted.eq(y.data).cpu()))  # compute accuracy
