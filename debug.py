@@ -49,6 +49,5 @@ valid_data = DataLoader(valid_dataset,batch_size=args.batch_size,shuffle=True,nu
 test_data = DataLoader(test_dataset,batch_size=args.batch_size,shuffle=True,num_workers=4,drop_last = True)
 
 
-for x,y in train_data:
-    print(x.shape)
-    print(y.shape)
+for i,(x,y) in enumerate(train_data):
+    print(i)
