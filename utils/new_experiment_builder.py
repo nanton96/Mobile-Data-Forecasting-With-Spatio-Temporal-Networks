@@ -105,8 +105,8 @@ class ExperimentBuilder(nn.Module):
         self.train()  # sets model to training mode (in case batch normalization or other methods have different procedures for training and evaluation)
         
        
-        if len(y.shape) > 1:
-            y = np.argmax(y, axis=1)  # convert one hot encoded labels to single integer labels
+        # if len(y.shape) > 1:
+        #     y = np.argmax(y, axis=1)  # convert one hot encoded labels to single integer labels
 
         #print(type(x))
 
@@ -144,8 +144,8 @@ class ExperimentBuilder(nn.Module):
         :return: the loss and accuracy for this batch
         """
         self.eval()  # sets the system to validation mode
-        if len(y.shape) > 1:
-            y = np.argmax(y, axis=1)  # convert one hot encoded labels to single integer labels
+        # if len(y.shape) > 1:
+        #     y = np.argmax(y, axis=1)  # convert one hot encoded labels to single integer labels
         if type(x) is np.ndarray:
             x, y = torch.Tensor(x).float().to(device=self.device), torch.Tensor(y).float().to(
             device=self.device)  # convert data to pytorch tensors and send to the computation device
