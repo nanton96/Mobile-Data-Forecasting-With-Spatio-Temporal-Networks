@@ -40,7 +40,6 @@ class ConvLSTM(nn.Module):
                 x = torch.zeros((h.size(0), self._input_channel, self._state_height,
                                       self._state_width), dtype=torch.float).to(self.device)
             else:
-                print(inputs.shape)
                 x = inputs[index, ...]
             cat_x = torch.cat([x, h], dim=1)
             conv_x = self._conv(cat_x)
