@@ -116,7 +116,7 @@ class ExperimentBuilder(nn.Module):
 
         # DATALOADER PUTS BATCHSIZE FIRST AND WE WANT IT SECOND IE S B C H H
         x = x.permute(1,0,2,3,4)
-        print(y.shape)
+        # print(y.shape)
         y = y.permute(1,0,2,3,4)
 
         x = x.to(self.device)
