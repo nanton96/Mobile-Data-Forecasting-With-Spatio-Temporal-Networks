@@ -3,20 +3,21 @@ import torch.utils.data as data
 
 class MilanDataLoader(data.Dataset):
 
-    def __init__(self,_set='train',toy=False,create_channel_axis=False):
+    def __init__(self,_set='train',toy=False,create_channel_axis=False, DATA_DIR = None):
         self.create_channel_axis = create_channel_axis
-        if toy == True:
-            DATA_DIR = 'data_toy/'
-        else:
-            DATA_DIR = 'data/'
-        if _set.lower() == 'train':
-            DATA_DIR += 'milan_processed_train.npz'
-        elif _set.lower() == 'valid':
-            DATA_DIR += 'milan_processed_val.npz'
-        elif _set.lower() == 'test':
-            DATA_DIR += 'milan_processed_test.npz'
-        else:
-            raise ValueError("Invalid set please select one of: train, valid, test")
+        if DATA_DIR == None: 
+            if toy == True:
+                DATA_DIR = 'data_toy/'
+            else:
+                DATA_DIR = 'data/'
+            if _set.lower() == 'train':
+                DATA_DIR += 'milan_processed_train.npz'
+            elif _set.lower() == 'valid':
+                DATA_DIR += 'milan_processed_val.npz'
+            elif _set.lower() == 'test':
+                DATA_DIR += 'milan_processed_test.npz'
+            else:
+                raise ValueError("Invalid set please select one of: train, valid, test")
         
         data_set = np.load(DATA_DIR)
         if create_channel_axis == True: 
