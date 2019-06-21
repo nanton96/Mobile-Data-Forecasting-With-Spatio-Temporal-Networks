@@ -17,7 +17,7 @@ class MilanDataLoader(data.Dataset):
             elif _set.lower() == 'test':
                 DATA_DIR += 'milan_processed_test.npz'
             else:
-                raise ValueError("Invalid set please select one of: train, valid, test")
+                raise ValueError("Invalid set. Please select one of: train, valid, test")
         
         data_set = np.load(DATA_DIR)
         if create_channel_axis == True: 
