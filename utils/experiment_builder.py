@@ -103,10 +103,6 @@ class ExperimentBuilder(nn.Module):
         :return: the loss and accuracy for this batch
         """
         self.train()  # sets model to training mode (in case batch normalization or other methods have different procedures for training and evaluation)
-        # if len(y.shape) > 1:
-        #     y = np.argmax(y, axis=1)  # convert one hot encoded labels to single integer labels
-
-        #print(type(x))
 
         if type(x) is np.ndarray:
             x, y = torch.Tensor(x).float().to(device=self.device), torch.Tensor(y).float().to(
@@ -118,11 +114,10 @@ class ExperimentBuilder(nn.Module):
         out_list = self.model.forward(x)  # forward the data in the model
         ###loss = F.cross_entropy(input=out, target=y)  # compute loss
         loss = 0
-        se = 0
-        for i in range(self.seq_length - self.seq_start):
-            se += torch.sum((out_list[i].squeeze() - y[:,i,:,:])**2,(1,2))
-        
-        loss = torch.mean(se) / (self.seq_length - self.seq_start)
+        #se = 0
+        #for i in range(self.seq_length - self.seq_start):
+        se += torch.sum((out_list[i].squeeze() - y[:,i,:,:])**2,(2,3))
+        loss = torch.mean(se)  #/ (self.seq_length - self.seq_start)
 
             #loss += self.criterion(out_list[i], y[:,i,:,:].float())
 
@@ -131,8 +126,6 @@ class ExperimentBuilder(nn.Module):
         loss.backward()  # backpropagate to compute gradients for current iter loss
 
         self.optimizer.step()  # update network parameters
-        #_, predicted = torch.max(out.data, 1)  # get argmax of predictions
-        ###accuracy = np.mean(list(predicted.eq(y.data).cpu()))  # compute accuracy
         return loss.data.detach().cpu().numpy()#, accuracy
 
     def run_evaluation_iter(self, x, y):
@@ -143,8 +136,6 @@ class ExperimentBuilder(nn.Module):
         :return: the loss and accuracy for this batch
         """
         self.eval()  # sets the system to validation mode
-        # if len(y.shape) > 1:
-        #     y = np.argmax(y, axis=1)  # convert one hot encoded labels to single integer labels
         if type(x) is np.ndarray:
             x, y = torch.Tensor(x).float().to(device=self.device), torch.Tensor(y).float().to(
             device=self.device)  # convert data to pytorch tensors and send to the computation device
@@ -152,18 +143,15 @@ class ExperimentBuilder(nn.Module):
         x = x.to(self.device)
         y = y.to(self.device)
         out_list = self.model.forward(x)  # forward the data in the model
-        ###loss = F.cross_entropy(input=out, target=y)  # compute loss
         loss = 0
         # for i in range(self.seq_length - self.seq_start):
         #     loss += self.criterion(out_list[i], y[:,i,:,:].float())
-        se = 0
-        for i in range(self.seq_length - self.seq_start):
-            se += torch.sum((out_list[i].squeeze() - y[:,i,:,:])**2,(1,2))
+        #se = 0
+        #for i in range(self.seq_length - self.seq_start):
+        se += torch.sum((out_list[i].squeeze() - y[:,i,:,:])**2,(2,3))
         
-        loss = torch.mean(se) / (self.seq_length - self.seq_start)
+        loss = torch.mean(se) #/ (self.seq_length - self.seq_start)
         #loss = torch.sqrt(self.criterion(out,y))
-        #_, predicted = torch.max(out.data, 1)  # get argmax of predictions
-        ###accuracy = np.mean(list(predicted.eq(y.data).cpu()))  # compute accuracy
         return loss.data.detach().cpu().numpy()#, accuracy
 
     def save_model(self, model_save_dir, model_save_name, model_idx, state):
@@ -208,19 +196,14 @@ class ExperimentBuilder(nn.Module):
             current_epoch_losses = {"train_loss": [], "val_loss": []}
             with tqdm.tqdm(total=len(self.train_data)) as pbar_train:  # create a progress bar for training
                 for idx, (x, y) in enumerate(self.train_data):  # get data batches
-                    # loss, accuracy = self.run_train_iter(x=x, y=y)  # take a training iter step
                     loss = self.run_train_iter(x=x, y=y)
                     current_epoch_losses["train_loss"].append(loss)  # add current iter loss to the train loss list
-                    # current_epoch_losses["train_acc"].append(accuracy)  # add current iter acc to the train acc list
                     pbar_train.update(1)
-                    # pbar_train.set_description("loss: {:.4f}, accuracy: {:.4f}".format(loss, accuracy))
                     pbar_train.set_description("loss: {:.4f}".format(loss))
             with tqdm.tqdm(total=len(self.val_data)) as pbar_val:  # create a progress bar for validation
                 for x, y in self.val_data:  # get data batches
-                    # loss, accuracy = self.run_evaluation_iter(x=x, y=y)  # run a validation iter
                     loss = self.run_evaluation_iter(x=x, y=y)
                     current_epoch_losses["val_loss"].append(loss)  # add current iter loss to val loss list.
-                    #current_epoch_losses["val_acc"].append(accuracy)  # add current iter acc to val acc lst.
                     pbar_val.update(1)  # add 1 step to the progress bar
                     pbar_val.set_description("loss: {:.4f}".format(loss))
             val_mean_loss = np.mean(current_epoch_losses['val_loss'])
@@ -265,7 +248,6 @@ class ExperimentBuilder(nn.Module):
                 loss = self.run_evaluation_iter(x=x,
                                                           y=y)  # compute loss and accuracy by running an evaluation step
                 current_epoch_losses["test_loss"].append(loss)  # save test loss
-                # current_epoch_losses["test_acc"].append(accuracy)  # save test accuracy
                 pbar_test.update(1)  # update progress bar status
                 pbar_test.set_description(
                     "loss: {:.4f}".format(loss))  # update progress bar string output

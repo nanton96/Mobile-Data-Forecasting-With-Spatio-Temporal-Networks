@@ -124,6 +124,8 @@ class EF(nn.Module):
         super().__init__()
         self.encoder = encoder
         self.forecaster = forecaster
+        self.input_dim ='SBCHW' # indicates the model expects inputs in the form S*B*C*H*W
+
 
     def forward(self, input):
         state = self.encoder(input)
