@@ -1,7 +1,7 @@
 import utils.dataloaders as dataloaders
 import numpy as np
 from utils.arg_extractor import get_args
-from utils.new_experiment_builder import ExperimentBuilder
+from utils.experiment_builder import ExperimentBuilder
 
 from model_architectures.conv_lstm_deep.DeepConvLstm import EF,Encoder,Forecaster,ConvLSTM
 from model_architectures.conv_lstm_deep.architecture_specifications import encoder_architecture, forecaster_architecture
@@ -46,4 +46,5 @@ experiment = ExperimentBuilder(network_model=model,seq_start = seq_input,seq_len
                                     device=device,
                                     train_data=train_data, val_data=valid_data,
                                     test_data=test_data)  # build an experiment object
+
 experiment_metrics, test_metrics = experiment.run_experiment()

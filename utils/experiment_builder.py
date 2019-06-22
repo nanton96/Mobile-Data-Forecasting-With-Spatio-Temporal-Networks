@@ -6,6 +6,8 @@ import tqdm
 import os
 import numpy as np
 import time
+import utils.helper_functions as helper
+
 
 from utils.storage import save_statistics
 
@@ -111,24 +113,19 @@ class ExperimentBuilder(nn.Module):
         x = x.to(self.device)
         y = y.to(self.device)
 
-        out_list = self.model.forward(x)  # forward the data in the model
-        ###loss = F.cross_entropy(input=out, target=y)  # compute loss
-        loss = 0
-        #se = 0
-        #for i in range(self.seq_length - self.seq_start):
-        print(out_list.shape)
-        print(y.shape)
-        se = torch.sum((out_list.squeeze() - y)**2,(2,3))
-        loss = torch.mean(se)  #/ (self.seq_length - self.seq_start)
+        if self.network_model.input_dim == 'SBCHW':
+            helper.convert_BSHW_to_SBCHW(x)
 
-            #loss += self.criterion(out_list[i], y[:,i,:,:].float())
-
+        out = self.model.forward(x)  # forward the data in the model
+        loss = 0        
+        se = torch.sum((out - y)**2,(2,3)) # MSE error per frame
+        loss = torch.mean(se)
         # loss = torch.sqrt(self.criterion(out,y))
         self.optimizer.zero_grad()  # set all weight grads from previous training iters to 0
         loss.backward()  # backpropagate to compute gradients for current iter loss
 
         self.optimizer.step()  # update network parameters
-        return loss.data.detach().cpu().numpy()#, accuracy
+        return loss.data.detach().cpu().numpy()
 
     def run_evaluation_iter(self, x, y):
         """
@@ -144,17 +141,11 @@ class ExperimentBuilder(nn.Module):
 
         x = x.to(self.device)
         y = y.to(self.device)
-        out_list = self.model.forward(x)  # forward the data in the model
+        out = self.model.forward(x)  # forward the data in the model
         loss = 0
-        # for i in range(self.seq_length - self.seq_start):
-        #     loss += self.criterion(out_list[i], y[:,i,:,:].float())
-        #se = 0
-        #for i in range(self.seq_length - self.seq_start):
-        se = torch.sum((out_list.squeeze() - y)**2,(2,3))
-        
-        loss = torch.mean(se) #/ (self.seq_length - self.seq_start)
-        #loss = torch.sqrt(self.criterion(out,y))
-        return loss.data.detach().cpu().numpy()#, accuracy
+        se = torch.sum((out.squeeze() - y)**2,(2,3))
+        loss = torch.mean(se) 
+        return loss.data.detach().cpu().numpy()
 
     def save_model(self, model_save_dir, model_save_name, model_idx, state):
         """
