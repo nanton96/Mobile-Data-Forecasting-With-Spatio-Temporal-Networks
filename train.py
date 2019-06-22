@@ -4,7 +4,7 @@ from utils.arg_extractor import get_args
 from utils.experiment_builder import ExperimentBuilder
 # from utils.models import ConvLSTMModel
 
-from model_architecturesl.conv_lstm_shallow.ShallowConvLstm import ConvLSTMModel
+from model_architectures.conv_lstm_shallow.ShallowConvLstm import ConvLSTMModel
 
 import torch
 from torch.utils.data import DataLoader
