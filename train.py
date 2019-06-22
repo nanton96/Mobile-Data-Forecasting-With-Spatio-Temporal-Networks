@@ -2,7 +2,10 @@ import utils.dataloaders as dataloaders
 import numpy as np
 from utils.arg_extractor import get_args
 from utils.experiment_builder import ExperimentBuilder
-from utils.models import ConvLSTMModel
+# from utils.models import ConvLSTMModel
+
+from model_architecturesl.conv_lstm_shallow.ShallowConvLstm import ConvLSTMModel
+
 import torch
 from torch.utils.data import DataLoader
 args, device = get_args()  # get arguments from command line
@@ -14,8 +17,6 @@ train_dataset = dataloaders.MilanDataLoader(_set = 'train',toy = args.toy)
 valid_dataset = dataloaders.MilanDataLoader(_set = 'valid',toy = args.toy)
 test_dataset  = dataloaders.MilanDataLoader(_set = 'test', toy = args.toy)
 
-
-
 train_data = DataLoader(
         train_dataset,
         batch_size=args.batch_size,
@@ -23,14 +24,12 @@ train_data = DataLoader(
         num_workers=4,
         drop_last = True)
 
-
 valid_data = DataLoader(
         valid_dataset,
         batch_size=args.batch_size,
         shuffle=True,
         num_workers=4,
         drop_last = True)
-
 
 test_data = DataLoader(
         test_dataset,
