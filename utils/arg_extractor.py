@@ -32,14 +32,9 @@ def get_args():
     parser.add_argument('--image_width', nargs="?", type=int, default=100, help='Width of image data')
     parser.add_argument('--dim_reduction_type', nargs="?", type=str, default='strided_convolution',
                         help='One of [strided_convolution, dilated_convolution, max_pooling, avg_pooling]')
-    parser.add_argument('--seq_length',
-                    type = int,
-                    default = 18,
-                    help = "length of the sequence")
-    parser.add_argument('--seq_start',
-                    type = int,
-                    default = 12,
-                    help = """start of the sequence generation""")
+    parser.add_argument('--seq_length',type = int,default = 18,help = "length of the sequence")
+    parser.add_argument('--seq_start',type = int,default = 12,help = """start of the sequence generation""")
+    parser.add_argument('--model',type= str, default = 'deepconvlstm', help="name of model architecture we are going to use")
     parser.add_argument('--num_epochs', nargs="?", type=int, default=100, help='The experiment\'s epoch budget')
     parser.add_argument('--experiment_name', nargs="?", type=str, default="exp_1",
                         help='Experiment name - to be used for building the experiment folder')
