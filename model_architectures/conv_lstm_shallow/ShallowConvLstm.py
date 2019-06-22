@@ -90,4 +90,5 @@ class ConvLSTMModel(nn.Module):
             output[i] = self.deconv(hidden2)
             output[i] = self.relu(output[i])
             
-        return torch.stack(output[self.seq_start:])
+        out = torch.stack(output[self.seq_start:]).squeeze()
+        return out.permute(1,0,2,3)
