@@ -113,7 +113,7 @@ class ExperimentBuilder(nn.Module):
         x = x.to(self.device)
         y = y.to(self.device)
 
-        if self.network_model.input_dim == 'SBCHW':
+        if self.model.input_dim == 'SBCHW':
             helper.convert_BSHW_to_SBCHW(x)
 
         out = self.model.forward(x)  # forward the data in the model
@@ -141,6 +141,10 @@ class ExperimentBuilder(nn.Module):
 
         x = x.to(self.device)
         y = y.to(self.device)
+
+        if self.model.input_dim == 'SBCHW':
+            helper.convert_BSHW_to_SBCHW(x)
+
         out = self.model.forward(x)  # forward the data in the model
         loss = 0
         se = torch.sum((out.squeeze() - y)**2,(2,3))
