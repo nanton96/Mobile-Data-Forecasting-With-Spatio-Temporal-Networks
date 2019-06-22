@@ -114,7 +114,7 @@ class ExperimentBuilder(nn.Module):
         y = y.to(self.device)
 
         if self.model.input_dim == 'SBCHW':
-            helper.convert_BSHW_to_SBCHW(x)
+            x = helper.convert_BSHW_to_SBCHW(x)
 
         out = self.model.forward(x)  # forward the data in the model
         loss = 0        
