@@ -2,7 +2,7 @@ import numpy as np
 import torch
 import torch.nn as nn
 import torch.nn.functional as F
-from ConvLstmCell import ConvLSTMCell
+from model_architectures.conv_lstm_shallow.ConvLstmCell import ConvLSTMCell
 from torch.autograd import Variable
 from torch.nn import functional as func
 """ modified code from  https://github.com/cxxixi/Precipitation-Nowcasting """
