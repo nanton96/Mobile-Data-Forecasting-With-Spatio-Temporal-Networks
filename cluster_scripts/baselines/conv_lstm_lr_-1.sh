@@ -42,4 +42,5 @@ cd /home/${STUDENT_ID}/dissertation/Mobile-Data-Forecasting-With-Spatio-Temporal
 python train.py --use_gpu True --gpu_id "0" --num_epochs 200\
                 --toy False --learning_rate 0.1\
                 --weight_decay_coefficient 0\
-                --experiment_name conv_lstm_lr_-1
+                --experiment_name conv_lstm_lr_-1\
+                --model shallowconvlstm

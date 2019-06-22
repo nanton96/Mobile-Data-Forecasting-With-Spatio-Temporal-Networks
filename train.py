@@ -10,6 +10,7 @@ rng = np.random.RandomState(seed=args.seed)
 
 torch.manual_seed(seed=args.seed)
 args.toy = False
+#load dataset
 train_dataset = dataloaders.MilanDataLoader(_set = 'train',toy = args.toy)
 valid_dataset = dataloaders.MilanDataLoader(_set = 'valid',toy = args.toy)
 test_dataset  = dataloaders.MilanDataLoader(_set = 'test', toy = args.toy)
@@ -17,8 +18,7 @@ test_dataset  = dataloaders.MilanDataLoader(_set = 'test', toy = args.toy)
 train_data = DataLoader(train_dataset,batch_size=args.batch_size,shuffle=True,num_workers=4,drop_last = True)
 valid_data = DataLoader(valid_dataset,batch_size=args.batch_size,shuffle=True,num_workers=4,drop_last = True)
 test_data = DataLoader(test_dataset,batch_size=args.batch_size,shuffle=True,num_workers=4,drop_last = True)
-
-
+#load model
 model = create_model(args.model,args,device)
 experiment = ExperimentBuilder(network_model=model,seq_start = args.seq_start,seq_length = args.seq_length,
                                     experiment_name=args.experiment_name,

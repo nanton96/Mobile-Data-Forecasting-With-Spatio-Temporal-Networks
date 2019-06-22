@@ -38,7 +38,8 @@ source /home/${STUDENT_ID}/miniconda3/bin/activate mlp
 cd /home/${STUDENT_ID}/dissertation/Mobile-Data-Forecasting-With-Spatio-Temporal-Networks
 
 
-python new_train.py --use_gpu True --gpu_id "0" --num_epochs 100\
+python train.py --use_gpu True --gpu_id "0" --num_epochs 100\
                 --toy False --learning_rate 0.001\
                 --weight_decay_coefficient 0\
-                --experiment_name new_conv_lstm_lr_-3
+                --experiment_name new_conv_lstm_lr_-3\
+                --model deepconvlstm
