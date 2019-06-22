@@ -12,7 +12,7 @@ def convert_BSHW_to_SBCHW(x):
     """
     assert len(x.shape) == 4
 
-    x = x.unsqueeze(x,0)
+    x = x.unsqueeze(0)
     x = x.permute(2,1,0,3,4)
     return x
 
