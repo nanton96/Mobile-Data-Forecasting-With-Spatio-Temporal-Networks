@@ -2,7 +2,6 @@ import utils.dataloaders as dataloaders
 import numpy as np
 from utils.arg_extractor import get_args
 from utils.experiment_builder import ExperimentBuilder
-#from model_architectures.conv_lstm_shallow.ShallowConvLstm import ConvLSTMModel
 from utils.model_loader import create_model
 import torch
 from torch.utils.data import DataLoader
@@ -15,32 +14,13 @@ train_dataset = dataloaders.MilanDataLoader(_set = 'train',toy = args.toy)
 valid_dataset = dataloaders.MilanDataLoader(_set = 'valid',toy = args.toy)
 test_dataset  = dataloaders.MilanDataLoader(_set = 'test', toy = args.toy)
 
-train_data = DataLoader(
-        train_dataset,
-        batch_size=args.batch_size,
-        shuffle=True,
-        num_workers=4,
-        drop_last = True)
+train_data = DataLoader(train_dataset,batch_size=args.batch_size,shuffle=True,num_workers=4,drop_last = True)
+valid_data = DataLoader(valid_dataset,batch_size=args.batch_size,shuffle=True,num_workers=4,drop_last = True)
+test_data = DataLoader(test_dataset,batch_size=args.batch_size,shuffle=True,num_workers=4,drop_last = True)
 
-valid_data = DataLoader(
-        valid_dataset,
-        batch_size=args.batch_size,
-        shuffle=True,
-        num_workers=4,
-        drop_last = True)
-
-test_data = DataLoader(
-        test_dataset,
-        batch_size=args.batch_size,
-        shuffle=True,
-        num_workers=4,
-        drop_last = True)
-
-seq_start = 12
-seq_length = 18
 
 model = create_model(args.model,args,device)
-experiment = ExperimentBuilder(network_model=model,seq_start = seq_start,seq_length = seq_length,
+experiment = ExperimentBuilder(network_model=model,seq_start = args.seq_start,seq_length = args.seq_length,
                                     experiment_name=args.experiment_name,
                                     num_epochs=args.num_epochs,
                                     lr =args.learning_rate, weight_decay_coefficient=args.weight_decay_coefficient,
