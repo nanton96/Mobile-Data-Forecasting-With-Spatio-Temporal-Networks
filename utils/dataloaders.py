@@ -4,7 +4,6 @@ import torch.utils.data as data
 class MilanDataLoader(data.Dataset):
 
     def __init__(self,_set='train',toy=False, DATA_DIR = None):
-        self.create_channel_axis = create_channel_axis
         if DATA_DIR == None: 
             if toy == True:
                 DATA_DIR = 'data_toy/'
