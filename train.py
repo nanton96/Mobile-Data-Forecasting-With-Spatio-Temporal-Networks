@@ -2,7 +2,8 @@ import utils.dataloaders as dataloaders
 import numpy as np
 from utils.arg_extractor import get_args
 from utils.experiment_builder import ExperimentBuilder
-from model_architectures.conv_lstm_shallow.ShallowConvLstm import ConvLSTMModel
+#from model_architectures.conv_lstm_shallow.ShallowConvLstm import ConvLSTMModel
+from utils.model_loader import create_model
 import torch
 from torch.utils.data import DataLoader
 args, device = get_args()  # get arguments from command line
@@ -38,7 +39,9 @@ test_data = DataLoader(
 seq_start = 12
 seq_length = 18
 
-model = ConvLSTMModel(input_size = args.image_height, seq_start = args.seq_start, seq_length = args.seq_length, batch_size = args.batch_size,use_gpu=args.use_gpu)
+model_name = 'shallowconvlstm'
+
+model = create_model(model_name,args,device)
 experiment = ExperimentBuilder(network_model=model,seq_start = seq_start,seq_length = seq_length,
                                     experiment_name=args.experiment_name,
                                     num_epochs=args.num_epochs,
