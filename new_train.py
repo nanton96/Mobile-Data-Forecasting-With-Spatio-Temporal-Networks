@@ -16,9 +16,9 @@ torch.manual_seed(seed=args.seed)
 args.toy = False
 batch_size = args.batch_size
 
-train_dataset = dataloaders.MilanDataLoader(_set = 'train',toy = args.toy,create_channel_axis=True)
-valid_dataset = dataloaders.MilanDataLoader(_set = 'valid',toy = args.toy,create_channel_axis=True)
-test_dataset  = dataloaders.MilanDataLoader(_set = 'test', toy = args.toy,create_channel_axis=True)
+train_dataset = dataloaders.MilanDataLoader(_set = 'train',toy = args.toy,create_channel_axis=False)
+valid_dataset = dataloaders.MilanDataLoader(_set = 'valid',toy = args.toy,create_channel_axis=False)
+test_dataset  = dataloaders.MilanDataLoader(_set = 'test', toy = args.toy,create_channel_axis=False)
 
 train_data = DataLoader(train_dataset,batch_size=args.batch_size,shuffle=True,num_workers=4,drop_last = True)
 valid_data = DataLoader(valid_dataset,batch_size=args.batch_size,shuffle=True,num_workers=4,drop_last = True)
