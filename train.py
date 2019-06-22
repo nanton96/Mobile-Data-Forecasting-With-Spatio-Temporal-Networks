@@ -2,10 +2,7 @@ import utils.dataloaders as dataloaders
 import numpy as np
 from utils.arg_extractor import get_args
 from utils.experiment_builder import ExperimentBuilder
-# from utils.models import ConvLSTMModel
-
 from model_architectures.conv_lstm_shallow.ShallowConvLstm import ConvLSTMModel
-
 import torch
 from torch.utils.data import DataLoader
 args, device = get_args()  # get arguments from command line
