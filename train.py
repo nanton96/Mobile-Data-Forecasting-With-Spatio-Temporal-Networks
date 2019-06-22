@@ -39,9 +39,7 @@ test_data = DataLoader(
 seq_start = 12
 seq_length = 18
 
-model_name = 'shallowconvlstm'
-
-model = create_model(model_name,args,device)
+model = create_model(args.model,args,device)
 experiment = ExperimentBuilder(network_model=model,seq_start = seq_start,seq_length = seq_length,
                                     experiment_name=args.experiment_name,
                                     num_epochs=args.num_epochs,
