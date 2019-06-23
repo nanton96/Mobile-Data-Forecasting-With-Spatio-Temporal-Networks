@@ -113,9 +113,6 @@ class ExperimentBuilder(nn.Module):
         x = x.to(self.device)
         y = y.to(self.device)
 
-        # if self.model.input_dim == 'SBCHW':
-        #     x = helper.convert_BSHW_to_SBCHW(x)
-
         out = self.model.forward(x)  # forward the data in the model
         loss = 0        
         se = torch.sum((out - y)**2,(2,3)) # MSE error per frame
@@ -141,9 +138,6 @@ class ExperimentBuilder(nn.Module):
 
         x = x.to(self.device)
         y = y.to(self.device)
-
-        # if self.model.input_dim == 'SBCHW':
-        #     x = helper.convert_BSHW_to_SBCHW(x)
 
         out = self.model.forward(x)  # forward the data in the model
         loss = 0

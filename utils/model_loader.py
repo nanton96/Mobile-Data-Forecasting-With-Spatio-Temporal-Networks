@@ -27,3 +27,6 @@ def create_model(model,args,device):
 
         model = EF(encoder,forecaster)
         return model
+
+    else:
+        raise ValueError('model ' + model + ' not implemented')
