@@ -65,7 +65,7 @@ with tqdm.tqdm(total=len(test_data)) as pbar_test:
         y = y.to(device)
         out = model.forward(x)
         se_batch = torch.sum((out.squeeze() - y)**2,(2,3))
-        mse_frame_timestep = mse_frame_timestep + torch.mean(se_batch,0).detach().numpy()
+        mse_frame_timestep = mse_frame_timestep + torch.mean(se_batch,0).cpu().detach().numpy()
         pbar_test.update(1)
 
 mse_frame_timestep = mse_frame_timestep / len(test_data)
