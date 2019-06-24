@@ -18,7 +18,7 @@ class args_class(object):
         self.use_gpu = False
 
 def load_pytorch_model_to_cpu(model,PARAMS_PATH):
-    network = torch.load(PARAMS_PATH,map_location='cpu')['network']
+    network = torch.load(PARAMS_PATH,map_location='cuda')['network']
     from collections import OrderedDict
     new_state_dict = OrderedDict()
     for key,value in network.items():
