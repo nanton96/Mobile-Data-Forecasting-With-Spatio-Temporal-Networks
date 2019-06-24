@@ -46,7 +46,7 @@ RESULT_FOLDERS = {
 
 experiment_name = 'conv_lstm_lr_-3'
 device = torch.cuda.current_device()
-args  =  args_class(10 ,12, 6)
+args  =  args_class(5 ,12, 6)
 model_name = 'shallowconvlstm'
 
 PARAMS_PATH = RESULTS_PATH + RESULT_FOLDERS[model_name] + experiment_name + '/saved_models/train_model_latest'
