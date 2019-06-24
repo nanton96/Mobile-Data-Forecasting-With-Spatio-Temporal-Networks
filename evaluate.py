@@ -52,7 +52,7 @@ model_name = 'shallowconvlstm'
 PARAMS_PATH = RESULTS_PATH + RESULT_FOLDERS[model_name] + experiment_name + '/saved_models/train_model_latest'
 model = create_model(model_name,args,device)
 model = load_pytorch_model_to_cpu(model,PARAMS_PATH)
-
+model.to(device)
 torch.manual_seed(seed=1)
 test_dataset  = dataloaders.MilanDataLoader(_set = 'test', toy = False, DATA_DIR=TEST_SET_PATH)
 test_data = DataLoader(test_dataset,batch_size=args.batch_size,shuffle=True,num_workers=4,drop_last = True)
