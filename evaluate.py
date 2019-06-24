@@ -73,8 +73,8 @@ np.savetxt(RESULTS_PATH + experiment_name + '/mse_frame_timestep.csv', mse_frame
 fig = plt.figure()
 ax = fig.add_subplot(111)
 ax.plot(mse_frame_timestep.detach().numpy(),'-o')
-ax.title('MSE/frame ' + model_name)
-ax.xlabel('timestep')
-ax.ylabel('MSE')
+ax.set_title('MSE/frame ' + model_name)
+ax.set_xlabel('timestep')
+ax.set_ylabel('MSE')
 fig.savefig(RESULTS_PATH + 'figures/' + experiment_name + '.pdf')
 
