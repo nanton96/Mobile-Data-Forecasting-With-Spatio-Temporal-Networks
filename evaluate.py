@@ -56,7 +56,7 @@ test_data = DataLoader(test_dataset,batch_size=args.batch_size,shuffle=True,num_
 _ , y = test_dataset.__getitem__(1)
 
 mse_frame_timestep = torch.zeros(y.shape[0])
-with tqdm.tqdm(total=len(self.test_data)) as pbar_test:
+with tqdm.tqdm(total=len(test_data)) as pbar_test:
     for idx,(x,y) in enumerate(test_data):
         out = model.forward(x)
         se_batch = torch.sum((out.squeeze() - y)**2,(2,3))
