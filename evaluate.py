@@ -5,7 +5,8 @@ import matplotlib.pyplot as plt
 from torch.utils.data import DataLoader
 import utils.dataloaders as dataloaders
 import tqdm
-
+import matplotlib
+matplotlib.use('Agg')
 
 class args_class(object):
     def __init__(self,batch_size,seq_input,seq_output):
