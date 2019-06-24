@@ -20,6 +20,7 @@ valid_data = DataLoader(valid_dataset,batch_size=args.batch_size,shuffle=True,nu
 test_data = DataLoader(test_dataset,batch_size=args.batch_size,shuffle=True,num_workers=4,drop_last = True)
 #load model
 model = create_model(args.model,args,device)
+# lr_scheduler = optim.lr_scheduler.ReduceLROnPlateau(optimizer_algorithm, mode='min', factor=0.1, patience=7)
 experiment = ExperimentBuilder(network_model=model,seq_start = args.seq_start,seq_length = args.seq_length,
                                     experiment_name=args.experiment_name,
                                     num_epochs=args.num_epochs,
