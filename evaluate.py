@@ -15,7 +15,7 @@ class args_class(object):
         self.seq_output = seq_output 
         self.seq_length = seq_input + seq_output
         self.image_height = 100
-        self.use_gpu = False
+        self.use_gpu = True
 
 def load_pytorch_model_to_cpu(model,PARAMS_PATH):
     network = torch.load(PARAMS_PATH,map_location='cuda')['network']
@@ -53,7 +53,6 @@ PARAMS_PATH = RESULTS_PATH + RESULT_FOLDERS[model_name] + experiment_name + '/sa
 model = create_model(model_name,args,device)
 model = load_pytorch_model_to_cpu(model,PARAMS_PATH)
 model = model.to(device)
-print(device)
 torch.manual_seed(seed=1)
 test_dataset  = dataloaders.MilanDataLoader(_set = 'test', toy = False, DATA_DIR=TEST_SET_PATH)
 test_data = DataLoader(test_dataset,batch_size=args.batch_size,shuffle=True,num_workers=4,drop_last = True)
