@@ -5,6 +5,9 @@ import matplotlib.pyplot as plt
 from torch.utils.data import DataLoader
 import utils.dataloaders as dataloaders
 import tqdm
+
+matplotlib.use('Agg')
+
 class args_class(object):
     def __init__(self,batch_size,seq_input,seq_output):
         self.batch_size = batch_size
@@ -58,6 +61,8 @@ _ , y = test_dataset.__getitem__(1)
 mse_frame_timestep = torch.zeros(y.shape[0])
 with tqdm.tqdm(total=len(test_data)) as pbar_test:
     for idx,(x,y) in enumerate(test_data):
+        x = x.to(device)
+        y = y.to(device)
         out = model.forward(x)
         se_batch = torch.sum((out.squeeze() - y)**2,(2,3))
         mse_frame_timestep += torch.mean(se_batch,0)
