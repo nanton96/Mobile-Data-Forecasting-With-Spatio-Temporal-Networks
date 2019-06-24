@@ -35,8 +35,10 @@ TEST_SET_PATH = '/home/s1818503/dissertation/Mobile-Data-Forecasting-With-Spatio
 RESULT_FOLDERS = {
 #     'no_scaling' : "conv_lstm_results_before_scaling_i=5_o=15/",
 #     'standard'   : "conv_lstm_with_data_standardisation_i=5_o=15/"
-    'deepconvlstm' :  'hzzone_conv_lstm/' ,
-    'shallowconvlstm' :  'cxiixi_conv_lstm/'
+    # 'deepconvlstm' :  'hzzone_conv_lstm/' ,
+    # 'shallowconvlstm' :  'cxiixi_conv_lstm/'
+    'deepconvlstm' :  '' ,
+    'shallowconvlstm' :  ''
 }
 
 experiment_name = 'conv_lstm_lr_-3'
