@@ -58,7 +58,7 @@ test_dataset  = dataloaders.MilanDataLoader(_set = 'test', toy = False, DATA_DIR
 test_data = DataLoader(test_dataset,batch_size=args.batch_size,shuffle=True,num_workers=4,drop_last = True)
 _ , y = test_dataset.__getitem__(1)
 
-mse_frame_timestep = torch.zeros(y.shape[0])
+mse_frame_timestep = torch.zeros(y.shape[0]).to(device)
 with tqdm.tqdm(total=len(test_data)) as pbar_test:
     for idx,(x,y) in enumerate(test_data):
         x = x.to(device)
