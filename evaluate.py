@@ -26,11 +26,12 @@ def load_pytorch_model_to_cpu(model,PARAMS_PATH):
     model.eval()
     return model
 
-
+RESULTS_PATH = '/home/s1818503/dissertation/Mobile-Data-Forecasting-With-Spatio-Temporal-Networks/experiments_results'
+TEST_SET_PATH = '/home/s1818503/dissertation/Mobile-Data-Forecasting-With-Spatio-Temporal-Networks/data_in12_out6/milan_processed_test.npz'
 # RESULTS_PATH = "/home/nick/Desktop/experiments_results/"
 # TEST_SET_PATH = "/home/nick/Desktop/experiments_results/milan_processed_test.npz"
-RESULTS_PATH  = '/afs/inf.ed.ac.uk/user/s18/s1818503/Desktop/experiments_results/'
-TEST_SET_PATH = '/afs/inf.ed.ac.uk/user/s18/s1818503/Desktop/experiments_results/milan_processed_test.npz'
+# RESULTS_PATH  = '/afs/inf.ed.ac.uk/user/s18/s1818503/Desktop/experiments_results/'
+# TEST_SET_PATH = '/afs/inf.ed.ac.uk/user/s18/s1818503/Desktop/experiments_results/milan_processed_test.npz'
 RESULT_FOLDERS = {
 #     'no_scaling' : "conv_lstm_results_before_scaling_i=5_o=15/",
 #     'standard'   : "conv_lstm_with_data_standardisation_i=5_o=15/"
