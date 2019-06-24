@@ -42,7 +42,7 @@ RESULT_FOLDERS = {
 }
 
 experiment_name = 'conv_lstm_lr_-3'
-device='cpu'
+device='cuda'
 args  =  args_class(10 ,12, 6)
 model_name = 'shallowconvlstm'
 
