@@ -4,7 +4,7 @@ from utils.model_loader import create_model
 import matplotlib.pyplot as plt
 from torch.utils.data import DataLoader
 import utils.dataloaders as dataloaders
-
+import tqdm
 class args_class(object):
     def __init__(self,batch_size,seq_input,seq_output):
         self.batch_size = batch_size
@@ -54,18 +54,21 @@ torch.manual_seed(seed=1)
 test_dataset  = dataloaders.MilanDataLoader(_set = 'test', toy = False, DATA_DIR=TEST_SET_PATH)
 test_data = DataLoader(test_dataset,batch_size=args.batch_size,shuffle=True,num_workers=4,drop_last = True)
 _ , y = test_dataset.__getitem__(1)
-mse_frame_timestep = torch.zeros(y.shape[0])
 
-for x,y in test_data:
-    out = model.forward(x)
-    se_batch = torch.sum((out.squeeze() - y)**2,(2,3))
-    mse_frame_timestep += torch.mean(se_batch,0) 
+mse_frame_timestep = torch.zeros(y.shape[0])
+with tqdm.tqdm(total=len(self.test_data)) as pbar_test:
+    for idx,(x,y) in enumerate(test_data):
+        out = model.forward(x)
+        se_batch = torch.sum((out.squeeze() - y)**2,(2,3))
+        mse_frame_timestep += torch.mean(se_batch,0)
+        pbar_test.update(1)
 
 mse_frame_timestep = mse_frame_timestep / len(test_data)
-numpy.savetxt(RESULTS_PATH + experiment_name + '/mse_frame_timestep.csv', mse_frame_timestep, delimiter=",")
+np.savetxt(RESULTS_PATH + experiment_name + '/mse_frame_timestep.csv', mse_frame_timestep, delimiter=",")
 fig = plt.figure()
 plt.plot(mse_frame_timestep.detach().numpy(),'-o')
 plt.title('MSE/frame ' + model_name)
 plt.xlabel('timestep')
 plt.ylabel('MSE')
 plt.savefig(RESULTS_PATH + 'figures/' + experiment_name + '.pdf')
+
