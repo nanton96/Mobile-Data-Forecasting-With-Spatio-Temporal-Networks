@@ -45,7 +45,7 @@ RESULT_FOLDERS = {
 }
 
 experiment_name = 'conv_lstm_lr_-3'
-device = [0,1]
+device = torch.cuda.current_device()
 args  =  args_class(5 ,12, 6)
 model_name = 'shallowconvlstm'
 
