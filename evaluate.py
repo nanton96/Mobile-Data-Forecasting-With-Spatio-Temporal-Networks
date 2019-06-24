@@ -26,7 +26,6 @@ def load_pytorch_model_to_cpu(model,PARAMS_PATH):
         new_state_dict[name] = value
 
     model.load_state_dict(new_state_dict)
-    del(new_state_dict)
     model.eval()
     return model
 
@@ -46,7 +45,7 @@ RESULT_FOLDERS = {
 }
 
 experiment_name = 'conv_lstm_lr_-3'
-device = torch.cuda.current_device()
+device = [0,1]
 args  =  args_class(5 ,12, 6)
 model_name = 'shallowconvlstm'
 
