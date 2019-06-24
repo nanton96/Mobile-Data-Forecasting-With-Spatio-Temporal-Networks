@@ -64,7 +64,7 @@ with tqdm.tqdm(total=len(test_data)) as pbar_test:
         pbar_test.update(1)
 
 mse_frame_timestep = mse_frame_timestep / len(test_data)
-np.savetxt(RESULTS_PATH + experiment_name + '/mse_frame_timestep.csv', mse_frame_timestep, delimiter=",")
+np.savetxt(RESULTS_PATH + experiment_name + '/mse_frame_timestep.csv', mse_frame_timestep.detach().numpy(), delimiter=",")
 fig = plt.figure()
 plt.plot(mse_frame_timestep.detach().numpy(),'-o')
 plt.title('MSE/frame ' + model_name)
