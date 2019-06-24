@@ -54,7 +54,7 @@ torch.manual_seed(seed=1)
 test_dataset  = dataloaders.MilanDataLoader(_set = 'test', toy = False, DATA_DIR=TEST_SET_PATH)
 test_data = DataLoader(test_dataset,batch_size=args.batch_size,shuffle=True,num_workers=4,drop_last = True)
 _ , y = test_dataset.__getitem__(1)
-mse_frame_timestep = torch.zeros(y.shape[1])
+mse_frame_timestep = torch.zeros(y.shape[0])
 
 for x,y in test_data:
     out = model.forward(x)
