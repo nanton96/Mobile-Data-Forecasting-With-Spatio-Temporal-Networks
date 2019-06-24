@@ -172,7 +172,6 @@ class ExperimentBuilder(nn.Module):
         #return state['best_val_model_idx'], state['best_val_model_acc'], state
         return state['best_val_model_idx'], state['best_val_model_loss'], state
 
-
     def run_experiment(self):
         """
         Runs experiment train and evaluation iterations, saving the model and best val model and val model accuracy after each epoch
