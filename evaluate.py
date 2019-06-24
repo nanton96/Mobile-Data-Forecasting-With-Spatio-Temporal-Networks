@@ -26,7 +26,7 @@ def load_pytorch_model_to_cpu(model,PARAMS_PATH):
     model.eval()
     return model
 
-RESULTS_PATH = '/home/s1818503/dissertation/Mobile-Data-Forecasting-With-Spatio-Temporal-Networks/experiments_results'
+RESULTS_PATH = '/home/s1818503/dissertation/Mobile-Data-Forecasting-With-Spatio-Temporal-Networks/experiments_results/'
 TEST_SET_PATH = '/home/s1818503/dissertation/Mobile-Data-Forecasting-With-Spatio-Temporal-Networks/data_in12_out6/milan_processed_test.npz'
 # RESULTS_PATH = "/home/nick/Desktop/experiments_results/"
 # TEST_SET_PATH = "/home/nick/Desktop/experiments_results/milan_processed_test.npz"
