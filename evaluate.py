@@ -58,21 +58,21 @@ test_dataset  = dataloaders.MilanDataLoader(_set = 'test', toy = False, DATA_DIR
 test_data = DataLoader(test_dataset,batch_size=args.batch_size,shuffle=True,num_workers=4,drop_last = True)
 _ , y = test_dataset.__getitem__(1)
 
-mse_frame_timestep = torch.zeros(y.shape[0]).to(device)
+mse_frame_timestep = np.zeros(y.shape[0]).to(device)
 with tqdm.tqdm(total=len(test_data)) as pbar_test:
     for idx,(x,y) in enumerate(test_data):
         x = x.to(device)
         y = y.to(device)
         out = model.forward(x)
         se_batch = torch.sum((out.squeeze() - y)**2,(2,3))
-        mse_frame_timestep += torch.mean(se_batch,0)
+        mse_frame_timestep = mse_frame_timestep + torch.mean(se_batch,0).detach().numpy()
         pbar_test.update(1)
 
 mse_frame_timestep = mse_frame_timestep / len(test_data)
-np.savetxt(RESULTS_PATH + experiment_name + '/mse_frame_timestep.csv', mse_frame_timestep.detach().numpy(), delimiter=",")
+np.savetxt(RESULTS_PATH + experiment_name + '/mse_frame_timestep.csv', mse_frame_timestep, delimiter=",")
 fig = plt.figure()
 ax = fig.add_subplot(111)
-ax.plot(mse_frame_timestep.detach().numpy(),'-o')
+ax.plot(mse_frame_timestep,'-o')
 ax.set_title('MSE/frame ' + model_name)
 ax.set_xlabel('timestep')
 ax.set_ylabel('MSE')
