@@ -44,6 +44,8 @@ def get_args():
                         help='')
     parser.add_argument('--toy', nargs="?", type=str2bool, default=False,
                         help='flag that indicates on whether or not to use a small toy dataset for testing/debugging')
+    parser.add_argument('--image_height',type = int,default = 100,help = "size of image")
+
 
     args = parser.parse_args()
     gpu_id = str(args.gpu_id)

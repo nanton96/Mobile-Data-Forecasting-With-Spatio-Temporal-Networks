@@ -19,7 +19,7 @@ def main():
     args = parser.parse_args()
     process_milan_dataset(args.S,args.K,args.shifted_predictions)
 
-def process_milan_dataset(S=12,K=4,shift_flag=True):
+def process_milan_dataset(S=12,K=4,shift_flag=False):
     '''
     This function will return a tensorflow Dataset consisting of tensors from the milan dataset.
     N is the number of training examples
