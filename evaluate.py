@@ -43,12 +43,12 @@ RESULT_FOLDERS = {
     'deepconvlstm' :  '' ,
     'shallowconvlstm' :  ''
 }
-
-experiment_name = 'new_conv_lstm_lr_-3_in12_out10'
+#### THIS NEEDS TO BE AN ARGUMENT
+experiment_name = 'conv_lstm_lr_-3_in12_out10'
 device = torch.cuda.current_device()
 #### NEED TO CHANGE THIS!!! ####
 args  =  args_class(5 ,12, 10)
-model_name = 'deepconvlstm'
+model_name = 'shallowconvlstm'
 
 PARAMS_PATH = RESULTS_PATH + RESULT_FOLDERS[model_name] + experiment_name + '/saved_models/train_model_latest'
 model = create_model(model_name,args,device)
