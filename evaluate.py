@@ -81,3 +81,68 @@ ax.set_xlabel('timestep')
 ax.set_ylabel('MSE')
 fig.savefig(RESULTS_PATH + 'figures/' + experiment_name + '.pdf')
 
+### SAMPLE PREDICTIONS ###
+
+x,y = next(iter(test_data))
+out = model.forward(x)
+out = out.detach().numpy()
+from matplotlib.colors import Normalize
+norm = Normalize(vmin=-0.42,vmax=50)
+import os
+
+PREDICTIONS_PATH = RESULTS_PATH + RESULT_FOLDERS[model_name] + experiment_name + '/example_predictions/'
+
+colormap = 'nipy_spectral'
+if not os.path.isdir(PREDICTIONS_PATH):
+    os.mkdir(PREDICTIONS_PATH)
+for i in range(y.shape[0]):
+    EXAMPLE_PATH = PREDICTIONS_PATH + 'example_' + str(i) 
+    if not os.path.isdir(EXAMPLE_PATH):
+        os.mkdir(EXAMPLE_PATH)
+    for j in range(y.shape[1]):
+        
+        plt.figure()
+        plt.suptitle('timestep: ' + str(j),fontsize=16)
+
+        plt.subplot(1,2,1)
+
+        plt.imshow(y[i,j,...],origin='lower',norm=norm,cmap=colormap)
+        plt.title('ground_truth',fontsize=16)
+        plt.xlabel('x coordinate',fontsize=16)
+        plt.ylabel('y coordinate',fontsize=16)
+
+        plt.subplot(1,2,2)
+
+        plt.imshow(out[i,j,...],origin='lower',norm=norm,cmap=colormap)
+        plt.title('prediction',fontsize=16)
+        plt.xlabel('x coordinate',fontsize=16)
+        # plt.ylabel('y coordinate',fontsize=16)
+        plt.subplots_adjust(wspace=0.3)
+        fig_name = 'timestep_' + str(j) + '.pdf'
+#         plt.colorbar()
+        plt.savefig(os.path.join(EXAMPLE_PATH,fig_name))
+        plt.clf()
+    
+    fig,ax =plt.subplots(2,y.shape[1])
+    for j in range(y.shape[1]):
+        
+        fig.suptitle('entire sequence',fontsize=16)
+        ax[0,j].imshow(y[i,j,...],origin='lower',norm=norm,cmap=colormap)
+        ax[0,j].axis('off')
+#         plt.title('ground_truth',fontsize=16)
+#         plt.xlabel('x coordinate',fontsize=16)
+#         plt.ylabel('y coordinate',fontsize=16)
+        ax[1,j].imshow(out[i,j,...],origin='lower',norm=norm,cmap=colormap)
+        ax[1,j].axis('off')
+
+#         plt.title('prediction',fontsize=16)
+#         plt.xlabel('x coordinate',fontsize=16)
+        # plt.ylabel('y coordinate',fontsize=16)
+        plt.subplots_adjust(hspace =-.5)
+#     fig.text(0.2,0.2,'ground_truth')
+#     ax[0,0].set_ylabel('ground_truth',fontsize=16)
+#     ax[1,0].set_ylabel('prediction',fontsize=16)
+
+    fig_name = 'entire_sequence' + '.pdf'    
+    plt.savefig(os.path.join(EXAMPLE_PATH,fig_name))
+    plt.clf()
