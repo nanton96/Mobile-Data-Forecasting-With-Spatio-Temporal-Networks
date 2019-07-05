@@ -84,6 +84,10 @@ fig.savefig(RESULTS_PATH + 'figures/' + experiment_name + '.pdf')
 ### SAMPLE PREDICTIONS ###
 
 x,y = next(iter(test_data))
+
+x = x.to(device)
+y = y.to(device)
+
 out = model.forward(x)
 out = out.detach().numpy()
 from matplotlib.colors import Normalize
