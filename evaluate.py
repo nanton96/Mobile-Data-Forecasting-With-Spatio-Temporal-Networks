@@ -17,12 +17,12 @@ class args_class(object):
         self.image_height = 100
         self.use_gpu = True
 
-def load_pytorch_model_to_cpu(model,PARAMS_PATH):
+def load_pytorch_model_to_gpu(model,PARAMS_PATH):
     network = torch.load(PARAMS_PATH,map_location='cuda')['network']
     from collections import OrderedDict
     new_state_dict = OrderedDict()
     for key,value in network.items():
-        name = key[6:]
+        name = key[6:] #because model dict keys are in the form model. (need to remove first 6 characters to get proper names)
         new_state_dict[name] = value
 
     model.load_state_dict(new_state_dict)
@@ -30,7 +30,7 @@ def load_pytorch_model_to_cpu(model,PARAMS_PATH):
     return model
 
 RESULTS_PATH = '/home/s1818503/dissertation/Mobile-Data-Forecasting-With-Spatio-Temporal-Networks/experiments_results/'
-TEST_SET_PATH = '/home/s1818503/dissertation/Mobile-Data-Forecasting-With-Spatio-Temporal-Networks/data_in12_out6/milan_processed_test.npz'
+TEST_SET_PATH = '/home/s1818503/dissertation/Mobile-Data-Forecasting-With-Spatio-Temporal-Networks/data/milan_processed_test.npz' #data is with input 12 and output 10
 # RESULTS_PATH = "/home/nick/Desktop/experiments_results/"
 # TEST_SET_PATH = "/home/nick/Desktop/experiments_results/milan_processed_test.npz"
 # RESULTS_PATH  = '/afs/inf.ed.ac.uk/user/s18/s1818503/Desktop/experiments_results/'
@@ -44,18 +44,21 @@ RESULT_FOLDERS = {
     'shallowconvlstm' :  ''
 }
 
-experiment_name = 'new_conv_lstm_lr_-3'
+experiment_name = 'new_conv_lstm_lr_-3_in12_out10'
 device = torch.cuda.current_device()
-args  =  args_class(5 ,12, 6)
+#### NEED TO CHANGE THIS!!! ####
+args  =  args_class(5 ,12, 10)
 model_name = 'deepconvlstm'
 
 PARAMS_PATH = RESULTS_PATH + RESULT_FOLDERS[model_name] + experiment_name + '/saved_models/train_model_latest'
 model = create_model(model_name,args,device)
-model = load_pytorch_model_to_cpu(model,PARAMS_PATH)
+model = load_pytorch_model_to_gpu(model,PARAMS_PATH)
 model = model.to(device)
 torch.manual_seed(seed=1)
+
 test_dataset  = dataloaders.MilanDataLoader(_set = 'test', toy = False, DATA_DIR=TEST_SET_PATH)
 test_data = DataLoader(test_dataset,batch_size=args.batch_size,shuffle=True,num_workers=4,drop_last = True)
+
 _ , y = test_dataset.__getitem__(1)
 
 mse_frame_timestep = np.zeros(y.shape[0])#.to(device)
