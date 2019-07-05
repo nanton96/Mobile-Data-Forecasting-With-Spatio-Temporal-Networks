@@ -91,6 +91,9 @@ y = y.to(device)
 out = model.forward(x)
 out = torch.Tensor.cpu(out)
 out = out.detach().numpy()
+
+y = torch.Tensor.cpu(y) # to generate plots
+
 from matplotlib.colors import Normalize
 norm = Normalize(vmin=-0.42,vmax=50)
 import os
