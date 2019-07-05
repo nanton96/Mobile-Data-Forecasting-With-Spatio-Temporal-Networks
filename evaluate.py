@@ -89,7 +89,7 @@ x = x.to(device)
 y = y.to(device)
 
 out = model.forward(x)
-out = out.cpu.detach().numpy()
+out = out.cpu().detach().numpy()
 from matplotlib.colors import Normalize
 norm = Normalize(vmin=-0.42,vmax=50)
 import os
