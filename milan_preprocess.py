@@ -50,9 +50,9 @@ def process_milan_dataset(S=12,K=4,shift_flag=False):
     df = milan_preprocess(df)
     # convert to numpy feature and label tensors
     x,y = dataframe_to_numpy_arrays(df,S,K,shift_flag)
-    
+    ####### SHUFFLE #######
     #x,y = shuffle(x,y,random_state = seed)
-    
+    #######################
     # transform to [1,-1] range
     #### NORMALISATION #####
     #max_x = np.max(x[...])
