@@ -50,7 +50,9 @@ def process_milan_dataset(S=12,K=4,shift_flag=False):
     df = milan_preprocess(df)
     # convert to numpy feature and label tensors
     x,y = dataframe_to_numpy_arrays(df,S,K,shift_flag)
-    x,y = shuffle(x,y,random_state = seed)
+    
+    #x,y = shuffle(x,y,random_state = seed)
+    
     # transform to [1,-1] range
     #### NORMALISATION #####
     #max_x = np.max(x[...])
@@ -81,7 +83,7 @@ def milan_preprocess(df):
     #Sum rows that are on the same square and time
     #ie marginalize over Country Code
     df = df.groupby(['Square id','TimeInterval'],as_index=False)['Traffic'].sum()
-
+    #convert datetime to integer index
     df['x'] = (df['Square id']-1) % 100 
     df['y'] = (df['Square id']-1) // 100
     df['t'] = (df['TimeInterval']) // 600000 - 2305434
@@ -95,6 +97,8 @@ def dataframe_to_numpy_arrays(df,S,K,shift_flag):
 
     '''
     Converts the dataframe to numpy arrays.
+    We have overlapping windows of stride 1
+
 
     params:
     pd.dataframe df: Milan dataframe 
@@ -118,6 +122,7 @@ def dataframe_to_numpy_arrays(df,S,K,shift_flag):
     L = raw.shape[2]
 
     x_t = [raw[:,:,t:t+S] for t in range(L-S-K)]
+    # TODO: Remove shift_flag
     if shift_flag == True: 
         y_t = [raw[:,:,t+1:t+S+1] for t in range(L-S-K)]
     else:
