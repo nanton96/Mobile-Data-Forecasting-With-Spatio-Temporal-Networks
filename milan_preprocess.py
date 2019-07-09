@@ -52,6 +52,12 @@ def process_milan_dataset(S=12,K=4,shift_flag=False):
     x,y = dataframe_to_numpy_arrays(df,S,K,shift_flag)
     ####### SHUFFLE #######
     #x,y = shuffle(x,y,random_state = seed)
+
+    # split to train,val, test set
+
+    x_train, x_test, y_train, y_test = train_test_split(x, y, test_size=0.2)
+    x_test, x_val, y_test, y_val = train_test_split(x_test, y_test, test_size=0.5)
+
     #######################
     # transform to [1,-1] range
     #### NORMALISATION #####
@@ -59,13 +65,17 @@ def process_milan_dataset(S=12,K=4,shift_flag=False):
     #x = 2 * (x / max_x) - 1
     #y = 2 * (y / max_x) - 1
     #### STANDARDISATION ###
-    mean_x = np.mean(x.flatten())
-    std_x  = np.std(x.flatten())
-    x = (x - mean_x) / std_x
-    y = (y - mean_x) / std_x
-    # split to train,val, test set
-    x_train, x_test, y_train, y_test = train_test_split(x, y, test_size=0.2)
-    x_test, x_val, y_test, y_val = train_test_split(x_test, y_test, test_size=0.5)
+    mean_x = np.mean(x_train.flatten())
+    std_x  = np.std(x_train.flatten())
+    
+    x_train = (x_train - mean_x) / std_x
+    y_train = (y_train - mean_x) / std_x
+
+    x_val = (x_val - mean_x) / std_x
+    y_val = (y_val - mean_x) / std_x
+
+    x_test = (x_test - mean_x) / std_x
+    y_test = (y_test - mean_x) / std_x
 
     np.savez(SAVE_FILE+'_train.npz',x=x_train,y=y_train)
     np.savez(SAVE_FILE+'_val.npz',x=x_val,y=y_val)
