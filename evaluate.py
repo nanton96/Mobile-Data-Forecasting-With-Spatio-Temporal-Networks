@@ -154,3 +154,5 @@ for i in range(y.shape[0]):
     fig_name = 'entire_sequence' + '.pdf'    
     plt.savefig(os.path.join(EXAMPLE_PATH,fig_name))
     plt.clf()
+
+print('done')
