@@ -74,7 +74,7 @@ with tqdm.tqdm(total=len(test_data)) as pbar_test:
         predictions.append(out.cpu().detach().numpy())
 ### SAVE PREDICTIONS
 predictions = np.array(predictions)
-np.savez(RESULTS_PATH + RESULT_FOLDERS[model_name] + experiment_name + '/predictions/test_predictions.npz',y=predictions)
+np.savez(RESULTS_PATH + RESULT_FOLDERS[model_name] + experiment_name + '/example_predictios/test_predictions.npz',y=predictions)
 ### SAVE MSE
 mse_frame_timestep = mse_frame_timestep / len(test_data)
 np.savetxt(RESULTS_PATH + experiment_name + '/mse_frame_timestep.csv', mse_frame_timestep, delimiter=",")
@@ -87,17 +87,13 @@ ax.set_xlabel('timestep')
 ax.set_ylabel('MSE')
 fig.savefig(RESULTS_PATH + 'figures/' + experiment_name + '.pdf')
 
-### SAMPLE PREDICTIONS ###
-
+### SAMPLE PREDICTIONS to create example plots###
 x,y = next(iter(test_data))
-
 x = x.to(device)
 y = y.to(device)
-
 out = model.forward(x)
 out = torch.Tensor.cpu(out)
 out = out.detach().numpy()
-
 y = torch.Tensor.cpu(y) # to generate plots
 
 from matplotlib.colors import Normalize
