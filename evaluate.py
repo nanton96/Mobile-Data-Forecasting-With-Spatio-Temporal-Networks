@@ -7,6 +7,8 @@ import utils.dataloaders as dataloaders
 import tqdm
 import matplotlib
 matplotlib.use('Agg')
+import argparse
+
 
 class args_class(object):
     def __init__(self,batch_size,seq_input,seq_output):
@@ -29,12 +31,30 @@ def load_pytorch_model_to_gpu(model,PARAMS_PATH):
     model.eval()
     return model
 
-RESULTS_PATH = '/home/s1818503/dissertation/Mobile-Data-Forecasting-With-Spatio-Temporal-Networks/experiments_results/'
-TEST_SET_PATH = '/home/s1818503/dissertation/Mobile-Data-Forecasting-With-Spatio-Temporal-Networks/data/milan_processed_test.npz' #data is with input 12 and output 10
-# RESULTS_PATH = "/home/nick/Desktop/experiments_results/"
-# TEST_SET_PATH = "/home/nick/Desktop/experiments_results/milan_processed_test.npz"
-# RESULTS_PATH  = '/afs/inf.ed.ac.uk/user/s18/s1818503/Desktop/experiments_results/'
-# TEST_SET_PATH = '/afs/inf.ed.ac.uk/user/s18/s1818503/Desktop/experiments_results/milan_processed_test.npz'
+### GET ARGUMENTS FROM COMMAND LINE
+parser = argparse.ArgumentParser(
+        description='evaluation script')
+parser.add_argument('--experiment_name', type=str,default='new_conv_lstm_lr_-3_in12_out10_no_shuffle_before_split',help='name of experiment to evaluate')
+parser.add_argument('--machine', type=str,default='cluster', help='name of machine where the script is run')
+arguments = parser.parse_args()
+
+if arguments.experiment_name.split('_') == 'new':
+    model_name = 'deepconvlstm'
+elif arguments.experiment_name.split('_') == 'conv':
+    model_name = 'shallowconvlstm'
+
+if arguments.machine.lower() =='cluster':
+    RESULTS_PATH = '/home/s1818503/dissertation/Mobile-Data-Forecasting-With-Spatio-Temporal-Networks/experiments_results/'
+    TEST_SET_PATH = '/home/s1818503/dissertation/Mobile-Data-Forecasting-With-Spatio-Temporal-Networks/data/milan_processed_test.npz' #data is with input 12 and output 10
+elif arguments.machine.lower() =='personal':
+    RESULTS_PATH = "/home/nick/Desktop/experiments_results/"
+    TEST_SET_PATH = "/home/nick/Desktop/experiments_results/milan_processed_test.npz"
+elif arguments.machine.lower() == 'dice':    
+    RESULTS_PATH  = '/afs/inf.ed.ac.uk/user/s18/s1818503/Desktop/experiments_results/'
+    TEST_SET_PATH = '/afs/inf.ed.ac.uk/user/s18/s1818503/Desktop/experiments_results/milan_processed_test.npz'
+
+experiment_name = arguments.experiment_name
+
 RESULT_FOLDERS = {
 #     'no_scaling' : "conv_lstm_results_before_scaling_i=5_o=15/",
 #     'standard'   : "conv_lstm_with_data_standardisation_i=5_o=15/"
@@ -43,12 +63,12 @@ RESULT_FOLDERS = {
     'deepconvlstm' :  '' ,
     'shallowconvlstm' :  ''
 }
+
 #### THIS NEEDS TO BE AN ARGUMENT
-experiment_name = 'new_conv_lstm_lr_-3_in12_out10_no_shuffle_before_split'
 device = torch.cuda.current_device()
-#### NEED TO CHANGE THIS!!! ####
+#### NEED TO CHANGE THIS to read meta data from experiment####
 args  =  args_class(5 ,12, 10)
-model_name = 'deepconvlstm'
+
 
 PARAMS_PATH = RESULTS_PATH + RESULT_FOLDERS[model_name] + experiment_name + '/saved_models/train_model_latest'
 model = create_model(model_name,args,device)

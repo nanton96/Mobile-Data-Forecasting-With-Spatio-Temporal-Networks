@@ -112,3 +112,6 @@ trained_models/
 logs/
 # vscode
 .vscode/
+# images
+.pdf
+.png
