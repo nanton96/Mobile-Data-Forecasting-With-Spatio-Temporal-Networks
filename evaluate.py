@@ -38,9 +38,9 @@ parser.add_argument('--experiment_name', type=str,default='new_conv_lstm_lr_-3_i
 parser.add_argument('--machine', type=str,default='cluster', help='name of machine where the script is run')
 arguments = parser.parse_args()
 
-if arguments.experiment_name.split('_') == 'new':
+if arguments.experiment_name.split('_')][0] == 'new':
     model_name = 'deepconvlstm'
-elif arguments.experiment_name.split('_') == 'conv':
+elif arguments.experiment_name.split('_')[0] == 'conv':
     model_name = 'shallowconvlstm'
 
 if arguments.machine.lower() =='cluster':
