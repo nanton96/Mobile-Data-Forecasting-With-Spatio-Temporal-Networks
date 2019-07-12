@@ -94,7 +94,7 @@ with tqdm.tqdm(total=len(test_data)) as pbar_test:
         predictions.append(out.cpu().detach().numpy())
 ### SAVE PREDICTIONS
 predictions = np.array(predictions)
-np.savez(RESULTS_PATH + RESULT_FOLDERS[model_name] + experiment_name + '/example_predictios/test_predictions.npz',y=predictions)
+np.savez(RESULTS_PATH + RESULT_FOLDERS[model_name] + experiment_name + '/example_predictions/test_predictions.npz',y=predictions)
 ### SAVE MSE
 mse_frame_timestep = mse_frame_timestep / len(test_data)
 np.savetxt(RESULTS_PATH + experiment_name + '/mse_frame_timestep.csv', mse_frame_timestep, delimiter=",")
