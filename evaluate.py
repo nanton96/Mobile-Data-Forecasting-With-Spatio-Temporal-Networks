@@ -57,11 +57,12 @@ model = model.to(device)
 torch.manual_seed(seed=1)
 
 test_dataset  = dataloaders.MilanDataLoader(_set = 'test', toy = False, DATA_DIR=TEST_SET_PATH)
-test_data = DataLoader(test_dataset,batch_size=args.batch_size,shuffle=True,num_workers=4,drop_last = True)
+test_data = DataLoader(test_dataset,batch_size=args.batch_size,shuffle=False,num_workers=4,drop_last = True)
 
 _ , y = test_dataset.__getitem__(1)
 
 mse_frame_timestep = np.zeros(y.shape[0])#.to(device)
+predictions = []
 with tqdm.tqdm(total=len(test_data)) as pbar_test:
     for idx,(x,y) in enumerate(test_data):
         x = x.to(device)
@@ -70,9 +71,14 @@ with tqdm.tqdm(total=len(test_data)) as pbar_test:
         se_batch = torch.sum((out.squeeze() - y)**2,(2,3))
         mse_frame_timestep = mse_frame_timestep + torch.mean(se_batch,0).cpu().detach().numpy()
         pbar_test.update(1)
-
+        predictions.append(out.cpu().detach().numpy())
+### SAVE PREDICTIONS
+predictions = np.array(predictions)
+np.savez(RESULTS_PATH + RESULT_FOLDERS[model_name] + experiment_name + '/predictions/test_predictions.npz',y=predictions)
+### SAVE MSE
 mse_frame_timestep = mse_frame_timestep / len(test_data)
 np.savetxt(RESULTS_PATH + experiment_name + '/mse_frame_timestep.csv', mse_frame_timestep, delimiter=",")
+### PLOT MSE/TIMESTEP
 fig = plt.figure()
 ax = fig.add_subplot(111)
 ax.plot(mse_frame_timestep,'-o')
@@ -132,6 +138,7 @@ for i in range(y.shape[0]):
         plt.clf()
     
     fig,ax =plt.subplots(2,y.shape[1])
+    fig.subplots_adjust(wspace = 0.01, hspace=0.01)
     for j in range(y.shape[1]):
         
         fig.suptitle('entire sequence',fontsize=16)
