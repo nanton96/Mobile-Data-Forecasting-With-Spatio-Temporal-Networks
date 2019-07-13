@@ -71,4 +71,4 @@ class PredRNNPP(nn.Module):
 
         output = torch.stack(output[:self.seq_input])
 
-        return output
+        return output.permute(1,0,2,3)
