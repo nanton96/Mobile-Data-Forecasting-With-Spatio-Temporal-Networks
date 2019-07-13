@@ -1,4 +1,4 @@
-from model_architectures.pred_rnn_pp import PredRNNPP
+from model_architectures.pred_rnn_pp.PredRNNPP import PredRNNPP
 import torch 
 import utils
 
