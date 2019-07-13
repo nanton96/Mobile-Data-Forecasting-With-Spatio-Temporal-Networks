@@ -80,7 +80,7 @@ class ConvLSTMModel(nn.Module):
             hidden1, cell1 = self.convlstm1(output[i],(hidden1,cell1))
             hidden2, cell2 = self.convlstm2(hidden1,(hidden2,cell2))
             output[i] = self.deconv(hidden2)
-            output[i] = self.relu(output[i])
+            # output[i] = self.relu(output[i])
         
         for i in range(self.seq_start,self.seq_length):                                                 
             output[i] = self.conv(output[i-1])    
@@ -88,7 +88,7 @@ class ConvLSTMModel(nn.Module):
             hidden1, cell1 = self.convlstm1(output[i],(hidden1,cell1))
             hidden2, cell2 = self.convlstm2(hidden1,(hidden2,cell2))
             output[i] = self.deconv(hidden2)
-            output[i] = self.relu(output[i])
+            # output[i] = self.relu(output[i])
             
         out = torch.stack(output[self.seq_start:]).squeeze()
         return out.permute(1,0,2,3)
