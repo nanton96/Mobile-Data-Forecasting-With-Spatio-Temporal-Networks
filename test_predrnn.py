@@ -8,7 +8,7 @@ y = torch.zeros([5,10,100,100]).to(device)
 
 num_hidden = [4,8,8,8]
 
-model = PredRNNPP(x.shape,12,10,5,num_hidden,device)
+model = PredRNNPP(x.shape,12,10,5,num_hidden,device).to(device)
 
 out = model.forward(x)
 
