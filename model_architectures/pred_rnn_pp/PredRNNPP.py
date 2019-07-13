@@ -67,8 +67,8 @@ class PredRNNPP(nn.Module):
             for i in range(2, self.num_layers):
                 hidden[i], cell[i], mem = self.lstm[i](hidden[i-1], hidden[i], cell[i], mem)
             x_gen = self.conv(hidden[self.num_layers-1])
-            output.append(x_gen)
+            output.append(x_gen.squeeze())
 
-        output = torch.stack(output[:seq_input])
+        output = torch.stack(output[:self.seq_input])
 
         return output
