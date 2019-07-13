@@ -53,7 +53,7 @@ class PredRNNPP(nn.Module):
         output = []
         x_gen = None
         # x has shape B S H W
-        for t in range(self.seq_length-1):
+        for t in range(self.seq_length):
             print('sequence:', t)
             if t < self.seq_input:
                 inputs = x[:,t,:,:].unsqueeze(1)
@@ -69,6 +69,6 @@ class PredRNNPP(nn.Module):
             x_gen = self.conv(hidden[self.num_layers-1])
             output.append(x_gen)
 
-        output = torch.stack(output)
+        output = torch.stack(output[:seq_input])
 
         return output
