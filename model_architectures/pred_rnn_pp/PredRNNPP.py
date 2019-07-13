@@ -54,7 +54,6 @@ class PredRNNPP(nn.Module):
         x_gen = None
         # x has shape B S H W
         for t in range(self.seq_length):
-            print('sequence:', t)
             if t < self.seq_input:
                 inputs = x[:,t,:,:].unsqueeze(1)
             else:
