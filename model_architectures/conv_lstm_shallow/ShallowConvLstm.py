@@ -11,7 +11,7 @@ class ConvLSTMModel(nn.Module):
 
     def __init__(self,input_size,seq_start,seq_length, batch_size,use_gpu):
         super(ConvLSTMModel,self).__init__()
-        self.input_dim = 'BSHW'
+        self.input_dim = 'BSHW' # BATCH_SIZE, SEQUENCE_START, HEIGHT, WIDTH
         self.seq_start = seq_start
         self.seq_length = seq_length
         self.batch_size = batch_size
