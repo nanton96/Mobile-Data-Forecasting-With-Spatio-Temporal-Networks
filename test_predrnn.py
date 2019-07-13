@@ -12,7 +12,13 @@ model = PredRNNPP(x.shape,12,10,5,num_hidden,device)
 
 out = model.forward(x)
 
+print('out shape' ,out.shape)
+
 se = torch.sum((out - y)**2,(2,3)) # MSE error per frame
 loss = torch.mean(se)
 
+print(loss)
+
 loss.backward()
+
+print('done')
