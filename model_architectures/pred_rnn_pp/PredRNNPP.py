@@ -68,6 +68,6 @@ class PredRNNPP(nn.Module):
             x_gen = self.conv(hidden[self.num_layers-1])
             output.append(x_gen.squeeze())
 
-        output = torch.stack(output[:self.seq_input])
+        output = torch.stack(output[self.seq_input:])
 
         return output.permute(1,0,2,3)
