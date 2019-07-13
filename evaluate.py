@@ -64,7 +64,6 @@ RESULT_FOLDERS = {
     'shallowconvlstm' :  ''
 }
 
-#### THIS NEEDS TO BE AN ARGUMENT
 device = torch.cuda.current_device()
 #### NEED TO CHANGE THIS to read meta data from experiment####
 args  =  args_class(5 ,12, 10)

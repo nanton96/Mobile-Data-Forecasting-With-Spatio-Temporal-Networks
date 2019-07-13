@@ -9,9 +9,10 @@ import torch.nn.functional as F
 class CausalLSTMCell(nn.Module):
 
     def __init__(self, input_channels, layer_name, filter_size, num_hidden_in, num_hidden_out,
-                 seq_shape, forget_bias=1.0, initializer=0.001):
+                 seq_shape,device, forget_bias=1.0, initializer=0.001):
         super(CausalLSTMCell,self).__init__()
         
+        self.device = device
         self.layer_name = layer_name
         self.filter_size = filter_size
         self.input_channels = input_channels
@@ -63,11 +64,11 @@ class CausalLSTMCell(nn.Module):
 
     def forward(self,x,h,c,m):
         if h is None:
-            h = torch.zeros([self.batch,self.num_hidden,self.height,self.width])
+            h = torch.zeros([self.batch,self.num_hidden,self.height,self.width]).to(self.device)
         if c is None:
-            c = torch.zeros([self.batch,self.num_hidden,self.height,self.width])
+            c = torch.zeros([self.batch,self.num_hidden,self.height,self.width]).to(self.device)
         if m is None:
-            m = torch.zeros([self.batch,self.num_hidden_in,self.height,self.width])
+            m = torch.zeros([self.batch,self.num_hidden_in,self.height,self.width]).to(self.device)
 
         h_cc = self.conv_h(h)
         c_cc = self.conv_c(c)
