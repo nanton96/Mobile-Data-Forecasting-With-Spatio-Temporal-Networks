@@ -10,7 +10,7 @@ num_hidden = [4,8,8,8]
 
 model = PredRNNPP(x.shape,12,10,5,num_hidden,device)
 
-model.cuda()
+# model.cuda()
 
 out = model.forward(x)
 

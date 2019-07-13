@@ -27,6 +27,13 @@ def create_model(model,args,device):
 
         model = EF(encoder,forecaster)
         return model
+    elif model.lower()=='predrnnpp':
+        from model_architectures.pred_rnn_pp.PredRNNPP import PredRNNPP
+
+        num_hidden = [64,128,128,128]
+        input_shape = [args.batch_size,args.seq_start,args.input_size,args.input_size]
+        model = PredRNNPP(input_shape,args.seq_start,args.seq_output,args.batch_size,num_hidden,device)
+        return model
 
     else:
         raise ValueError('model ' + model + ' not implemented')
