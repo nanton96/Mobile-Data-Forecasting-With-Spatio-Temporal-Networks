@@ -26,7 +26,7 @@ class PredRNNPP(nn.Module):
                            out_channels=self.output_channels, 
                            kernel_size=1,
                            stride=1,
-                           padding=0)
+                           padding=0).cuda(0)
 
         for i in range(self.num_layers):
             if i == 0:

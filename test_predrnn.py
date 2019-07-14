@@ -2,16 +2,15 @@ from model_architectures.pred_rnn_pp.PredRNNPP import PredRNNPP
 import torch 
 import utils
 
-devices = [torch.cuda.device(0),torch.cuda.device(1),torch.cuda.device(2),torch.cuda.device(3)]
-device = devices[0]
+device = torch.cuda.current_device()
 x = torch.randn([5,12,100,100]).to(device)
 y = torch.randn([5,10,100,100]).to(device)
 
-num_hidden = [32,32,32]
+num_hidden = [4,8,8,8]
 
 model = PredRNNPP(x.shape,12,10,5,num_hidden,device)
 
-model.to(device)
+# model.to(device)
 
 out = model.forward(x)
 
