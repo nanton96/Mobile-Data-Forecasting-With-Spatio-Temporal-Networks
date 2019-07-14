@@ -2,8 +2,8 @@ from model_architectures.pred_rnn_pp.PredRNNPP import PredRNNPP
 import torch 
 import utils
 
-device = torch.cuda.current_device()
-print(torch.cuda.device_count() )
+devices = [torch.cuda(0),torch.cuda(1),torch.cuda(2),torch.cuda(3)]
+device = torch.cuda(0)
 x = torch.randn([5,12,100,100]).to(device)
 y = torch.randn([5,10,100,100]).to(device)
 
