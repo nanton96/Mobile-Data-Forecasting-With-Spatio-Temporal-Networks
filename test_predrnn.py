@@ -10,11 +10,11 @@ num_hidden = [16,32,32,32]
 
 model = PredRNNPP(x.shape,12,10,5,num_hidden,device)
 torch.cuda
-print(torch.cuda.max_memory_allocated)
+print(torch.cuda.max_memory_allocated())
 model.to(device)
-print(torch.cuda.max_memory_allocated)
+print(torch.cuda.max_memory_allocated())
 out = model.forward(x)
-print(torch.cuda.max_memory_allocated)
+print(torch.cuda.max_memory_allocated())
 print('out shape' ,out.shape)
 
 se = torch.sum((out - y)**2,(2,3)) # MSE error per frame
