@@ -68,6 +68,7 @@ class PredRNNPP(nn.Module):
             
             x_gen = self.conv(hidden[self.num_layers-1])
             output.append(x_gen.squeeze())
+            torch.cuda.empty_cache()
             print('t= ', t, ' memory :', torch.cuda.max_memory_allocated())
 
         output = torch.stack(output[self.seq_input:])
