@@ -70,5 +70,5 @@ class PredRNNPP(nn.Module):
             output.append(x_gen.squeeze())
 
         output = torch.stack(output[self.seq_input:])
-
+        print(output.shape)
         return output.permute(1,0,2,3)
