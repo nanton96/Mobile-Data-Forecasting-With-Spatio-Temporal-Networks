@@ -65,8 +65,10 @@ class PredRNNPP(nn.Module):
             hidden[1],cell[1],mem = self.lstm[1](z_t, hidden[1], cell[1], mem)
             for i in range(2, self.num_layers):
                 hidden[i], cell[i], mem = self.lstm[i](hidden[i-1], hidden[i], cell[i], mem)
+            
             x_gen = self.conv(hidden[self.num_layers-1])
             output.append(x_gen.squeeze())
+            print('t= ', t, ' memory :', torch.cuda.max_memory_allocated())
 
         output = torch.stack(output[self.seq_input:])
         if self.batch_size==1:
