@@ -64,11 +64,11 @@ class CausalLSTMCell(nn.Module):
 
     def forward(self,x,h,c,m):
         if h is None:
-            h = torch.zeros([self.batch,self.num_hidden,self.height,self.width])#.to(self.device) ## HERE
+            h = torch.zeros([self.batch,self.num_hidden,self.height,self.width]).to(self.device) ## HERE
         if c is None:
-            c = torch.zeros([self.batch,self.num_hidden,self.height,self.width])#.to(self.device)
+            c = torch.zeros([self.batch,self.num_hidden,self.height,self.width]).to(self.device)
         if m is None:
-            m = torch.zeros([self.batch,self.num_hidden_in,self.height,self.width])#.to(self.device)
+            m = torch.zeros([self.batch,self.num_hidden_in,self.height,self.width]).to(self.device)
 
         h_cc = self.conv_h(h)
         c_cc = self.conv_c(c)
