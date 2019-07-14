@@ -30,7 +30,7 @@ def create_model(model,args,device):
     elif model.lower()=='predrnnpp':
         from model_architectures.pred_rnn_pp.PredRNNPP import PredRNNPP
 
-        num_hidden = [64,128,128,128]
+        num_hidden = [32,64,64,64]
         input_shape = [args.batch_size,args.seq_start,args.image_height,args.image_height]
         model = PredRNNPP(input_shape,args.seq_start,args.seq_length-args.seq_start,args.batch_size,num_hidden,device)
         return model
