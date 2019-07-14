@@ -23,5 +23,6 @@ loss = torch.mean(se)
 print(loss)
 
 loss.backward()
+print(torch.cuda.max_memory_allocated())
 
 print('done')
