@@ -72,5 +72,5 @@ class PredRNNPP(nn.Module):
         output = torch.stack(output[self.seq_input:])
         print(output.shape)
         if self.batch_size==1:
-            output.unsqueeze(1)
+            output = output.unsqueeze(1)
         return output.permute(1,0,2,3)
