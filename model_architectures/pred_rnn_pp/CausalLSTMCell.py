@@ -91,8 +91,8 @@ class CausalLSTMCell(nn.Module):
             g = torch.tanh(g_x + g_h + g_c)
         
         c_new = f * c + i * g
-        c2m = self.conv_h(c_new)
-        i_c, g_c, f_c, o_c = torch.chunk(c2m, 4, dim=1)
+        # c2m = self.conv_h(c_new)
+        i_c, g_c, f_c, o_c = torch.chunk(self.conv_h(c_new), 4, dim=1)
 
         if x is None:
             ii = torch.sigmoid(i_c + i_m)
