@@ -70,6 +70,8 @@ class CausalLSTMCell(nn.Module):
         if m is None:
             m = torch.zeros([self.batch,self.num_hidden_in,self.height,self.width]).cuda(self.gpu_id)
 
+        m.cuda(self.gpu_id)
+
         h_cc = self.conv_h(h)
         c_cc = self.conv_c(c)
         m_cc = self.conv_m(m)
