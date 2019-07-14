@@ -32,7 +32,7 @@ def create_model(model,args,device):
 
         num_hidden = [64,128,128,128]
         input_shape = [args.batch_size,args.seq_start,args.image_height,args.image_height]
-        model = PredRNNPP(input_shape,args.seq_start,args.seq_output,args.batch_size,num_hidden,device)
+        model = PredRNNPP(input_shape,args.seq_start,args.seq_length-args.seq_start,args.batch_size,num_hidden,device)
         return model
 
     else:
