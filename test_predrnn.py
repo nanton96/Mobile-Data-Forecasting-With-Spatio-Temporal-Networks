@@ -3,7 +3,7 @@ import torch
 import utils
 
 devices = [torch.cuda.device(0),torch.cuda.device(1),torch.cuda.device(2),torch.cuda.device(3)]
-device = torch.cuda(0)
+device = devices[0]
 x = torch.randn([5,12,100,100]).to(device)
 y = torch.randn([5,10,100,100]).to(device)
 
