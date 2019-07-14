@@ -9,7 +9,7 @@ import torch.nn.functional as F
 class CausalLSTMCell(nn.Module):
 
     def __init__(self, input_channels, layer_name, filter_size, num_hidden_in, num_hidden_out,
-                 seq_shape,device, forget_bias=1.0, initializer=0.001):
+                 seq_shape,device,gpu_id, forget_bias=1.0, initializer=0.001):
         super(CausalLSTMCell,self).__init__()
         
         self.device = device
@@ -24,7 +24,7 @@ class CausalLSTMCell(nn.Module):
         self.width = seq_shape[3]
         # self.layer_norm = tln
         self._forget_bias = forget_bias
-
+        self.gpu_id = gpu_id
         self.conv_h = nn.Conv2d(in_channels=self.num_hidden, ###hidden state has similar spatial struture as inputs, we simply concatenate them on the feature dimension
                            out_channels=self.num_hidden*4, ##lstm has four gates
                            kernel_size=self.filter_size,
@@ -64,11 +64,11 @@ class CausalLSTMCell(nn.Module):
 
     def forward(self,x,h,c,m):
         if h is None:
-            h = torch.zeros([self.batch,self.num_hidden,self.height,self.width]).to(self.device) ## HERE
+            h = torch.zeros([self.batch,self.num_hidden,self.height,self.width]).cuda(gpu_id) ## HERE
         if c is None:
-            c = torch.zeros([self.batch,self.num_hidden,self.height,self.width]).to(self.device)
+            c = torch.zeros([self.batch,self.num_hidden,self.height,self.width]).cuda(gpu_id)
         if m is None:
-            m = torch.zeros([self.batch,self.num_hidden_in,self.height,self.width]).to(self.device)
+            m = torch.zeros([self.batch,self.num_hidden_in,self.height,self.width]).cuda(gpu_id)
 
         h_cc = self.conv_h(h)
         c_cc = self.conv_c(c)
