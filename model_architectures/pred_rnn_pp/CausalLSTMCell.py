@@ -64,11 +64,11 @@ class CausalLSTMCell(nn.Module):
 
     def forward(self,x,h,c,m):
         if h is None:
-            h = torch.zeros([self.batch,self.num_hidden,self.height,self.width]).cuda(gpu_id) ## HERE
+            h = torch.zeros([self.batch,self.num_hidden,self.height,self.width]).cuda(self.gpu_id) ## HERE
         if c is None:
-            c = torch.zeros([self.batch,self.num_hidden,self.height,self.width]).cuda(gpu_id)
+            c = torch.zeros([self.batch,self.num_hidden,self.height,self.width]).cuda(self.gpu_id)
         if m is None:
-            m = torch.zeros([self.batch,self.num_hidden_in,self.height,self.width]).cuda(gpu_id)
+            m = torch.zeros([self.batch,self.num_hidden_in,self.height,self.width]).cuda(self.gpu_id)
 
         h_cc = self.conv_h(h)
         c_cc = self.conv_c(c)
