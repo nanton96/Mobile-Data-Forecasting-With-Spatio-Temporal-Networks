@@ -43,8 +43,7 @@ class PredRNNPP(nn.Module):
         
 
     def forward(self,x):
-        if len(x.shape) == 3:
-            x.unsquueze(0)
+
         cell = []
         hidden = []
         mem = None
@@ -72,4 +71,6 @@ class PredRNNPP(nn.Module):
 
         output = torch.stack(output[self.seq_input:])
         print(output.shape)
+        if len(output.shape) == 3:
+            output.unsqueeze(1)
         return output.permute(1,0,2,3)
