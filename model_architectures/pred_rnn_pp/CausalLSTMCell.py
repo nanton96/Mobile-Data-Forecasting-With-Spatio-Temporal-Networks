@@ -64,7 +64,7 @@ class CausalLSTMCell(nn.Module):
 
     def forward(self,x,h,c,m):
         if h is None:
-            h = torch.zeros([self.batch,self.num_hidden,self.height,self.width]).to(self.device) ## HERE
+            h = torch.zeros([self.batch,self.num_hidden,self.height,self.width]).to(self.device)
         if c is None:
             c = torch.zeros([self.batch,self.num_hidden,self.height,self.width]).to(self.device)
         if m is None:
@@ -74,6 +74,9 @@ class CausalLSTMCell(nn.Module):
         c_cc = self.conv_c(c)
         m_cc = self.conv_m(m)
 
+        print('h_cc:',h_cc.shape)
+        print('c_cc:',c_cc.shape)
+        print('m_cc:',m_cc.shape)
         i_h, g_h, f_h, o_h = torch.chunk(h_cc, 4, dim=1)
         i_c, g_c, f_c = torch.chunk(c_cc, 3, dim=1)
         i_m, f_m, m_m = torch.chunk(m_cc, 3, dim=1)
@@ -85,17 +88,17 @@ class CausalLSTMCell(nn.Module):
 
         else:
             x_cc = self.conv_x(x)
-    
+            print('x_cc:',x_cc.shape)
             i_x, g_x, f_x, o_x, i_x_, g_x_, f_x_ = torch.chunk(x_cc, 7, dim = 1)
-
+            print('i_x:',i_x.shape)
             i = torch.sigmoid(i_x + i_h + i_c)
             f = torch.sigmoid(f_x + f_h + f_c + self._forget_bias)
             g = torch.tanh(g_x + g_h + g_c)
         
         c_new = f * c + i * g
-        
+        print('c_new',c_new.shape)
         c2m = self.conv_h(c_new)
-
+        print('c2m', c2m.shape)
         i_c, g_c, f_c, o_c = torch.chunk(c2m, 4, dim=1)
 
         if x is None:
