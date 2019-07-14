@@ -19,7 +19,7 @@ class PredRNNPP(nn.Module):
         self.num_hidden = num_hidden
         self.num_layers = len(num_hidden)
 
-        self.lstm = []
+        self.lstm = nn.ModuleList()
         self.output_channels = 1
 
         self.conv = nn.Conv2d(in_channels=self.num_hidden[self.num_layers-1], ###hidden state has similar spatial struture as inputs, we simply concatenate them on the feature dimension
