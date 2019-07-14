@@ -43,7 +43,8 @@ class PredRNNPP(nn.Module):
         
 
     def forward(self,x):
-        
+        if len(x.shape) == 3:
+            x.unsquueze(0)
         cell = []
         hidden = []
         mem = None
