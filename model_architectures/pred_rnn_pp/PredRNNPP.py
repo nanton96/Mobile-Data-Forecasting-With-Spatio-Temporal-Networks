@@ -26,7 +26,7 @@ class PredRNNPP(nn.Module):
                            out_channels=self.output_channels, 
                            kernel_size=1,
                            stride=1,
-                           padding=0).cuda(0)
+                           padding=0).to(device)
 
         for i in range(self.num_layers):
             if i == 0:
@@ -36,7 +36,7 @@ class PredRNNPP(nn.Module):
                 num_hidden_in = self.num_hidden[i-1]
                 input_channels = self.num_hidden[i-1]
 
-            new_cell = clstm(input_channels,'lstm_'+str(i+1),3,num_hidden_in,self.num_hidden[i],self.input_shape,self.device,gpu_id = i).cuda(i)
+            new_cell = clstm(input_channels,'lstm_'+str(i+1),3,num_hidden_in,self.num_hidden[i],self.input_shape,self.device).to(device)
             self.lstm.append(new_cell)
 
         self.ghu = None
@@ -66,7 +66,6 @@ class PredRNNPP(nn.Module):
             hidden[1],cell[1],mem = self.lstm[1](z_t, hidden[1], cell[1], mem)
             for i in range(2, self.num_layers):
                 hidden[i], cell[i], mem = self.lstm[i](hidden[i-1], hidden[i], cell[i], mem)
-            mem.cuda(0)
             x_gen = self.conv(hidden[self.num_layers-1])
             output.append(x_gen.squeeze())
 

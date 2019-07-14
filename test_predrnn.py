@@ -3,8 +3,8 @@ import torch
 import utils
 
 device = torch.cuda.current_device()
-x = torch.randn([5,12,100,100]).to(device)
-y = torch.randn([5,10,100,100]).to(device)
+x = torch.randn([5,12,50,50]).to(device)
+y = torch.randn([5,10,50,50]).to(device)
 
 num_hidden = [32,32,32,32]
 
