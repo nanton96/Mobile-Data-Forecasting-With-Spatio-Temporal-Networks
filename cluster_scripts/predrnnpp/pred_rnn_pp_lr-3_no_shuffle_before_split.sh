@@ -44,3 +44,4 @@ python train.py --use_gpu True --gpu_id "0" --num_epochs 100\
                 --experiment_name pred_rnn_pp_lr_-3_in12_out10_no_shuffle_before_split\
                 --model predrnnpp\
                 --seq_start 12 --seq_length 22
+                --batch_size 3
