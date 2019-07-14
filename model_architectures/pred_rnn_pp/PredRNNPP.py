@@ -54,7 +54,6 @@ class PredRNNPP(nn.Module):
         x_gen = None
         # x has shape B S H W
         for t in range(self.seq_length):
-            print('seq no', t)
             if t < self.seq_input:
                 inputs = x[:,t,:,:].unsqueeze(1)
             else:
@@ -70,7 +69,6 @@ class PredRNNPP(nn.Module):
             output.append(x_gen.squeeze())
 
         output = torch.stack(output[self.seq_input:])
-        print(output.shape)
         if self.batch_size==1:
             output = output.unsqueeze(1)
         return output.permute(1,0,2,3)
