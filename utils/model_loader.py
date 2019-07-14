@@ -27,6 +27,7 @@ def create_model(model,args,device):
 
         model = EF(encoder,forecaster)
         return model
+        
     elif model.lower()=='predrnnpp':
         from model_architectures.pred_rnn_pp.PredRNNPP import PredRNNPP
 
