@@ -10,7 +10,7 @@ num_hidden = [16,32,32,32]
 
 model = PredRNNPP(x.shape,12,10,5,num_hidden,device)
 
-# model.to(device)
+model.to(device)
 
 out = model.forward(x)
 
