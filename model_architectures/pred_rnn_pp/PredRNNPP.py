@@ -36,7 +36,7 @@ class PredRNNPP(nn.Module):
                 num_hidden_in = self.num_hidden[i-1]
                 input_channels = self.num_hidden[i-1]
 
-            new_cell = clstm(input_channels,'lstm_'+str(i+1),3,num_hidden_in,self.num_hidden[i],self.input_shape,self.device).to(device)
+            new_cell = clstm(input_channels,'lstm_'+str(i+1),3,num_hidden_in,self.num_hidden[i],self.input_shape,self.device)#.to(device)
             self.lstm.append(new_cell)
 
         self.ghu = None
