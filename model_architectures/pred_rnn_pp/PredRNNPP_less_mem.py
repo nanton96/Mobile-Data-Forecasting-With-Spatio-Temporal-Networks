@@ -7,7 +7,7 @@ from model_architectures.pred_rnn_pp.CausalLSTMCell_less_mem import CausalLSTMCe
 
 class PredRNNPP(nn.Module):
 
-    def __init__(self,input_shape,seq_input,seq_output,batch_size,num_hidden,strides,padding,kernel_sizes,device):
+    def __init__(self,input_shape,seq_input,seq_output,batch_size,num_hidden,strides,padding,kernel_sizes,halve_dim,device):
         super(PredRNNPP,self).__init__()
 
         self.seq_input = seq_input
@@ -40,7 +40,7 @@ class PredRNNPP(nn.Module):
                 num_hidden_in = self.num_hidden[i-1]
                 input_channels = self.num_hidden[i-1]
 
-            new_cell = clstm(input_channels,'lstm_'+str(i+1),self.kernel_sizes[i],num_hidden_in,self.num_hidden[i],self.input_shape,self.device,self.strides[i],self.padding[i])
+            new_cell = clstm(input_channels,'lstm_'+str(i+1),self.kernel_sizes[i],num_hidden_in,self.num_hidden[i],self.input_shape,self.device,self.strides[i],self.padding[i],self.halve_dim[i])
             self.lstm.append(new_cell)
 
         self.ghu = None
@@ -76,7 +76,6 @@ class PredRNNPP(nn.Module):
             hidden[0], cell[0], mem = self.lstm[0].forward(inputs, hidden[0],cell[0], mem)
             #z_t = self.ghu(self.hidden[0], z_t)
             z_t = hidden[0]
-            print('hidden0',hidden[0].shape)
             hidden[1],cell[1],mem = self.lstm[1](z_t, hidden[1], cell[1], mem)
             for i in range(2, self.num_layers):
                 hidden[i], cell[i], mem = self.lstm[i](hidden[i-1], hidden[i], cell[i], mem)

@@ -8,12 +8,12 @@ x = torch.randn([5,12,50,50]).to(device)
 y = torch.randn([5,10,50,50]).to(device)
 
 num_hidden = [16,32,32]
-
+halve_dim = [True,True,False]
 strides = [2,2,1]
 padding = [1,0,1]
 kernel_sizes = [4,3,3]
 
-model = PredRNNPP(x.shape,12,10,5,num_hidden,strides,padding,kernel_sizes,device)
+model = PredRNNPP(x.shape,12,10,5,num_hidden,strides,padding,kernel_sizes,halve_dim,device)
 print(torch.cuda.max_memory_allocated())
 model.to(device)
 print(torch.cuda.max_memory_allocated())

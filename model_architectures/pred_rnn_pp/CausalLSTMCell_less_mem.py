@@ -9,7 +9,7 @@ import torch.nn.functional as F
 class CausalLSTMCell(nn.Module):
 
     def __init__(self, input_channels, layer_name, filter_size, num_hidden_in, num_hidden_out,
-                 seq_shape,device,stride,padding, forget_bias=1.0, initializer=0.001):
+                 seq_shape,device,stride,padding, halve_dim, forget_bias=1.0, initializer=0.001):
         super(CausalLSTMCell,self).__init__()
         
         self.device = device
@@ -19,7 +19,6 @@ class CausalLSTMCell(nn.Module):
         self.num_hidden_in = num_hidden_in
         self.num_hidden = num_hidden_out
         self.batch = seq_shape[0]
-        # self.x_channels = 1
         self.height = seq_shape[2]
         self.width = seq_shape[3]
         # self.layer_norm = tln
@@ -27,6 +26,8 @@ class CausalLSTMCell(nn.Module):
 
         self.padding = padding
         self.stride = stride 
+
+        self.halve_dim = halve_dim
 
         self.conv_h = nn.Conv2d(in_channels=self.num_hidden, ###hidden state has similar spatial struture as inputs, we simply concatenate them on the feature dimension
                            out_channels=self.num_hidden*4, ##lstm has four gates
@@ -67,12 +68,19 @@ class CausalLSTMCell(nn.Module):
                            padding=0)
 
     def forward(self,x,h,c,m):
+        if self.halve_dim == True:
+            hidden_height = x.shape[2]//2
+            hidden_width = x.shape[3]//2
+        else:
+            hidden_height = x.shape[2]
+            hidden_width = x.shape[3]
+
         if h is None:
-            h = torch.zeros([self.batch,self.num_hidden,self.height//2,self.width//2]).to(self.device)
+            h = torch.zeros([self.batch,self.num_hidden,hidden_height ,hidden_width]).to(self.device)
         if c is None:
-            c = torch.zeros([self.batch,self.num_hidden,self.height//2,self.width//2]).to(self.device)
+            c = torch.zeros([self.batch,self.num_hidden,hidden_height,hidden_width]).to(self.device)
         if m is None:
-            m = torch.zeros([self.batch,self.num_hidden_in,self.height//2,self.width//2]).to(self.device)
+            m = torch.zeros([self.batch,self.num_hidden_in,hidden_height,hidden_width]).to(self.device)
 
         h_cc = self.conv_h(h)
         c_cc = self.conv_c(c)
