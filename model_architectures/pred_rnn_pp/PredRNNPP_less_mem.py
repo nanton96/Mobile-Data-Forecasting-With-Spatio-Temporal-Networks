@@ -46,7 +46,7 @@ class PredRNNPP(nn.Module):
         self.ghu = None
         ## CHANGE THESE PARAMS
         self.deconv = nn.ConvTranspose2d(
-            in_channels= num_hidden[len(num_hidden)] , 
+            in_channels= num_hidden[len(num_hidden)-1] , 
             out_channels=1, 
             kernel_size=6,
             stride=4,
