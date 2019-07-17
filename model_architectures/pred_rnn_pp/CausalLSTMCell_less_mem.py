@@ -90,6 +90,7 @@ class CausalLSTMCell(nn.Module):
         else:
             x_cc = self.conv_x(x)
             i_x, g_x, f_x, o_x, i_x_, g_x_, f_x_ = torch.chunk(x_cc, 7, dim = 1)
+            print(i_x.shape,i_h.shape,i_c.shape)
             i = torch.sigmoid(i_x + i_h + i_c)
             f = torch.sigmoid(f_x + f_h + f_c + self._forget_bias)
             g = torch.tanh(g_x + g_h + g_c)
