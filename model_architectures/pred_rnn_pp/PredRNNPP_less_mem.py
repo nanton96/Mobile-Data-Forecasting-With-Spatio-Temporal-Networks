@@ -72,9 +72,6 @@ class PredRNNPP(nn.Module):
                 inputs = x[:,t,:,:].unsqueeze(1)
             else:
                 inputs = x_gen
-            
-            inputs = self.conv(inputs)
-
 
             hidden[0], cell[0], mem = self.lstm[0].forward(inputs, hidden[0],cell[0], mem)
             #z_t = self.ghu(self.hidden[0], z_t)
