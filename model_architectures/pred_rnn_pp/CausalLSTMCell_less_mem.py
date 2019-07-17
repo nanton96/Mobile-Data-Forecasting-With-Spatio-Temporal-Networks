@@ -30,23 +30,23 @@ class CausalLSTMCell(nn.Module):
 
         self.conv_h = nn.Conv2d(in_channels=self.num_hidden, ###hidden state has similar spatial struture as inputs, we simply concatenate them on the feature dimension
                            out_channels=self.num_hidden*4, ##lstm has four gates
-                           kernel_size=self.filter_size,
-                           stride=self.stride,
-                           padding=self.padding
+                           kernel_size=3,
+                           stride=1,
+                           padding=1
         )
 
         self.conv_c = nn.Conv2d(in_channels=self.num_hidden, ###hidden state has similar spatial struture as inputs, we simply concatenate them on the feature dimension
                            out_channels=self.num_hidden*3, 
-                           kernel_size=self.filter_size,
-                           stride=self.stride,
-                           padding=self.padding
+                           kernel_size=3,
+                           stride=1,
+                           padding=1
         )
 
         self.conv_m = nn.Conv2d(in_channels=self.num_hidden_in, ###hidden state has similar spatial struture as inputs, we simply concatenate them on the feature dimension
                            out_channels=self.num_hidden*3, 
-                           kernel_size=self.filter_size,
-                           stride=self.stride,
-                           padding=self.padding
+                           kernel_size=3,
+                           stride=1,
+                           padding=1
         )
 
         self.conv_x = nn.Conv2d(in_channels=self.input_channels, ###hidden state has similar spatial struture as inputs, we simply concatenate them on the feature dimension

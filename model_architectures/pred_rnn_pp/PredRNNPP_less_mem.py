@@ -44,9 +44,6 @@ class PredRNNPP(nn.Module):
             self.lstm.append(new_cell)
 
         self.ghu = None
-
-        ##TODO: NEED TO ENCODE THE INPUT in lower dimensions
-        self.conv = None
         ## CHANGE THESE PARAMS
 
         self.deconv = nn.ConvTranspose2d(
