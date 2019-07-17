@@ -7,6 +7,9 @@ seq_start =12
 seq_length = 22
 device = torch.cuda.current_device()
 
+x = torch.randn([5,12,50,50]).to(device)
+y = torch.randn([5,10,50,50]).to(device)
+
 enc_arch = encoder_architecture(batch_size, device, seq_start)
 encoder = Encoder(enc_arch[0],enc_arch[1]).to(device)
 
