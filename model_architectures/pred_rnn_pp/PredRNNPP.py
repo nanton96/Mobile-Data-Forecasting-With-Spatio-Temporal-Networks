@@ -22,11 +22,11 @@ class PredRNNPP(nn.Module):
         self.lstm = nn.ModuleList()
         self.output_channels = 1
 
-        self.conv = nn.Conv2d(in_channels=self.num_hidden[self.num_layers-1], ###hidden state has similar spatial struture as inputs, we simply concatenate them on the feature dimension
-                           out_channels=self.output_channels, 
-                           kernel_size=1,
-                           stride=1,
-                           padding=0).to(device)
+        # self.conv = nn.Conv2d(in_channels=self.num_hidden[self.num_layers-1], ###hidden state has similar spatial struture as inputs, we simply concatenate them on the feature dimension
+        #                    out_channels=self.output_channels, 
+        #                    kernel_size=1,
+        #                    stride=1,
+        #                    padding=0).to(device)
 
         for i in range(self.num_layers):
             if i == 0:
@@ -66,7 +66,8 @@ class PredRNNPP(nn.Module):
             for i in range(2, self.num_layers):
                 hidden[i], cell[i], mem = self.lstm[i](hidden[i-1], hidden[i], cell[i], mem)
             
-            x_gen = self.conv(hidden[self.num_layers-1])
+            # x_gen = self.conv(hidden[self.num_layers-1])
+            x_gen = hidden[i]
             output.append(x_gen.squeeze())
             print('t= ', t, ' memory :', torch.cuda.max_memory_allocated())
 

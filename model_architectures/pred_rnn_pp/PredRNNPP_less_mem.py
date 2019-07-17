@@ -26,11 +26,11 @@ class PredRNNPP(nn.Module):
         self.padding = padding
         self.kernel_sizes = kernel_sizes
 
-        self.conv = nn.Conv2d(in_channels=self.num_hidden[self.num_layers-1], ###hidden state has similar spatial struture as inputs, we simply concatenate them on the feature dimension
-                           out_channels=self.output_channels, 
-                           kernel_size=1,
-                           stride=1,
-                           padding=0).to(device)
+        # self.conv = nn.Conv2d(in_channels=self.num_hidden[self.num_layers-1], ###hidden state has similar spatial struture as inputs, we simply concatenate them on the feature dimension
+        #                    out_channels=self.output_channels, 
+        #                    kernel_size=1,
+        #                    stride=1,
+        #                    padding=0).to(device)
 
         for i in range(self.num_layers):
             if i == 0:
@@ -44,7 +44,11 @@ class PredRNNPP(nn.Module):
             self.lstm.append(new_cell)
 
         self.ghu = None
+
+        ##TODO: NEED TO ENCODE THE INPUT in lower dimensions
+        self.conv = None
         ## CHANGE THESE PARAMS
+
         self.deconv = nn.ConvTranspose2d(
             in_channels= num_hidden[len(num_hidden)-1] , 
             out_channels=1, 
@@ -66,11 +70,15 @@ class PredRNNPP(nn.Module):
         x_gen = None
         # x has shape B S H W
         for t in range(self.seq_length):
+
             if t < self.seq_input:
                 inputs = x[:,t,:,:].unsqueeze(1)
             else:
                 inputs = x_gen
             
+            inputs = self.conv(inputs)
+
+
             hidden[0], cell[0], mem = self.lstm[0].forward(inputs, hidden[0],cell[0], mem)
             #z_t = self.ghu(self.hidden[0], z_t)
             z_t = hidden[0]
@@ -79,7 +87,7 @@ class PredRNNPP(nn.Module):
             for i in range(2, self.num_layers):
                 hidden[i], cell[i], mem = self.lstm[i](hidden[i-1], hidden[i], cell[i], mem)
             
-            x_gen = self.conv(hidden[self.num_layers-1])
+            # x_gen = self.conv(hidden[self.num_layers-1])
             x_gen = self.deconv(x_gen)
             output.append(x_gen.squeeze())
             print('t= ', t, ' memory :', torch.cuda.max_memory_allocated())
