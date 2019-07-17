@@ -25,7 +25,7 @@ class PredRNNPP(nn.Module):
         self.strides = strides
         self.padding = padding
         self.kernel_sizes = kernel_sizes
-
+        self.halve_dim = halve_dim
         # self.conv = nn.Conv2d(in_channels=self.num_hidden[self.num_layers-1], ###hidden state has similar spatial struture as inputs, we simply concatenate them on the feature dimension
         #                    out_channels=self.output_channels, 
         #                    kernel_size=1,
