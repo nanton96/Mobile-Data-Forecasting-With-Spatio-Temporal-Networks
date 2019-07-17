@@ -56,9 +56,9 @@ class CausalLSTMCell(nn.Module):
                            padding=self.padding)
 
         self.conv_o = nn.Conv2d(in_channels=self.num_hidden,out_channels=self.num_hidden, 
-                           kernel_size=self.filter_size,
-                           stride=self.stride,
-                           padding=self.padding)
+                           kernel_size=3,
+                           stride=1,
+                           padding=1)
         
 
         self.conv_1_1 =  nn.Conv2d(in_channels=self.num_hidden*2,out_channels=self.num_hidden, 
