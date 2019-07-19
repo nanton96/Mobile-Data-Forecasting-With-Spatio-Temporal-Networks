@@ -22,8 +22,8 @@ class MilanDataLoader(data.Dataset):
         self.x = data_set['x'].transpose(0,3,1,2).astype(np.float32)  # DIMENSIONS B S H W
         self.y = data_set['y'].transpose(0,3,1,2).astype(np.float32)
         if cropped == True:
-            self.x = self.x[:,:,33:55,33:55]
-            self.y = self.y[:,:,33:55,33:55]
+            self.x = self.x[:,:,33:55,33:65]
+            self.y = self.y[:,:,33:55,33:65]
 
     
     def __getitem__(self,index):

@@ -112,7 +112,6 @@ class ExperimentBuilder(nn.Module):
 
         x = x.to(self.device)
         y = y.to(self.device)
-        print(x.shape)
         out = self.model.forward(x)  # forward the data in the model
         loss = 0        
         se = torch.sum((out - y)**2,(2,3)) # MSE error per frame
