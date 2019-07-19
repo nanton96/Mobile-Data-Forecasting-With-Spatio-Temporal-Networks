@@ -28,6 +28,8 @@ class PredRNNPP(nn.Module):
                            padding=0)
         self.pool = nn.MaxPool2d(kernel_size=3)
 
+        self.compressed_shape = [batch_size,8,32,32]
+
         for i in range(self.num_layers):
             if i == 0:
                 num_hidden_in = self.num_hidden[self.num_layers-1]
@@ -36,7 +38,7 @@ class PredRNNPP(nn.Module):
                 num_hidden_in = self.num_hidden[i-1]
                 input_channels = self.num_hidden[i-1]
 
-            new_cell = clstm(input_channels,'lstm_'+str(i+1),3,num_hidden_in,self.num_hidden[i],self.input_shape,self.device)
+            new_cell = clstm(input_channels,'lstm_'+str(i+1),3,num_hidden_in,self.num_hidden[i],self.compressed_shape,self.device)
             self.lstm.append(new_cell)
 
         self.ghu = None
@@ -70,7 +72,7 @@ class PredRNNPP(nn.Module):
 
             inputs = self.conv(inputs)  #to 98x98
             inputs = self.pool(inputs)  #to 32x32
-
+            # Causal LSTMs do not change dimensionality
             hidden[0], cell[0], mem = self.lstm[0].forward(inputs, hidden[0],cell[0], mem)
             #z_t = self.ghu(self.hidden[0], z_t)
             z_t = hidden[0]
