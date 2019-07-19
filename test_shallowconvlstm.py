@@ -1,5 +1,5 @@
 
-from model_architectures.conv_lstm_shallow.ShallowConvLstm import ConvLSTMModel
+from model_architectures.conv_lstm_shallow.ShallowConvLstm32x32 import ConvLSTMModel
 import torch
 batch_size = 5
 seq_start =12
