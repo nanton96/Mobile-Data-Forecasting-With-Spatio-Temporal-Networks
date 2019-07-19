@@ -52,7 +52,7 @@ class ConvLSTMModel(nn.Module):
                         kernel_size=6,
                         stride=3,
                         padding=0, 
-                        output_padding=1, 
+                        output_padding=0, 
                         )
         self.relu = func.relu
 
