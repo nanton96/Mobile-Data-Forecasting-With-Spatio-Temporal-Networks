@@ -45,6 +45,7 @@ def get_args():
     parser.add_argument('--toy', nargs="?", type=str2bool, default=False,
                         help='flag that indicates on whether or not to use a small toy dataset for testing/debugging')
     parser.add_argument('--image_height',type = int,default = 100,help = "size of image")
+    parser.add_argument('--cropped',type = str2bool,default = False,help = "if true use 32x32 center of image")
 
 
     args = parser.parse_args()

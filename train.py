@@ -11,9 +11,9 @@ rng = np.random.RandomState(seed=args.seed)
 torch.manual_seed(seed=args.seed)
 args.toy = False
 #load dataset
-train_dataset = dataloaders.MilanDataLoader(_set = 'train',toy = args.toy)
-valid_dataset = dataloaders.MilanDataLoader(_set = 'valid',toy = args.toy)
-test_dataset  = dataloaders.MilanDataLoader(_set = 'test', toy = args.toy)
+train_dataset = dataloaders.MilanDataLoader(_set = 'train',toy = args.toy,cropped = args.cropped)
+valid_dataset = dataloaders.MilanDataLoader(_set = 'valid',toy = args.toy,cropped = args.cropped)
+test_dataset  = dataloaders.MilanDataLoader(_set = 'test', toy = args.toy,cropped = args.cropped)
 
 train_data = DataLoader(train_dataset,batch_size=args.batch_size,shuffle=True,num_workers=4,drop_last = True)
 valid_data = DataLoader(valid_dataset,batch_size=args.batch_size,shuffle=True,num_workers=4,drop_last = True)
