@@ -78,7 +78,7 @@ class PredRNNPP(nn.Module):
             hidden[0], cell[0], mem = self.lstm[0].forward(inputs, hidden[0],cell[0], mem)
             
             if self.use_GHU:
-                z_t = self.ghu(self.hidden[0], z_t)
+                z_t = self.ghu(hidden[0], z_t)
             else:
                 z_t = hidden[0]
             hidden[1],cell[1],mem = self.lstm[1](z_t, hidden[1], cell[1], mem)
