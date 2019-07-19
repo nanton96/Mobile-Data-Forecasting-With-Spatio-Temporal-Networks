@@ -43,7 +43,7 @@ class PredRNNPP(nn.Module):
             self.lstm.append(new_cell)
         
         if self.use_GHU:
-            self.ghu = GHU(filter_size=3, num_features = num_hidden[1],input_channels=num_hidden[0],self.device)
+            self.ghu = GHU(filter_size=3, num_features = num_hidden[1],input_channels=num_hidden[0],device = self.device)
 
         self.deconv = nn.ConvTranspose2d(
             in_channels= num_hidden[len(num_hidden)-1] , 
