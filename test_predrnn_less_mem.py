@@ -9,7 +9,7 @@ y = torch.randn([5,10,100,100]).to(device)
 num_hidden = [64,64,64,64]
 
 
-model = PredRNNPP(x.shape,12,10,5,num_hidden,device)
+model = PredRNNPP(x.shape,12,10,5,num_hidden,device,use_GHU=True)
 print(torch.cuda.max_memory_allocated())
 model.to(device)
 print(torch.cuda.max_memory_allocated())
