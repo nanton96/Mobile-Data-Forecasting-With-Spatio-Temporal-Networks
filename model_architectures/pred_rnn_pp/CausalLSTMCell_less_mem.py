@@ -9,7 +9,7 @@ import torch.nn.functional as F
 class CausalLSTMCell(nn.Module):
 
     def __init__(self, input_channels, layer_name, filter_size, num_hidden_in, num_hidden_out,
-                 seq_shape,device,stride,padding, halve_dim, forget_bias=1.0, initializer=0.001):
+            seq_shape,device, forget_bias=1.0, initializer=0.001):
         super(CausalLSTMCell,self).__init__()
         
         self.device = device
@@ -23,11 +23,6 @@ class CausalLSTMCell(nn.Module):
         self.width = seq_shape[3]
         # self.layer_norm = tln
         self._forget_bias = forget_bias
-
-        self.padding = padding
-        self.stride = stride 
-
-        self.halve_dim = halve_dim
 
         self.conv_h = nn.Conv2d(in_channels=self.num_hidden, ###hidden state has similar spatial struture as inputs, we simply concatenate them on the feature dimension
                            out_channels=self.num_hidden*4, ##lstm has four gates
@@ -52,9 +47,9 @@ class CausalLSTMCell(nn.Module):
 
         self.conv_x = nn.Conv2d(in_channels=self.input_channels, ###hidden state has similar spatial struture as inputs, we simply concatenate them on the feature dimension
                            out_channels=self.num_hidden*7, 
-                           kernel_size=self.filter_size,
-                           stride=self.stride,
-                           padding=self.padding)
+                           kernel_size=3,
+                           stride=1,
+                           padding=1)
 
         self.conv_o = nn.Conv2d(in_channels=self.num_hidden,out_channels=self.num_hidden, 
                            kernel_size=3,
@@ -68,19 +63,12 @@ class CausalLSTMCell(nn.Module):
                            padding=0)
 
     def forward(self,x,h,c,m):
-        if self.halve_dim == True:
-            hidden_height = x.shape[2]//2
-            hidden_width = x.shape[3]//2
-        else:
-            hidden_height = x.shape[2]
-            hidden_width = x.shape[3]
-
         if h is None:
-            h = torch.zeros([self.batch,self.num_hidden,hidden_height ,hidden_width]).to(self.device)
+            h = torch.zeros([self.batch,self.num_hidden,self.height,self.width]).to(self.device)
         if c is None:
-            c = torch.zeros([self.batch,self.num_hidden,hidden_height,hidden_width]).to(self.device)
+            c = torch.zeros([self.batch,self.num_hidden,self.height,self.width]).to(self.device)
         if m is None:
-            m = torch.zeros([self.batch,self.num_hidden_in,hidden_height,hidden_width]).to(self.device)
+            m = torch.zeros([self.batch,self.num_hidden_in,self.height,self.width]).to(self.device)
 
         h_cc = self.conv_h(h)
         c_cc = self.conv_c(c)
@@ -98,7 +86,6 @@ class CausalLSTMCell(nn.Module):
         else:
             x_cc = self.conv_x(x)
             i_x, g_x, f_x, o_x, i_x_, g_x_, f_x_ = torch.chunk(x_cc, 7, dim = 1)
-            # print(i_x.shape,i_h.shape,i_c.shape)
             i = torch.sigmoid(i_x + i_h + i_c)
             f = torch.sigmoid(f_x + f_h + f_c + self._forget_bias)
             g = torch.tanh(g_x + g_h + g_c)
@@ -112,7 +99,6 @@ class CausalLSTMCell(nn.Module):
             ff = torch.sigmoid(f_c + f_m + self._forget_bias)
             gg = torch.tanh(g_c)
         else:
-            print(i_c.shape,i_x_.shape,i_m.shape)
             ii = torch.sigmoid(i_c + i_x_ + i_m)
             ff = torch.sigmoid(f_c + f_x_ + f_m + self._forget_bias)
             gg = torch.tanh(g_c + g_x_)
