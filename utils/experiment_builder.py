@@ -112,12 +112,11 @@ class ExperimentBuilder(nn.Module):
 
         x = x.to(self.device)
         y = y.to(self.device)
-
+        print(x.shape)
         out = self.model.forward(x)  # forward the data in the model
         loss = 0        
         se = torch.sum((out - y)**2,(2,3)) # MSE error per frame
         loss = torch.mean(se)
-        # loss = torch.sqrt(self.criterion(out,y))
         self.optimizer.zero_grad()  # set all weight grads from previous training iters to 0
         loss.backward()  # backpropagate to compute gradients for current iter loss
 
