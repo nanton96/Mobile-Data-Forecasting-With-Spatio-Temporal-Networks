@@ -41,7 +41,7 @@ class ExperimentBuilder(nn.Module):
             self.model = nn.DataParallel(module=self.model)
         else:
             self.model.to(self.device)  # sends the model from the cpu to the gpu
-          # re-initialize network parameters
+            #re-initialize network parameters
         self.train_data = train_data
         self.val_data = val_data
         self.test_data = test_data
