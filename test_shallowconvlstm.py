@@ -6,8 +6,8 @@ seq_start =12
 seq_length = 22
 device = torch.cuda.current_device()
 
-x = torch.randn([5,12,100,100]).to(device)
-y = torch.randn([5,10,100,100]).to(device)
+x = torch.randn([5,12,32,32]).to(device)
+y = torch.randn([5,10,32,32]).to(device)
 
 seq_output = seq_length - seq_start
 
