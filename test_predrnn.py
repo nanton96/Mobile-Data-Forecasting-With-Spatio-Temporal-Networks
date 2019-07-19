@@ -7,7 +7,7 @@ device = torch.cuda.current_device()
 x = torch.randn([5,12,40,40],requires_grad=False).to(device)
 y = torch.randn([5,10,40,40],requires_grad=False).to(device)
 
-num_hidden = [64,128,128,128]
+num_hidden = [64,64,64,64]
 
 model = PredRNNPP(x.shape,12,10,5,num_hidden,device)
 torch.cuda
