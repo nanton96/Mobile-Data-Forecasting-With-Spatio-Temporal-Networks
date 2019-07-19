@@ -59,6 +59,7 @@ class PredRNNPP(nn.Module):
         cell = []
         hidden = []
         mem = None
+        z_t = None
         for i in range(self.num_layers):
             cell.append(None)
             hidden.append(None)
