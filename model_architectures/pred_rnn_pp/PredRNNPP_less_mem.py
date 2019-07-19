@@ -4,10 +4,11 @@
 import torch
 import torch.nn as nn
 from model_architectures.pred_rnn_pp.CausalLSTMCell_less_mem import CausalLSTMCell as clstm
+from model_architectures.pred_rnn_pp.GradientHighWayUnit import GHU
 
 class PredRNNPP(nn.Module):
 
-    def __init__(self,input_shape,seq_input,seq_output,batch_size,num_hidden,device):
+    def __init__(self,input_shape,seq_input,seq_output,batch_size,num_hidden,device,use_GHU = False):
         super(PredRNNPP,self).__init__()
 
         self.seq_input = seq_input
@@ -29,7 +30,7 @@ class PredRNNPP(nn.Module):
         self.pool = nn.MaxPool2d(kernel_size=3)
 
         self.compressed_shape = [batch_size,8,32,32]
-
+        self.use_GHU = use_GHU
         for i in range(self.num_layers):
             if i == 0:
                 num_hidden_in = self.num_hidden[self.num_layers-1]
@@ -40,8 +41,9 @@ class PredRNNPP(nn.Module):
 
             new_cell = clstm(input_channels,'lstm_'+str(i+1),3,num_hidden_in,self.num_hidden[i],self.compressed_shape,self.device)
             self.lstm.append(new_cell)
-
-        self.ghu = None
+        
+        if self.use_GHU:
+            self.ghu = GHU(filter_size=3, num_features = num_hidden[1],input_channels=num_hidden[0])
 
         self.deconv = nn.ConvTranspose2d(
             in_channels= num_hidden[len(num_hidden)-1] , 
@@ -74,8 +76,11 @@ class PredRNNPP(nn.Module):
             inputs = self.pool(inputs)  #to 32x32
             # Causal LSTMs do not change dimensionality
             hidden[0], cell[0], mem = self.lstm[0].forward(inputs, hidden[0],cell[0], mem)
-            #z_t = self.ghu(self.hidden[0], z_t)
-            z_t = hidden[0]
+            
+            if self.use_GHU:
+                z_t = self.ghu(self.hidden[0], z_t)
+            else:
+                z_t = hidden[0]
             hidden[1],cell[1],mem = self.lstm[1](z_t, hidden[1], cell[1], mem)
             for i in range(2, self.num_layers):
                 hidden[i], cell[i], mem = self.lstm[i](hidden[i-1], hidden[i], cell[i], mem)
