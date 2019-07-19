@@ -5,7 +5,7 @@ import torch
 import torch.nn as nn
 
 class GHU(nn.Module):
-    def __init__(self, filter_size, num_features,input_channels):
+    def __init__(self, filter_size, num_features,input_channels,device):
         """Initialize the Gradient Highway Unit.
         """
         super(GHU,self).__init__()
@@ -22,7 +22,7 @@ class GHU(nn.Module):
                                 kernel_size =self.filter_size,
                                 stride=1,
                                 padding=1)
-        
+        self.device = device
         
     def init_state(self, inputs, num_features):
         dims = len(inputs.shape)
@@ -32,7 +32,7 @@ class GHU(nn.Module):
             width = inputs.shape[3]
         else:
             raise ValueError('input tensor should be rank 4.')
-        return torch.zeros([batch, num_features, height, width])
+        return torch.zeros([batch, num_features, height, width]).to(self.device)
 
     def forward(self,x,z):
         if z is None:
