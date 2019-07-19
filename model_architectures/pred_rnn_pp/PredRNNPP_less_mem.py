@@ -47,9 +47,9 @@ class PredRNNPP(nn.Module):
             in_channels= num_hidden[len(num_hidden)-1] , 
             out_channels=1, 
             kernel_size=6,
-            stride=4,
+            stride=3,
             padding=0, 
-            output_padding=0, 
+            output_padding=1 
         )
 
     def forward(self,x):
