@@ -7,7 +7,7 @@ from model_architectures.pred_rnn_pp.CausalLSTMCell_less_mem import CausalLSTMCe
 
 class PredRNNPP(nn.Module):
 
-    def __init__(self,input_shape,seq_input,seq_output,batch_size,num_hidden,strides,padding,kernel_sizes,halve_dim,device):
+    def __init__(self,input_shape,seq_input,seq_output,batch_size,num_hidden,device):
         super(PredRNNPP,self).__init__()
 
         self.seq_input = seq_input
@@ -21,21 +21,17 @@ class PredRNNPP(nn.Module):
 
         self.lstm = nn.ModuleList()
         self.output_channels = 1
-
-        self.strides = strides
-        self.padding = padding
-        self.kernel_sizes = kernel_sizes
-        self.halve_dim = halve_dim
-        # self.conv = nn.Conv2d(in_channels=self.num_hidden[self.num_layers-1], ###hidden state has similar spatial struture as inputs, we simply concatenate them on the feature dimension
-        #                    out_channels=self.output_channels, 
-        #                    kernel_size=1,
-        #                    stride=1,
-        #                    padding=0).to(device)
+        self.conv = nn.Conv2d(in_channels=1,
+                           out_channels=8, 
+                           kernel_size=3,
+                           stride=1,
+                           padding=0)
+        self.pool = nn.MaxPool2d(kernel_size=3)
 
         for i in range(self.num_layers):
             if i == 0:
                 num_hidden_in = self.num_hidden[self.num_layers-1]
-                input_channels = 1
+                input_channels = 8
             else:
                 num_hidden_in = self.num_hidden[i-1]
                 input_channels = self.num_hidden[i-1]
@@ -44,7 +40,6 @@ class PredRNNPP(nn.Module):
             self.lstm.append(new_cell)
 
         self.ghu = None
-        ## CHANGE THESE PARAMS
 
         self.deconv = nn.ConvTranspose2d(
             in_channels= num_hidden[len(num_hidden)-1] , 
@@ -73,6 +68,9 @@ class PredRNNPP(nn.Module):
             else:
                 inputs = x_gen
 
+            inputs = self.conv(inputs)  #to 98x98
+            inputs = self.pool(inputs)  #to 32x32
+
             hidden[0], cell[0], mem = self.lstm[0].forward(inputs, hidden[0],cell[0], mem)
             #z_t = self.ghu(self.hidden[0], z_t)
             z_t = hidden[0]
@@ -80,8 +78,7 @@ class PredRNNPP(nn.Module):
             for i in range(2, self.num_layers):
                 hidden[i], cell[i], mem = self.lstm[i](hidden[i-1], hidden[i], cell[i], mem)
             
-            # x_gen = self.conv(hidden[self.num_layers-1])
-            x_gen = self.deconv(x_gen)
+            x_gen = self.deconv(x_gen) #back to 100x100
             output.append(x_gen.squeeze())
             print('t= ', t, ' memory :', torch.cuda.max_memory_allocated())
 

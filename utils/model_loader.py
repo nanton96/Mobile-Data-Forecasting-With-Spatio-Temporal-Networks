@@ -9,6 +9,15 @@ def create_model(model,args,device):
             seq_length = args.seq_length, 
             batch_size = args.batch_size,
             use_gpu=args.use_gpu)
+    elif model.lower()=='shallowconvlstm32x32':
+        from model_architectures.conv_lstm_shallow.ShallowConvLstm32x32 import ConvLSTMModel
+        return ConvLSTMModel(
+            input_size = args.image_height,
+            seq_start = args.seq_start, 
+            seq_length = args.seq_length, 
+            batch_size = args.batch_size,
+            use_gpu=args.use_gpu)
+            
     elif model.lower()=='deepconvlstm':
 
         from model_architectures.conv_lstm_deep.DeepConvLstm import EF,Encoder,Forecaster,ConvLSTM
