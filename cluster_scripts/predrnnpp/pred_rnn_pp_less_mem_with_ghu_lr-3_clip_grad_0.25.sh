@@ -1,10 +1,10 @@
 #!/bin/sh
 #SBATCH -N 1	  # nodes requested
 #SBATCH -n 1	  # tasks requested
-#SBATCH --partition=Standard
+#SBATCH --partition=Interactive
 #SBATCH --gres=gpu:1
 #SBATCH --mem=12000  # memory in Mb
-#SBATCH --time=0-07:59:00
+#SBATCH --time=0-01:59:00
 
 export CUDA_HOME=/opt/cuda-9.0.176.1/
 
@@ -32,7 +32,6 @@ mkdir -p ${TMP}/datasets/
 export DATASET_DIR=${TMP}/datasets/
 # Activate the relevant virtual environment:
 
-rsync -ua --progress /home/${STUDENT_ID}/dissertation/Mobile-Data-Forecasting-With-Spatio-Temporal-Networks/data/*.npz /disk/scratch/${STUDENT_ID}/data
 
 source /home/${STUDENT_ID}/miniconda3/bin/activate mlp
 cd /home/${STUDENT_ID}/dissertation/Mobile-Data-Forecasting-With-Spatio-Temporal-Networks
