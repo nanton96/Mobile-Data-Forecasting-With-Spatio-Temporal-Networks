@@ -17,6 +17,8 @@ class CNN3D(nn.Module):
         self.deconv3 = nn.ConvTranspose3d(in_channels=64,out_channels=1,kernel_size=5,stride=1,padding=2,output_padding=0)
 
     def forward(self,x): 
+        
+        x.unsquueze(1) # BSHW to BCSHW
 
         out = self.conv1(x)  
         out = self.conv2(out)  
@@ -25,4 +27,4 @@ class CNN3D(nn.Module):
         out = self.deconv2(out)
         out = self.deconv3(out)
 
-        return out.squeeze()
+        return out.squeeze() # BCSHW to BSHW
