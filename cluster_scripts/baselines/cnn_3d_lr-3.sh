@@ -1,10 +1,10 @@
 #!/bin/sh
 #SBATCH -N 1	  # nodes requested
 #SBATCH -n 1	  # tasks requested
-#SBATCH --partition=General_Usage
+#SBATCH --partition=Short
 #SBATCH --gres=gpu:1
 #SBATCH --mem=12000  # memory in Mb
-#SBATCH --time=0-23:59:00
+#SBATCH --time=0-3:59:00
 
 export CUDA_HOME=/opt/cuda-9.0.176.1/
 
@@ -41,7 +41,6 @@ cd /home/${STUDENT_ID}/dissertation/Mobile-Data-Forecasting-With-Spatio-Temporal
 python train.py --use_gpu True --gpu_id "0" --num_epochs 100\
                 --toy False --learning_rate 0.001\
                 --weight_decay_coefficient 0\
-                --experiment_name pred_rnn_pp_less_mem_with_ghu_lr_-3_in12_out10_no_shuffle_before_split\
-                --model predrnnpplessmemwithghu\
-                --seq_start 12 --seq_length 22\
-                --batch_size 5
+                --experiment_name cnn_3d_lr_-3_in_12_out_10\
+                --model cnn3d\
+                --seq_start 12 --seq_length 22

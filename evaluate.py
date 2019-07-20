@@ -42,7 +42,14 @@ if arguments.experiment_name.split('_')[0] == 'new':
     model_name = 'deepconvlstm'
 elif arguments.experiment_name.split('_')[0] == 'conv':
     model_name = 'shallowconvlstm'
-
+elif arguments.experiment_name.split('_')[0] == 'pred':
+    if arguments.experiment_name.split('_')[3] == 'less':
+        if arguments.experiment_name.split('_')[5] == 'with':
+            model_name = 'predrnnpplessmemwithghu'
+        else:
+            model_name = 'predrnnlessmem' 
+    else:
+        model_name = 'predrnnpp'
 if arguments.machine.lower() =='cluster':
     RESULTS_PATH = '/home/s1818503/dissertation/Mobile-Data-Forecasting-With-Spatio-Temporal-Networks/experiments_results/'
     TEST_SET_PATH = '/home/s1818503/dissertation/Mobile-Data-Forecasting-With-Spatio-Temporal-Networks/data/milan_processed_test.npz' #data is with input 12 and output 10
