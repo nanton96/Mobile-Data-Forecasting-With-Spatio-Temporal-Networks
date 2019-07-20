@@ -8,7 +8,7 @@ class CNN3D(nn.Module):
     
     def __init__(self):
 
-        super(CNN3D).__init__ ()
+        super(CNN3D,self).__init__ ()
         self.conv1   = nn.Conv3d(in_channels=1,out_channels=64,kernel_size=5,stride=1,padding=2)
         self.conv2   = nn.Conv3d(in_channels=64,out_channels=128,kernel_size=3,stride=(1,2,2),padding=1)
         self.conv3   = nn.Conv3d(in_channels=128,out_channels=128,kernel_size=3,stride=(2,2,2),padding=1)
