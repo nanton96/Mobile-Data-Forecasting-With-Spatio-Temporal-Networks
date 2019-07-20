@@ -91,6 +91,8 @@ _ , y = test_dataset.__getitem__(1)
 
 mse_frame_timestep = np.zeros(y.shape[0])#.to(device)
 predictions = []
+
+model.eval()
 with tqdm.tqdm(total=len(test_data)) as pbar_test:
     for idx,(x,y) in enumerate(test_data):
         x = x.to(device)
