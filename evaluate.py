@@ -47,7 +47,7 @@ elif arguments.experiment_name.split('_')[0] == 'pred':
         if arguments.experiment_name.split('_')[5] == 'with':
             model_name = 'predrnnpplessmemwithghu'
         else:
-            model_name = 'predrnnlessmem' 
+            model_name = 'predrnnpplessmem' 
     else:
         model_name = 'predrnnpp'
 if arguments.machine.lower() =='cluster':
