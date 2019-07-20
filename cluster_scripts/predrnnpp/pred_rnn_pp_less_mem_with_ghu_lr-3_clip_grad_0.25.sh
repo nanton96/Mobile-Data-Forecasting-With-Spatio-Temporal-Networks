@@ -38,10 +38,14 @@ source /home/${STUDENT_ID}/miniconda3/bin/activate mlp
 cd /home/${STUDENT_ID}/dissertation/Mobile-Data-Forecasting-With-Spatio-Temporal-Networks
 
 
-python train.py --use_gpu True --gpu_id "0" --num_epochs 100\
+start_epoch="$1"
+epoch_interval= 8
+total_epoch= echo "$1 + $epoch_interval" | bc
+
+python train.py --use_gpu True --gpu_id "0" --num_epochs $total_epoch\
                 --toy False --learning_rate 0.001\
                 --weight_decay_coefficient 0.00001\
                 --experiment_name pred_rnn_pp_less_mem_with_ghu_lr-3_clip_grad_0.25\
                 --model predrnnpplessmemwithghu\
                 --seq_start 12 --seq_length 22\
-                --batch_size 5 --clip_grad 0.25
+                --batch_size 5 --clip_grad 0.25 --continue_from_epoch $start_epoch
