@@ -56,6 +56,12 @@ def create_model(model,args,device):
         
         model = CNN3D()
         return model
+    
+    elif model.lower()=='cnn3drelu':
+        from model_architectures.conv_3d.CNN_3D_12_to_10_with_RELU import CNN3D
+        model = CNN3D()
+        return model
+
     elif model.lower()=='predrnnpplessmemwithghu':
         from model_architectures.pred_rnn_pp.PredRNNPP_less_mem import PredRNNPP
 
