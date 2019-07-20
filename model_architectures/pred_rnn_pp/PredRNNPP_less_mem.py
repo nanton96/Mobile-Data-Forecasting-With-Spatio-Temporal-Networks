@@ -73,10 +73,10 @@ class PredRNNPP(nn.Module):
             else:
                 inputs = x_gen
 
-            inputs = self.conv(inputs)  #to 98x98
-            inputs = self.pool(inputs)  #to 32x32
+            inputs_ = self.conv(inputs)  #to 98x98
+            inputs__ = self.pool(inputs_)  #to 32x32
             # Causal LSTMs do not change dimensionality
-            hidden[0], cell[0], mem = self.lstm[0].forward(inputs, hidden[0],cell[0], mem)
+            hidden[0], cell[0], mem = self.lstm[0].forward(inputs__, hidden[0],cell[0], mem)
             
             if self.use_GHU:
                 z_t = self.ghu(hidden[0], z_t)

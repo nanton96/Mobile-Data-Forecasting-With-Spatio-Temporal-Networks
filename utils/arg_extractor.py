@@ -46,7 +46,8 @@ def get_args():
                         help='flag that indicates on whether or not to use a small toy dataset for testing/debugging')
     parser.add_argument('--image_height',type = int,default = 100,help = "size of image")
     parser.add_argument('--cropped',type = str2bool,default = False,help = "if true use 32x32 center of image")
-
+        
+    parser.add_argument('--clip_grad', type=float, default=-1, help='grad clip parameter, -1 for no grad clip')
 
     args = parser.parse_args()
     gpu_id = str(args.gpu_id)
