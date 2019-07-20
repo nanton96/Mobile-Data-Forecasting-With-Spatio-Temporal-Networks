@@ -18,7 +18,7 @@ class CNN3D(nn.Module):
 
     def forward(self,x): 
         
-        x.unsquueze(1) # BSHW to BCSHW
+        x.unsqueeze(1) # BSHW to BCSHW
 
         out = self.conv1(x)  
         out = self.conv2(out)  
