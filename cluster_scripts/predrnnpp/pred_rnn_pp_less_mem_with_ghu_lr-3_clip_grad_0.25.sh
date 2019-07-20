@@ -36,10 +36,8 @@ export DATASET_DIR=${TMP}/datasets/
 source /home/${STUDENT_ID}/miniconda3/bin/activate mlp
 cd /home/${STUDENT_ID}/dissertation/Mobile-Data-Forecasting-With-Spatio-Temporal-Networks
 
-
-start_epoch="$1"
 epoch_interval= 8
-total_epoch= echo "$1 + $epoch_interval" | bc
+total_epoch= echo "$start_epoch + $epoch_interval" | bc
 
 python train.py --use_gpu True --gpu_id "0" --num_epochs $total_epoch\
                 --toy False --learning_rate 0.001\
