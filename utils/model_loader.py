@@ -52,10 +52,10 @@ def create_model(model,args,device):
         model = PredRNNPP(input_shape,args.seq_start,args.seq_length-args.seq_start,args.batch_size,num_hidden,device)
         return model
     elif model.lower()=='cnn3d':
-        from model_architectures.3d_conv.CNN_3D_12_to_10 import CNN3D
+        from model_architectures.conv_3d.CNN_3D_12_to_10 import CNN3D
         
         model = CNN3D()
-    return model
+        return model
     elif model.lower()=='predrnnpplessmemwithghu':
         from model_architectures.pred_rnn_pp.PredRNNPP_less_mem import PredRNNPP
 
