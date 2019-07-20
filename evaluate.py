@@ -68,7 +68,9 @@ RESULT_FOLDERS = {
     # 'deepconvlstm' :  'hzzone_conv_lstm/' ,
     # 'shallowconvlstm' :  'cxiixi_conv_lstm/'
     'deepconvlstm' :  '' ,
-    'shallowconvlstm' :  ''
+    'shallowconvlstm' :  '',
+    'predrnnpplessmem' : '',
+    'predrnnpplessmemwithghu':''
 }
 
 device = torch.cuda.current_device()
