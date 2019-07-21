@@ -92,100 +92,102 @@ _ , y = test_dataset.__getitem__(1)
 mse_frame_timestep = np.zeros(y.shape[0])#.to(device)
 predictions = []
 
-model.eval()
-with tqdm.tqdm(total=len(test_data)) as pbar_test:
-    for idx,(x,y) in enumerate(test_data):
-        x = x.to(device)
-        y = y.to(device)
-        out = model.forward(x)
-        se_batch = torch.sum((out.squeeze() - y)**2,(2,3))
-        mse_frame_timestep = mse_frame_timestep + torch.mean(se_batch,0).cpu().detach().numpy()
-        pbar_test.update(1)
-        predictions.append(out.cpu().detach().numpy())
-### SAVE PREDICTIONS
-predictions = np.array(predictions)
-np.savez(RESULTS_PATH + RESULT_FOLDERS[model_name] + experiment_name + '/example_predictions/test_predictions.npz',y=predictions)
-### SAVE MSE
-mse_frame_timestep = mse_frame_timestep / len(test_data)
-np.savetxt(RESULTS_PATH + experiment_name + '/mse_frame_timestep.csv', mse_frame_timestep, delimiter=",")
-### PLOT MSE/TIMESTEP
-fig = plt.figure()
-ax = fig.add_subplot(111)
-ax.plot(mse_frame_timestep,'-o')
-ax.set_title('MSE/frame ' + model_name)
-ax.set_xlabel('timestep')
-ax.set_ylabel('MSE')
-fig.savefig(RESULTS_PATH + 'figures/' + experiment_name + '.pdf')
+# for module in model.children():
+#     module.train(False)
+with torch.no_grad():
+    with tqdm.tqdm(total=len(test_data)) as pbar_test:
+        for idx,(x,y) in enumerate(test_data):
+            x = x.to(device)
+            y = y.to(device)
+            out = model.forward(x)
+            se_batch = torch.sum((out.squeeze() - y)**2,(2,3))
+            mse_frame_timestep = mse_frame_timestep + torch.mean(se_batch,0).cpu().detach().numpy()
+            pbar_test.update(1)
+            predictions.append(out.cpu().detach().numpy())
+    ### SAVE PREDICTIONS
+    predictions = np.array(predictions)
+    np.savez(RESULTS_PATH + RESULT_FOLDERS[model_name] + experiment_name + '/example_predictions/test_predictions.npz',y=predictions)
+    ### SAVE MSE
+    mse_frame_timestep = mse_frame_timestep / len(test_data)
+    np.savetxt(RESULTS_PATH + experiment_name + '/mse_frame_timestep.csv', mse_frame_timestep, delimiter=",")
+    ### PLOT MSE/TIMESTEP
+    fig = plt.figure()
+    ax = fig.add_subplot(111)
+    ax.plot(mse_frame_timestep,'-o')
+    ax.set_title('MSE/frame ' + model_name)
+    ax.set_xlabel('timestep')
+    ax.set_ylabel('MSE')
+    fig.savefig(RESULTS_PATH + 'figures/' + experiment_name + '.pdf')
 
-### SAMPLE PREDICTIONS to create example plots###
-x,y = next(iter(test_data))
-x = x.to(device)
-y = y.to(device)
-out = model.forward(x)
-out = torch.Tensor.cpu(out)
-out = out.detach().numpy()
-y = torch.Tensor.cpu(y) # to generate plots
+    ### SAMPLE PREDICTIONS to create example plots###
+    x,y = next(iter(test_data))
+    x = x.to(device)
+    y = y.to(device)
+    out = model.forward(x)
+    out = torch.Tensor.cpu(out)
+    out = out.detach().numpy()
+    y = torch.Tensor.cpu(y) # to generate plots
 
-from matplotlib.colors import Normalize
-norm = Normalize(vmin=-0.42,vmax=50)
-import os
+    from matplotlib.colors import Normalize
+    norm = Normalize(vmin=-0.42,vmax=50)
+    import os
 
-PREDICTIONS_PATH = RESULTS_PATH + RESULT_FOLDERS[model_name] + experiment_name + '/example_predictions/'
+    PREDICTIONS_PATH = RESULTS_PATH + RESULT_FOLDERS[model_name] + experiment_name + '/example_predictions/'
 
-colormap = 'nipy_spectral'
-if not os.path.isdir(PREDICTIONS_PATH):
-    os.mkdir(PREDICTIONS_PATH)
-for i in range(y.shape[0]):
-    EXAMPLE_PATH = PREDICTIONS_PATH + 'example_' + str(i) 
-    if not os.path.isdir(EXAMPLE_PATH):
-        os.mkdir(EXAMPLE_PATH)
-    for j in range(y.shape[1]):
+    colormap = 'nipy_spectral'
+    if not os.path.isdir(PREDICTIONS_PATH):
+        os.mkdir(PREDICTIONS_PATH)
+    for i in range(y.shape[0]):
+        EXAMPLE_PATH = PREDICTIONS_PATH + 'example_' + str(i) 
+        if not os.path.isdir(EXAMPLE_PATH):
+            os.mkdir(EXAMPLE_PATH)
+        for j in range(y.shape[1]):
+            
+            plt.figure()
+            plt.suptitle('timestep: ' + str(j),fontsize=16)
+
+            plt.subplot(1,2,1)
+
+            plt.imshow(y[i,j,...],origin='lower',norm=norm,cmap=colormap)
+            plt.title('ground_truth',fontsize=16)
+            plt.xlabel('x coordinate',fontsize=16)
+            plt.ylabel('y coordinate',fontsize=16)
+
+            plt.subplot(1,2,2)
+
+            plt.imshow(out[i,j,...],origin='lower',norm=norm,cmap=colormap)
+            plt.title('prediction',fontsize=16)
+            plt.xlabel('x coordinate',fontsize=16)
+            # plt.ylabel('y coordinate',fontsize=16)
+            plt.subplots_adjust(wspace=0.3)
+            fig_name = 'timestep_' + str(j) + '.pdf'
+    #         plt.colorbar()
+            plt.savefig(os.path.join(EXAMPLE_PATH,fig_name))
+            plt.clf()
         
-        plt.figure()
-        plt.suptitle('timestep: ' + str(j),fontsize=16)
+        fig,ax =plt.subplots(2,y.shape[1])
+        fig.subplots_adjust(wspace = 0.01, hspace=0.01)
+        for j in range(y.shape[1]):
+            
+            fig.suptitle('entire sequence',fontsize=16)
+            ax[0,j].imshow(y[i,j,...],origin='lower',norm=norm,cmap=colormap)
+            ax[0,j].axis('off')
+    #         plt.title('ground_truth',fontsize=16)
+    #         plt.xlabel('x coordinate',fontsize=16)
+    #         plt.ylabel('y coordinate',fontsize=16)
+            ax[1,j].imshow(out[i,j,...],origin='lower',norm=norm,cmap=colormap)
+            ax[1,j].axis('off')
 
-        plt.subplot(1,2,1)
+    #         plt.title('prediction',fontsize=16)
+    #         plt.xlabel('x coordinate',fontsize=16)
+            # plt.ylabel('y coordinate',fontsize=16)
+            plt.subplots_adjust(hspace =-.5)
+    #     fig.text(0.2,0.2,'ground_truth')
+    #     ax[0,0].set_ylabel('ground_truth',fontsize=16)
+    #     ax[1,0].set_ylabel('prediction',fontsize=16)
 
-        plt.imshow(y[i,j,...],origin='lower',norm=norm,cmap=colormap)
-        plt.title('ground_truth',fontsize=16)
-        plt.xlabel('x coordinate',fontsize=16)
-        plt.ylabel('y coordinate',fontsize=16)
-
-        plt.subplot(1,2,2)
-
-        plt.imshow(out[i,j,...],origin='lower',norm=norm,cmap=colormap)
-        plt.title('prediction',fontsize=16)
-        plt.xlabel('x coordinate',fontsize=16)
-        # plt.ylabel('y coordinate',fontsize=16)
-        plt.subplots_adjust(wspace=0.3)
-        fig_name = 'timestep_' + str(j) + '.pdf'
-#         plt.colorbar()
+        fig_name = 'entire_sequence' + '.pdf'    
         plt.savefig(os.path.join(EXAMPLE_PATH,fig_name))
         plt.clf()
-    
-    fig,ax =plt.subplots(2,y.shape[1])
-    fig.subplots_adjust(wspace = 0.01, hspace=0.01)
-    for j in range(y.shape[1]):
-        
-        fig.suptitle('entire sequence',fontsize=16)
-        ax[0,j].imshow(y[i,j,...],origin='lower',norm=norm,cmap=colormap)
-        ax[0,j].axis('off')
-#         plt.title('ground_truth',fontsize=16)
-#         plt.xlabel('x coordinate',fontsize=16)
-#         plt.ylabel('y coordinate',fontsize=16)
-        ax[1,j].imshow(out[i,j,...],origin='lower',norm=norm,cmap=colormap)
-        ax[1,j].axis('off')
 
-#         plt.title('prediction',fontsize=16)
-#         plt.xlabel('x coordinate',fontsize=16)
-        # plt.ylabel('y coordinate',fontsize=16)
-        plt.subplots_adjust(hspace =-.5)
-#     fig.text(0.2,0.2,'ground_truth')
-#     ax[0,0].set_ylabel('ground_truth',fontsize=16)
-#     ax[1,0].set_ylabel('prediction',fontsize=16)
-
-    fig_name = 'entire_sequence' + '.pdf'    
-    plt.savefig(os.path.join(EXAMPLE_PATH,fig_name))
-    plt.clf()
-
-print('done')
+    print('done')
