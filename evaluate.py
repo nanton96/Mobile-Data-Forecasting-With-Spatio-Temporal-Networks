@@ -5,6 +5,7 @@ import matplotlib.pyplot as plt
 from torch.utils.data import DataLoader
 import utils.dataloaders as dataloaders
 import tqdm
+import os
 import matplotlib
 matplotlib.use('Agg')
 import argparse
@@ -106,7 +107,12 @@ with torch.no_grad():
             predictions.append(out.cpu().detach().numpy())
     ### SAVE PREDICTIONS
     predictions = np.array(predictions)
-    np.savez(RESULTS_PATH + RESULT_FOLDERS[model_name] + experiment_name + '/example_predictions/test_predictions.npz',y=predictions)
+
+    PREDICTIONS_PATH = RESULTS_PATH + RESULT_FOLDERS[model_name] + experiment_name + '/example_predictions/'
+    if not os.path.isdir(PREDICTIONS_PATH):
+            os.mkdir(PREDICTIONS_PATH)
+
+    np.savez(PREDICTIONS_PATH + 'test_predictions.npz',y=predictions)
     ### SAVE MSE
     mse_frame_timestep = mse_frame_timestep / len(test_data)
     np.savetxt(RESULTS_PATH + experiment_name + '/mse_frame_timestep.csv', mse_frame_timestep, delimiter=",")
@@ -130,13 +136,10 @@ with torch.no_grad():
 
     from matplotlib.colors import Normalize
     norm = Normalize(vmin=-0.42,vmax=50)
-    import os
 
-    PREDICTIONS_PATH = RESULTS_PATH + RESULT_FOLDERS[model_name] + experiment_name + '/example_predictions/'
 
     colormap = 'nipy_spectral'
-    if not os.path.isdir(PREDICTIONS_PATH):
-        os.mkdir(PREDICTIONS_PATH)
+    
     for i in range(y.shape[0]):
         EXAMPLE_PATH = PREDICTIONS_PATH + 'example_' + str(i) 
         if not os.path.isdir(EXAMPLE_PATH):
