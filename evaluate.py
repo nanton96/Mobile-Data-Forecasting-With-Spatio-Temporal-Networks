@@ -51,6 +51,10 @@ elif arguments.experiment_name.split('_')[0] == 'pred':
             model_name = 'predrnnpplessmem' 
     else:
         model_name = 'predrnnpp'
+elif arguments.experiment_name.split('_')[0]=='cnn':
+    model_name = 'cnn3drelu'
+
+
 if arguments.machine.lower() =='cluster':
     RESULTS_PATH = '/home/s1818503/dissertation/Mobile-Data-Forecasting-With-Spatio-Temporal-Networks/experiments_results/'
     TEST_SET_PATH = '/home/s1818503/dissertation/Mobile-Data-Forecasting-With-Spatio-Temporal-Networks/data/milan_processed_test.npz' #data is with input 12 and output 10
@@ -71,7 +75,8 @@ RESULT_FOLDERS = {
     'deepconvlstm' :  '' ,
     'shallowconvlstm' :  '',
     'predrnnpplessmem' : '',
-    'predrnnpplessmemwithghu':''
+    'predrnnpplessmemwithghu':'',
+    'cnn3drelu':''
 }
 
 device = torch.cuda.current_device()
