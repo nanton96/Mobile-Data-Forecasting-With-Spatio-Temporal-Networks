@@ -51,6 +51,17 @@ def create_model(model,args,device):
         input_shape = [args.batch_size,args.seq_start,args.image_height,args.image_height]
         model = PredRNNPP(input_shape,args.seq_start,args.seq_length-args.seq_start,args.batch_size,num_hidden,device)
         return model
+    elif model.lower()=='cnn3d':
+        from model_architectures.conv_3d.CNN_3D_12_to_10 import CNN3D
+        
+        model = CNN3D()
+        return model
+    
+    elif model.lower()=='cnn3drelu':
+        from model_architectures.conv_3d.CNN_3D_12_to_10_with_RELU import CNN3D
+        model = CNN3D()
+        return model
+
     elif model.lower()=='predrnnpplessmemwithghu':
         from model_architectures.pred_rnn_pp.PredRNNPP_less_mem import PredRNNPP
 
@@ -58,6 +69,5 @@ def create_model(model,args,device):
         input_shape = [args.batch_size,args.seq_start,args.image_height,args.image_height]
         model = PredRNNPP(input_shape,args.seq_start,args.seq_length-args.seq_start,args.batch_size,num_hidden,device,use_GHU=True)
         return model
-
     else:
         raise ValueError('model ' + model + ' not implemented')
