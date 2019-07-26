@@ -66,7 +66,12 @@ def process_milan_dataset(S=12,K=4,shift_flag=False):
     #y = 2 * (y / max_x) - 1
     #### STANDARDISATION ###
     mean_x = np.mean(x_train.flatten())
+
+    print('mean of training set: ', mean_x)
+
     std_x  = np.std(x_train.flatten())
+
+    print('standard deviation of trainign set ', std_x)
     
     x_train = (x_train - mean_x) / std_x
     y_train = (y_train - mean_x) / std_x

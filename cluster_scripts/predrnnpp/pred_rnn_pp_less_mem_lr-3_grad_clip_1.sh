@@ -41,7 +41,7 @@ cd /home/${STUDENT_ID}/dissertation/Mobile-Data-Forecasting-With-Spatio-Temporal
 python train.py --use_gpu True --gpu_id "0" --num_epochs 45\
                 --toy False --learning_rate 0.001\
                 --weight_decay_coefficient 0.00001\
-                --experiment_name pred_rnn_pp_less_mem_lr-3_grad_clip_10\
+                --experiment_name pred_rnn_pp_less_mem_lr-3_grad_clip_1\
                 --model predrnnpplessmem\
                 --seq_start 12 --seq_length 22\
-                --batch_size 5 --clip_grad 10.0
+                --batch_size 5 --clip_grad 1.0
