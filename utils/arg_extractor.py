@@ -23,15 +23,10 @@ def get_args():
     
     parser.add_argument('--batch_size', nargs="?", type=int, default=10, help='Batch_size for experiment')
     parser.add_argument('--continue_from_epoch', nargs="?", type=int, default=-1, help='Batch_size for experiment')
-    parser.add_argument('--dataset_name', type=str, help='Dataset on which the system will train/eval our model')
     parser.add_argument('--seed', nargs="?", type=int, default=7112018,
                         help='Seed to use for random number generator for experiment')
     parser.add_argument('--image_num_channels', nargs="?", type=int, default=1,
                         help='The channel dimensionality of our image-data')
-    parser.add_argument('--image_height', nargs="?", type=int, default=100, help='Height of image data')
-    parser.add_argument('--image_width', nargs="?", type=int, default=100, help='Width of image data')
-    parser.add_argument('--dim_reduction_type', nargs="?", type=str, default='strided_convolution',
-                        help='One of [strided_convolution, dilated_convolution, max_pooling, avg_pooling]')
     parser.add_argument('--seq_length',type = int,default = 18,help = "length of the sequence")
     parser.add_argument('--seq_start',type = int,default = 12,help = """start of the sequence generation""")
     parser.add_argument('--model',type= str, default = 'deepconvlstm', help="name of model architecture we are going to use")
@@ -49,6 +44,10 @@ def get_args():
                         help='')
     parser.add_argument('--toy', nargs="?", type=str2bool, default=False,
                         help='flag that indicates on whether or not to use a small toy dataset for testing/debugging')
+    parser.add_argument('--image_height',type = int,default = 100,help = "size of image")
+    parser.add_argument('--cropped',type = str2bool,default = False,help = "if true use 32x32 center of image")
+        
+    parser.add_argument('--clip_grad', type=float, default=-1, help='grad clip parameter, -1 for no grad clip')
 
     args = parser.parse_args()
     gpu_id = str(args.gpu_id)

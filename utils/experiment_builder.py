@@ -13,7 +13,7 @@ from utils.storage import save_statistics
 
 class ExperimentBuilder(nn.Module):
     def __init__(self,seq_start,seq_length, network_model, experiment_name, num_epochs, train_data, val_data,
-                 test_data, lr, weight_decay_coefficient, device, continue_from_epoch=-1):
+                 test_data, lr, weight_decay_coefficient, device, continue_from_epoch=-1,clip_grad=-1):
         """
         Initializes an ExperimentBuilder object. Such an object takes care of running training and evaluation of a deep net
         on a given dataset. It also takes care of saving per epoch models and automatically inferring the best val model
@@ -29,6 +29,8 @@ class ExperimentBuilder(nn.Module):
         :param continue_from_epoch: An int indicating whether we'll start from scrach (-1) or whether we'll reload a previously saved model of epoch 'continue_from_epoch' and continue training from there.
         """
         super(ExperimentBuilder, self).__init__()
+        
+        self.clip_grad = clip_grad
 
         self.experiment_name = experiment_name
         self.model = network_model
@@ -41,7 +43,7 @@ class ExperimentBuilder(nn.Module):
             self.model = nn.DataParallel(module=self.model)
         else:
             self.model.to(self.device)  # sends the model from the cpu to the gpu
-          # re-initialize network parameters
+            #re-initialize network parameters
         self.train_data = train_data
         self.val_data = val_data
         self.test_data = test_data
@@ -55,7 +57,7 @@ class ExperimentBuilder(nn.Module):
         # Set best models to be at 0 since we are just starting
         self.best_val_model_idx = 0
         self.best_val_model_loss = np.Inf
-
+        
         if not os.path.exists(self.experiment_folder):  # If experiment directory does not exist
             os.mkdir(self.experiment_folder)  # create the experiment directory
 
@@ -112,17 +114,14 @@ class ExperimentBuilder(nn.Module):
 
         x = x.to(self.device)
         y = y.to(self.device)
-
-        if self.model.input_dim == 'SBCHW':
-            x = helper.convert_BSHW_to_SBCHW(x)
-
         out = self.model.forward(x)  # forward the data in the model
         loss = 0        
         se = torch.sum((out - y)**2,(2,3)) # MSE error per frame
         loss = torch.mean(se)
-        # loss = torch.sqrt(self.criterion(out,y))
         self.optimizer.zero_grad()  # set all weight grads from previous training iters to 0
         loss.backward()  # backpropagate to compute gradients for current iter loss
+        if self.clip_grad != -1:
+            torch.nn.utils.clip_grad_norm_(self.model.parameters(), self.clip_grad)
 
         self.optimizer.step()  # update network parameters
         return loss.data.detach().cpu().numpy()
@@ -141,9 +140,6 @@ class ExperimentBuilder(nn.Module):
 
         x = x.to(self.device)
         y = y.to(self.device)
-
-        if self.model.input_dim == 'SBCHW':
-            x = helper.convert_BSHW_to_SBCHW(x)
 
         out = self.model.forward(x)  # forward the data in the model
         loss = 0
@@ -177,7 +173,6 @@ class ExperimentBuilder(nn.Module):
         self.load_state_dict(state_dict=state['network'])
         #return state['best_val_model_idx'], state['best_val_model_acc'], state
         return state['best_val_model_idx'], state['best_val_model_loss'], state
-
 
     def run_experiment(self):
         """

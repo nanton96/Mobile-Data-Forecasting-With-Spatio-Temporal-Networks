@@ -1,8 +1,11 @@
 from torch import nn
 import torch
 from collections import OrderedDict
-from utils.helper_functions import convert_SBCHW_to_BSHW
+from utils.helper_functions import convert_SBCHW_to_BSHW,convert_BSHW_to_SBCHW
 # code modified from https://github.com/Hzzone/Precipitation-Nowcasting
+
+#### MAIN MODEL IS THE EF CLASS, REST ARE PARTS OF IT ####
+
 class ConvLSTM(nn.Module):
     def __init__(self, input_channel, num_filter, b_h_w, kernel_size, stride=1, padding=1,device=None,seq_len=None):
         super().__init__()
@@ -129,6 +132,7 @@ class EF(nn.Module):
 
 
     def forward(self, input):
+        input = convert_BSHW_to_SBCHW(input)
         state = self.encoder(input)
         output = self.forecaster(state)
         return convert_SBCHW_to_BSHW(output)

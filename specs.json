@@ -1,0 +1,7 @@
+{
+    "model" : "shallowconvlstm",
+    "seq_input" : 12,
+    "seq_output" : 6,
+    "learning_rate" : 0.001,
+    "epochs" : 200
+}

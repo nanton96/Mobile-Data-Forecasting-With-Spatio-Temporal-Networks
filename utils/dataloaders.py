@@ -3,7 +3,7 @@ import torch.utils.data as data
 
 class MilanDataLoader(data.Dataset):
 
-    def __init__(self,_set='train',toy=False, DATA_DIR = None):
+    def __init__(self,_set='train',toy=False, DATA_DIR = None,cropped=False):
         if DATA_DIR == None: 
             if toy == True:
                 DATA_DIR = 'data_toy/'
@@ -19,14 +19,11 @@ class MilanDataLoader(data.Dataset):
                 raise ValueError("Invalid set. Please select one of: train, valid, test")
         
         data_set = np.load(DATA_DIR)
-        # if create_channel_axis == True: 
-        #     self.x = np.expand_dims(data_set['x'],4).transpose(0,3,4,1,2).astype(np.float32)   
-        #     # DIMENSIONS B S C H W
-        #     self.y = np.expand_dims(data_set['y'],4).transpose(0,3,4,1,2).astype(np.float32)   
-        #     # seq_len batch_size input_channel height width
-        
         self.x = data_set['x'].transpose(0,3,1,2).astype(np.float32)  # DIMENSIONS B S H W
         self.y = data_set['y'].transpose(0,3,1,2).astype(np.float32)
+        if cropped == True:
+            self.x = self.x[:,:,33:65,33:65]
+            self.y = self.y[:,:,33:65,33:65]
 
     
     def __getitem__(self,index):

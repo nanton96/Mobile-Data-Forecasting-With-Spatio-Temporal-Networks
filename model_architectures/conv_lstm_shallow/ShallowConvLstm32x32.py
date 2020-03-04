@@ -49,7 +49,7 @@ class ConvLSTMModel(nn.Module):
         self.deconv = nn.ConvTranspose2d(
                         in_channels=self.hidden_size , 
                         out_channels=1, 
-                        kernel_size=6,
+                        kernel_size=4,
                         stride=3,
                         padding=0, 
                         output_padding=1, 
